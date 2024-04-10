@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:karshi/backend/auth.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -6,7 +7,17 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final AuthService _auth = AuthService();
   bool isUserSignup = true;
+
+
+  String _owner_name = '';
+  String _customer_name = '';
+  String _shop_name = '';
+  String _password = '';
+  String _address = '';
+  int _mobile_number = 0;
+  String _email = '';
 
   @override
   Widget build(BuildContext context) {
@@ -53,39 +64,71 @@ class _SignupPageState extends State<SignupPage> {
             SizedBox(height: 20.0),
             TextField(
               decoration: InputDecoration(labelText: 'Name'),
+              onChanged: (val){
+                                setState(() => _customer_name = val);
+                              },
             ),
             SizedBox(height: 10.0),
             if (!isUserSignup)
               TextField(
                 decoration: InputDecoration(labelText: 'Owner Name'),
+                onChanged: (val){
+                                setState(() => _owner_name = val);
+                              },
               ),
             SizedBox(height: 10.0),
             if (!isUserSignup)
               TextField(
                 decoration: InputDecoration(labelText: 'Shop Name'),
+                onChanged: (val){
+                                setState(() => _shop_name = val);
+                              },
               ),
             SizedBox(height: 10.0),
             TextField(
               decoration: InputDecoration(labelText: 'Password'),
               obscureText: true,
+              onChanged: (val){
+                                setState(() => _password = val);
+                              },
             ),
             SizedBox(height: 10.0),
             TextField(
               decoration: InputDecoration(labelText: 'Email'),
+              onChanged: (val){
+                                setState(() => _email = val);
+                              },
             ),
             SizedBox(height: 10.0),
             TextField(
               decoration: InputDecoration(labelText: 'Address'),
+              onChanged: (val){
+                                setState(() => _address = val);
+                              },
             ),
             SizedBox(height: 10.0),
             if (!isUserSignup)
               TextField(
                 decoration: InputDecoration(labelText: 'Mobile Number'),
+                onChanged: (val){
+                                setState(() => _mobile_number = int.parse(val));
+                              },
               ),
             SizedBox(height: 20.0),
             ElevatedButton(
-              onPressed: () {
+              onPressed: () async {
                 // Add signup logic
+                dynamic result;
+                if(!isUserSignup){
+                  result = await _auth.register_shopkeeper(_email, _password, _shop_name, _owner_name, _mobile_number, _address, '0', '0');
+                }
+                else {
+                  result = await _auth.register_customer(_email, _password, _customer_name, _mobile_number, _address);
+                }
+                if(result == null){
+                  print("Not Signed in");
+                }
+                // dynamic result = await _auth.register_shopkeeper(email, password, shop_name, owner_name, mobile_number, shop_address, latitude, longitude)
               },
               child: Text('Sign Up'),
             ),

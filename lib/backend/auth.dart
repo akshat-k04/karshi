@@ -20,6 +20,7 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       if(user != null){
+        await Role(uid: user.uid).update_role('ShopKeeper');
         // await DatabaseService(uid: user.uid).updateUserData(email, name, bhawan, room_number, enrollment_number, branch, role);
         // await DataBaseLaundry(uid: user.uid,bhawan: bhawan).updateData(name,room_number, '', false);
         // await DatabaseEntryExit(uid: user.uid,Bhawan: bhawan).statusUserEntry(bhawan, false,false);
@@ -37,6 +38,7 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User? user = result.user;
       if(user != null){
+        await Role(uid: user.uid).update_role('Customer');
         // await DatabaseService(uid: user.uid).updateUserData(email, name, bhawan, room_number, enrollment_number, branch, role);
         // await DataBaseLaundry(uid: user.uid,bhawan: bhawan).updateData(name,room_number, '', false);
         // await DatabaseEntryExit(uid: user.uid,Bhawan: bhawan).statusUserEntry(bhawan, false,false);
