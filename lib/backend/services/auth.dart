@@ -1,10 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
-// import 'database.dart';
+
 
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:karshi/backend/services/customer_services.dart';
 import 'package:karshi/backend/models/models.dart';
-import 'package:karshi/backend/shopkeeper_services.dart';
+import 'package:karshi/backend/services/customer_services.dart';
+import 'package:karshi/backend/services/shopkeeper_services.dart';
+
 
 class AuthService {
   final FirebaseAuth _auth = FirebaseAuth.instance;
