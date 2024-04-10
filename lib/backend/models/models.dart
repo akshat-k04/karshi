@@ -23,5 +23,10 @@ class ShopKeeperData {
   ShopKeeperData({required this.email, required this.owner_name, required this.shop_name, required this.shop_address, required this.mobile_number, required this.latitude, required this.longitude});
 }
 
+class Item {
+  final String item_name, description, image_url;
+  final int price, stock;
 
+  Item({required this.description, required this.item_name, required this.price, required this.image_url, required this.stock});
+}
 
