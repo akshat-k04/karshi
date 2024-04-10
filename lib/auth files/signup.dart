@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:karshi/User/Home_page.dart';
 import 'package:karshi/backend/auth.dart';
 
 class SignupPage extends StatefulWidget {
@@ -121,9 +122,39 @@ class _SignupPageState extends State<SignupPage> {
                 dynamic result;
                 if(!isUserSignup){
                   result = await _auth.register_shopkeeper(_email, _password, _shop_name, _owner_name, _mobile_number, _address, '0', '0');
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: Duration(milliseconds: 500),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          HomePage(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
                 }
                 else {
                   result = await _auth.register_customer(_email, _password, _customer_name, _mobile_number, _address);
+                  Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: Duration(milliseconds: 500),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          HomePage(),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                    ),
+                  );
                 }
                 if(result == null){
                   print("Not Signed in");
