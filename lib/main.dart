@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:karshi/auth%20files/signin.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/auth.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';

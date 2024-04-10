@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:karshi/User/Home_page.dart';
 import 'package:karshi/auth%20files/forgotPassword.dart';
 import 'package:karshi/auth%20files/signup.dart';
-import 'package:karshi/backend/auth.dart';
+import 'package:karshi/backend/models/models.dart';
+import 'package:karshi/backend/services/auth.dart';
 import 'package:provider/provider.dart';
 
 class SigninScreen extends StatefulWidget {
