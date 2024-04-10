@@ -137,6 +137,7 @@ class _SignupPageState extends State<SignupPage> {
                       },
                     ),
                   );
+                
                 }
                 else {
                   result = await _auth.register_customer(_email, _password, _customer_name, _mobile_number, _address);

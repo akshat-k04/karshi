@@ -55,24 +55,26 @@ class SignupScreenState extends State<SigninScreen> {
                 onPressed: () {
                   // Add your sign in logic here
                   dynamic result = _auth.signIn(email.text, password.text);
-                  // print(result.uid);
-                  print("hello");
-                  if (user != null) print(user.uid);
-                  // Navigator.push(
-                  //   context,
-                  //   PageRouteBuilder(
-                  //     transitionDuration: Duration(milliseconds: 500),
-                  //     pageBuilder: (context, animation, secondaryAnimation) =>
-                  //         HomePage(),
-                  //     transitionsBuilder:
-                  //         (context, animation, secondaryAnimation, child) {
-                  //       return FadeTransition(
-                  //         opacity: animation,
-                  //         child: child,
-                  //       );
-                  //     },
-                  //   ),
-                  // );
+                  if (user != null && result != null ){
+                    // signin successful
+
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: 500),
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            HomePage(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
+                  }
+                  
                 },
                 child: const Text('Sign in'),
               ),
