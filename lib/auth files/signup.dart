@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:karshi/User/Home_page.dart';
 import 'package:karshi/backend/services/auth.dart';
+import 'package:karshi/seller/dashboard.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -11,7 +12,6 @@ class _SignupPageState extends State<SignupPage> {
   final AuthService _auth = AuthService();
   bool isUserSignup = true;
 
-
   String _owner_name = '';
   String _customer_name = '';
   String _shop_name = '';
@@ -19,6 +19,14 @@ class _SignupPageState extends State<SignupPage> {
   String _address = '';
   int _mobile_number = 0;
   String _email = '';
+
+  String? _nameError;
+  String? _ownerNameError;
+  String? _shopNameError;
+  String? _passwordError;
+  String? _addressError;
+  String? _mobileNumberError;
+  String? _emailError;
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +36,7 @@ class _SignupPageState extends State<SignupPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-              const SizedBox(height: 100.0),
+            const SizedBox(height: 100.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
@@ -63,104 +71,135 @@ class _SignupPageState extends State<SignupPage> {
               ],
             ),
             SizedBox(height: 20.0),
-            TextField(
-              decoration: InputDecoration(labelText: 'Name'),
-              onChanged: (val){
-                                setState(() => _customer_name = val);
-                              },
-            ),
-            SizedBox(height: 10.0),
             if (!isUserSignup)
               TextField(
-                decoration: InputDecoration(labelText: 'Owner Name'),
-                onChanged: (val){
-                                setState(() => _owner_name = val);
-                              },
+                decoration: InputDecoration(
+                    labelText: 'Owner Name', errorText: _ownerNameError),
+                onChanged: (val) {
+                  setState(() => _owner_name = val);
+                },
               ),
-            SizedBox(height: 10.0),
+            if (!isUserSignup) SizedBox(height: 10.0),
             if (!isUserSignup)
               TextField(
-                decoration: InputDecoration(labelText: 'Shop Name'),
-                onChanged: (val){
-                                setState(() => _shop_name = val);
-                              },
+                decoration: InputDecoration(
+                    labelText: 'Shop Name', errorText: _shopNameError),
+                onChanged: (val) {
+                  setState(() => _shop_name = val);
+                },
+              ),
+            if (isUserSignup) SizedBox(height: 10.0),
+            if (isUserSignup)
+              TextField(
+                decoration:
+                    InputDecoration(labelText: 'Name', errorText: _nameError),
+                onChanged: (val) {
+                  setState(() => _customer_name = val);
+                },
               ),
             SizedBox(height: 10.0),
             TextField(
-              decoration: InputDecoration(labelText: 'Password'),
+              decoration: InputDecoration(
+                  labelText: 'Password', errorText: _passwordError),
               obscureText: true,
-              onChanged: (val){
-                                setState(() => _password = val);
-                              },
+              onChanged: (val) {
+                setState(() => _password = val);
+              },
             ),
             SizedBox(height: 10.0),
             TextField(
-              decoration: InputDecoration(labelText: 'Email'),
-              onChanged: (val){
-                                setState(() => _email = val);
-                              },
+              decoration:
+                  InputDecoration(labelText: 'Email', errorText: _emailError),
+              onChanged: (val) {
+                setState(() => _email = val);
+              },
             ),
             SizedBox(height: 10.0),
             TextField(
-              decoration: InputDecoration(labelText: 'Address'),
-              onChanged: (val){
-                                setState(() => _address = val);
-                              },
+              decoration: InputDecoration(
+                  labelText: 'Address', errorText: _addressError),
+              onChanged: (val) {
+                setState(() => _address = val);
+              },
             ),
             SizedBox(height: 10.0),
-            if (!isUserSignup)
-              TextField(
-                decoration: InputDecoration(labelText: 'Mobile Number'),
-                onChanged: (val){
-                                setState(() => _mobile_number = int.parse(val));
-                              },
-              ),
+            TextField(
+              decoration: InputDecoration(
+                  labelText: 'Mobile Number', errorText: _mobileNumberError),
+              onChanged: (val) {
+                setState(() => _mobile_number = int.tryParse(val) ?? 0);
+              },
+            ),
             SizedBox(height: 20.0),
             ElevatedButton(
               onPressed: () async {
-                // Add signup logic
-                dynamic result;
-                if(!isUserSignup){
-                  result = await _auth.register_shopkeeper(_email, _password, _shop_name, _owner_name, _mobile_number, _address, '0', '0');
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: Duration(milliseconds: 500),
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          HomePage(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
-                
+                setState(() {
+                  _ownerNameError = isUserSignup
+                      ? null
+                      : (_owner_name.isEmpty
+                          ? 'Owner Name cannot be empty'
+                          : null);
+                  _shopNameError = isUserSignup
+                      ? null
+                      : (_shop_name.isEmpty
+                          ? 'Shop Name cannot be empty'
+                          : null);
+                  _nameError = isUserSignup
+                      ? (_customer_name.isEmpty ? 'Name cannot be empty' : null)
+                      : null;
+                  _passwordError =
+                      _password.isEmpty ? 'Password cannot be empty' : null;
+                  _emailError = _email.isEmpty ? 'Email cannot be empty' : null;
+                  _addressError =
+                      _address.isEmpty ? 'Address cannot be empty' : null;
+                  _mobileNumberError = _mobile_number == 0
+                      ? 'Mobile Number cannot be empty'
+                      : null;
+                });
+
+                if (_nameError == null &&
+                    _ownerNameError == null &&
+                    _shopNameError == null &&
+                    _passwordError == null &&
+                    _emailError == null &&
+                    _addressError == null &&
+                    _mobileNumberError == null) {
+                  dynamic result;
+                  if (!isUserSignup) {
+                    result = await _auth.register_shopkeeper(
+                        _email,
+                        _password,
+                        _shop_name,
+                        _owner_name,
+                        _mobile_number,
+                        _address,
+                        '0',
+                        '0');
+                  } else {
+                    result = await _auth.register_customer(_email, _password,
+                        _customer_name, _mobile_number, _address);
+                  }
+
+                  if (result == null) {
+                    print("Not Signed in");
+                  } else {
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: 500),
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            isUserSignup? HomePage():Dashboard(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
+                  }
                 }
-                else {
-                  result = await _auth.register_customer(_email, _password, _customer_name, _mobile_number, _address);
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: Duration(milliseconds: 500),
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          HomePage(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
-                }
-                if(result == null){
-                  print("Not Signed in");
-                }
-                // dynamic result = await _auth.register_shopkeeper(email, password, shop_name, owner_name, mobile_number, shop_address, latitude, longitude)
               },
               child: Text('Sign Up'),
             ),
@@ -171,14 +210,12 @@ class _SignupPageState extends State<SignupPage> {
                 const Text('Already have an account?'),
                 TextButton(
                   onPressed: () {
-                    // Navigate to Sign In page (implementation needed)
                     Navigator.pop(context);
                   },
                   child: Text('Sign In'),
                 ),
               ],
             ),
-            
           ],
         ),
       ),
