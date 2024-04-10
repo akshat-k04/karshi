@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:karshi/User/Product_details.dart';
+import 'package:karshi/User/profile.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -22,6 +23,21 @@ class HomePageState extends State<HomePage> {
             icon: const Icon(Icons.person),
             onPressed: () {
               // Add profile icon onPressed logic
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  transitionDuration: Duration(milliseconds: 500),
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      ProfilePage(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
             },
           ),
         ],
@@ -128,7 +144,6 @@ class HomePageState extends State<HomePage> {
     );
   }
 }
-
 class ProductItem extends StatefulWidget {
   @override
   _ProductItemState createState() => _ProductItemState();
@@ -140,7 +155,6 @@ class _ProductItemState extends State<ProductItem> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // margin: EdgeInsets.symmetric(vertical: 10.0),
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -157,6 +171,14 @@ class _ProductItemState extends State<ProductItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
+          Text(
+            'Product Name', // Replace with actual product name
+            style: TextStyle(
+              fontSize: 18.0,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          const SizedBox(height: 10.0),
           Stack(
             alignment: Alignment.topRight,
             children: [
@@ -178,7 +200,7 @@ class _ProductItemState extends State<ProductItem> {
                       },
                     ),
                   );
-                
+
                   print('Image clicked!');
                 },
                 child: Container(
