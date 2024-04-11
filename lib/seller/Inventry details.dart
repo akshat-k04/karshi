@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:karshi/app_colors.dart';
 
 class InventoryDescriptionPage extends StatefulWidget {
   @override
@@ -57,8 +58,8 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
       initialValue: value,
       maxLines: maxLines,
       decoration: InputDecoration(
-        labelText: label,
-      ),
+          labelText: label,
+          labelStyle: TextStyle(color: MyAppColors.textColor)),
       onChanged: (newValue) {
         setState(() {
           switch (label) {

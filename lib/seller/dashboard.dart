@@ -152,7 +152,12 @@ class DashboardBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     double blockWidth = MediaQuery.of(context).size.width * 0.29;
     return GestureDetector(
-      onTap: onTap,
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => InventoryDescriptionPage()),
+        );
+      },
       child: Container(
         width: blockWidth,
         height: blockWidth,
