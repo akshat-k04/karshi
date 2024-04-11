@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:karshi/User/Cart.dart';
@@ -214,9 +215,132 @@ class _InventoryListPageState extends State<InventoryListPage> {
   }
 }
 
+// class InventryItem extends StatefulWidget {
+//   Item product_details;
+//   InventryItem({required this.product_details});
+//   @override
+//   _InventryItemState createState() => _InventryItemState();
+// }
+
+// class _InventryItemState extends State<InventryItem> {
+//   int availableStock = 100;
+//   int pendingOrders = 20;
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Container(
+//       padding: const EdgeInsets.all(10.0),
+//       decoration: BoxDecoration(
+//         color: Colors.white,
+//         borderRadius: BorderRadius.circular(10.0),
+//         boxShadow: [
+//           BoxShadow(
+//             color: Colors.grey.withOpacity(0.5),
+//             spreadRadius: 2,
+//             blurRadius: 5,
+//             offset: const Offset(0, 3),
+//           ),
+//         ],
+//       ),
+//       child: Column(
+//         crossAxisAlignment: CrossAxisAlignment.stretch,
+//         children: [
+//           Text(
+//             widget
+//                 .product_details.item_name, // Replace with actual product name
+//             style: TextStyle(
+//               fontSize: 18.0,
+//               fontWeight: FontWeight.bold,
+//             ),
+//           ),
+//           const SizedBox(height: 10.0),
+//           Stack(
+//             alignment: Alignment.topRight,
+//             children: [
+//               GestureDetector(
+//                 onTap: () {
+//                   // Add your function here
+//                   Navigator.push(
+//                     context,
+//                     PageRouteBuilder(
+//                       transitionDuration: Duration(milliseconds: 500),
+//                       pageBuilder: (context, animation, secondaryAnimation) =>
+//                           InventoryDescriptionPage(),
+//                       transitionsBuilder:
+//                           (context, animation, secondaryAnimation, child) {
+//                         return FadeTransition(
+//                           opacity: animation,
+//                           child: child,
+//                         );
+//                       },
+//                     ),
+//                   );
+//                   print('Image clicked!');
+//                 },
+//                 child: Container(
+//                   height: 250.0,
+//                   decoration: BoxDecoration(
+//                     borderRadius: BorderRadius.circular(10.0),
+//                     image: DecorationImage(
+//                       image: NetworkImage(widget.product_details.image_url), // Replace with your image
+//                       fit: BoxFit.cover,
+//                     ),
+//                   ),
+//                 ),
+//               ),
+//             ],
+//           ),
+//           const SizedBox(height: 10.0),
+//           Row(
+//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//             children: [
+//               _buildInfoBox(
+//                   'Available Stock', widget.product_details.stock.toString()),
+//               SizedBox(width: 10),
+//               _buildInfoBox('Pending Orders', pendingOrders.toString()),
+//             ],
+//           ),
+//         ],
+//       ),
+//     );
+//   }
+
+//   Widget _buildInfoBox(String title, String value) {
+//     return Expanded(
+//       child: Container(
+//         padding: EdgeInsets.all(8.0),
+//         decoration: BoxDecoration(
+//           color: Colors.blue,
+//           borderRadius: BorderRadius.circular(5.0),
+//         ),
+//         child: Column(
+//           crossAxisAlignment: CrossAxisAlignment.start,
+//           children: [
+//             Text(
+//               title,
+//               style: TextStyle(
+//                 color: Colors.white,
+//                 fontWeight: FontWeight.bold,
+//               ),
+//             ),
+//             SizedBox(height: 5),
+//             Text(
+//               value,
+//               style: TextStyle(
+//                 color: Colors.white,
+//               ),
+//             ),
+//           ],
+//         ),
+//       ),
+//     );
+//   }
+// }
+
 class InventryItem extends StatefulWidget {
   Item product_details;
   InventryItem({required this.product_details});
+
   @override
   _InventryItemState createState() => _InventryItemState();
 }
@@ -241,63 +365,58 @@ class _InventryItemState extends State<InventryItem> {
           ),
         ],
       ),
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
+      child: Row(
+        
+        crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Text(
-            widget
-                .product_details.item_name, // Replace with actual product name
-            style: TextStyle(
-              fontSize: 18.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          const SizedBox(height: 10.0),
-          Stack(
-            alignment: Alignment.topRight,
+          // Image on the left
+         
+          Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              GestureDetector(
-                onTap: () {
-                  // Add your function here
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: Duration(milliseconds: 500),
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          InventoryDescriptionPage(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
-                  print('Image clicked!');
-                },
-                child: Container(
-                  height: 250.0,
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10.0),
-                    image: DecorationImage(
-                      image: NetworkImage(widget.product_details.image_url), // Replace with your image
-                      fit: BoxFit.cover,
-                    ),
-                  ),
+              SizedBox(height: 13,),
+              Container(
+              
+              width: 140.0,
+              height: 140.0,
+              decoration: BoxDecoration(
+                color: Colors.black,
+                borderRadius: BorderRadius.circular(10.0),
+                image: DecorationImage(
+                  image: NetworkImage(widget.product_details.image_url),
+                  fit: BoxFit.cover,
                 ),
               ),
-            ],
+            ),
+            ]
           ),
-          const SizedBox(height: 10.0),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              _buildInfoBox(
-                  'Available Stock', widget.product_details.stock.toString()),
-              SizedBox(width: 10),
-              _buildInfoBox('Pending Orders', pendingOrders.toString()),
-            ],
+          SizedBox(width: 10.0),
+          // Column on the right
+          Expanded(
+            child: Column(
+              
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // Name
+                Text(
+                  widget.product_details.item_name,
+                  style: TextStyle(
+                    fontSize: 18.0,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 10.0),
+                // Available Stock
+                _buildInfoBox(
+                    'Available Stock', widget.product_details.stock.toString()),
+                const SizedBox(height: 10.0),
+                // Pending Orders
+                _buildInfoBox('Pending Orders', pendingOrders.toString()),
+                // const SizedBox(height: 10.0),
+                // Buttons
+                
+              ],
+            ),
           ),
         ],
       ),
@@ -305,32 +424,30 @@ class _InventryItemState extends State<InventryItem> {
   }
 
   Widget _buildInfoBox(String title, String value) {
-    return Expanded(
-      child: Container(
-        padding: EdgeInsets.all(8.0),
-        decoration: BoxDecoration(
-          color: Colors.blue,
-          borderRadius: BorderRadius.circular(5.0),
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              title,
-              style: TextStyle(
-                color: Colors.white,
-                fontWeight: FontWeight.bold,
-              ),
+    return Container(
+      padding: EdgeInsets.all(8.0),
+      decoration: BoxDecoration(
+        color: Colors.blue,
+        borderRadius: BorderRadius.circular(5.0),
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text(
+            title,
+            style: TextStyle(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
             ),
-            SizedBox(height: 5),
-            Text(
-              value,
-              style: TextStyle(
-                color: Colors.white,
-              ),
+          ),
+          SizedBox(height: 5),
+          Text(
+            value,
+            style: TextStyle(
+              color: Colors.white,
             ),
-          ],
-        ),
+          ),
+        ],
       ),
     );
   }

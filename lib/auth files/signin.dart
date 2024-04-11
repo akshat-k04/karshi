@@ -117,7 +117,7 @@ class SignupScreenState extends State<SigninScreen> {
                               isLoading = false;
                             });
 
-                            Navigator.push(
+                            Navigator.pushAndRemoveUntil(
                               context,
                               PageRouteBuilder(
                                 transitionDuration: Duration(milliseconds: 500),
@@ -134,6 +134,7 @@ class SignupScreenState extends State<SigninScreen> {
                                   );
                                 },
                               ),
+                              (route) => false,
                             );
                           }
                           setState(() {
@@ -184,7 +185,7 @@ class SignupScreenState extends State<SigninScreen> {
                       TextButton(
                         onPressed: () {
                           // Add your forgot password logic here
-                          Navigator.push(
+                          Navigator.pushAndRemoveUntil(
                             context,
                             PageRouteBuilder(
                               transitionDuration: Duration(milliseconds: 500),
@@ -198,7 +199,9 @@ class SignupScreenState extends State<SigninScreen> {
                                   child: child,
                                 );
                               },
+                              
                             ),
+                            (route) => false,
                           );
                         },
                         child: const Text(

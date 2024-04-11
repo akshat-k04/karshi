@@ -21,13 +21,31 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   String Selected_catagory = "All";
+  List<Item> show_products = [];
   List<Product> tempProducts = [
     Product('Product 1', 10.0, 2),
     Product('Product 2', 15.0, 1),
     Product('Product 3', 20.0, 3),
   ];
-  @override
+
+  
+
   Widget build(BuildContext context) {
+    final user = Provider.of<UserAuth?>(context);
+    List<Item> filter_products(String value) {
+      List<Item> filtered_product = [];
+      for (Item product in widget.products) {
+        if (product.category.contains(value) ||
+            product.description.contains(value) ||
+            product.item_name.contains(value)) {
+          filtered_product.add(product);
+        }
+      }
+      return filtered_product;
+    }
+    setState(() {
+      show_products = widget.products;
+    });
     return Scaffold(
       appBar: AppBar(
         title: const Text('Krashi'),
@@ -64,6 +82,11 @@ class HomePageState extends State<HomePage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: TextField(
+                onChanged: (value) => {
+                  setState(() {
+                    show_products = filter_products(value);
+                  })
+                },
                 decoration: InputDecoration(
                   hintText: 'Search...',
                   prefixIcon: const Icon(Icons.search),
@@ -75,43 +98,10 @@ class HomePageState extends State<HomePage> {
               ),
             ),
             const SizedBox(height: 20.0),
-            DropdownButton<String>(
-              value: Selected_catagory, // Maintain original variable name
-              icon: const Icon(Icons.arrow_drop_down), // Down arrow icon
-              iconSize: 24.0, // Icon size
-              elevation: 16, // Shadow effect
-              // Customize the style to match your UI
-              style: const TextStyle(
-                color: Colors.black, // Adjust text color
-                fontSize: 16.0, // Adjust font size
-              ),
-              underline: Container(
-                height: 2.0, // Thickness of the underline
-                color: Colors.grey, // Adjust underline color
-              ),
-              onChanged: (String? newValue) {
-                setState(() {
-                  Selected_catagory = newValue!;
-                });
-              },
-              items: <String>[
-                'All',
-                'One',
-                'Two',
-                'Three'
-              ] // List of dropdown options
-                  .map<DropdownMenuItem<String>>((String value) {
-                return DropdownMenuItem<String>(
-                  value: value,
-                  child: Text(value),
-                );
-              }).toList(),
-            ),
-            const SizedBox(height: 20.0),
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.all(20),
-                itemCount: widget.products.length,
+                itemCount: show_products.length,
                 itemBuilder: (context, index) {
                   return Container(
                       margin: const EdgeInsets.only(bottom: 20.0),
@@ -127,7 +117,8 @@ class HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                      child: ProductItem(product_details: (widget.products)[index]));
+                      child:
+                          ProductItem(product_details: (show_products)[index]));
                 },
               ),
             ),
@@ -224,8 +215,9 @@ class _ProductItemState extends State<ProductItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-           Text(
-            widget.product_details.item_name, // Replace with actual product name
+          Text(
+            widget
+                .product_details.item_name, // Replace with actual product name
             style: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.bold,
@@ -243,7 +235,8 @@ class _ProductItemState extends State<ProductItem> {
                     PageRouteBuilder(
                       transitionDuration: Duration(milliseconds: 500),
                       pageBuilder: (context, animation, secondaryAnimation) =>
-                          ProductDetailsPage(product_detail : widget.product_details),
+                          ProductDetailsPage(
+                              product_detail: widget.product_details),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
                         return FadeTransition(
@@ -261,7 +254,8 @@ class _ProductItemState extends State<ProductItem> {
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
                     image: DecorationImage(
-                      image: NetworkImage(widget.product_details.image_url), // Replace with your image
+                      image: NetworkImage(widget.product_details
+                          .image_url), // Replace with your image
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -273,26 +267,27 @@ class _ProductItemState extends State<ProductItem> {
                     : Icon(Icons.favorite_border),
                 onPressed: () {
                   // Add to wishlist logic
-                  
-                  if(!isFavorite){
-                    dynamic result = CustomerService(uid: user!.uid).addToWishlist(
-                    widget.product_details.item_name,
-                    widget.product_details.description,
-                    widget.product_details.price,
-                    widget.product_details.image_url,
-                    widget.product_details.stock,
-                    widget.product_details.category,
-                  );
-                  }
-                  else{
-                    dynamic result = CustomerService(uid: user!.uid).removeFromWishlist(
-                    widget.product_details.item_name,
-                    widget.product_details.description,
-                    widget.product_details.price,
-                    widget.product_details.image_url,
-                    widget.product_details.stock,
-                    widget.product_details.category,
-                  );
+
+                  if (!isFavorite) {
+                    dynamic result =
+                        CustomerService(uid: user!.uid).addToWishlist(
+                      widget.product_details.item_name,
+                      widget.product_details.description,
+                      widget.product_details.price,
+                      widget.product_details.image_url,
+                      widget.product_details.stock,
+                      widget.product_details.category,
+                    );
+                  } else {
+                    dynamic result =
+                        CustomerService(uid: user!.uid).removeFromWishlist(
+                      widget.product_details.item_name,
+                      widget.product_details.description,
+                      widget.product_details.price,
+                      widget.product_details.image_url,
+                      widget.product_details.stock,
+                      widget.product_details.category,
+                    );
                   }
                   setState(() {
                     isFavorite = !isFavorite;
