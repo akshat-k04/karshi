@@ -280,9 +280,8 @@ class _InventryItemState extends State<InventryItem> {
                   height: 250.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
-                    image: const DecorationImage(
-                      image: AssetImage(
-                          "assets/images/temp.png"), // Replace with your image
+                    image: DecorationImage(
+                      image: NetworkImage(widget.product_details.image_url), // Replace with your image
                       fit: BoxFit.cover,
                     ),
                   ),

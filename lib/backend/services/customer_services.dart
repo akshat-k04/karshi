@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:karshi/backend/models/models.dart';
+import 'package:uuid/uuid.dart';
 
 class CustomerService {
 
@@ -159,6 +160,7 @@ class CustomerService {
       List<dynamic> itemList = (snapshot.data() as Map<String, dynamic>)['cart'];
       if (itemList != null) {
         CollectionReference shopCollection = FirebaseFirestore.instance.collection('ShopKeeper_Data');
+        CollectionReference orderCollection = FirebaseFirestore.instance.collection('Orders');
         QuerySnapshot shopSnapshot = await shopCollection.get();
         List<DocumentSnapshot> shopDocs = shopSnapshot.docs;
         itemList.forEach((item) async {
@@ -194,6 +196,13 @@ class CustomerService {
               }
             ])
           });
+          await orderCollection.doc(Uuid().v4()).set({
+                'cutomer_uid': uid,
+                'shopkeeper_uid': shop.id,
+                'item_name': item['item_name'],
+                'stock': item['stock'],
+                'price': item['price']  
+              });
               }
             }
           }
