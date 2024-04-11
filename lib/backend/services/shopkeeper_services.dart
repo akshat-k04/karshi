@@ -44,31 +44,37 @@ class ShopKeeperService {
     });
   }
 
-  Future deleteItem(String item_name) async {
+  Future deleteItem(String item_name, String description, int price,
+      String image_url, int stock, String category) async {
     return await userCollection.doc(uid).update({
       'items': FieldValue.arrayRemove([
-        {
-          'item_name': item_name,
-        }
-      ])
-    });
-  }
-
-  Future updateItem(String item_name, String description, int price,
-      String image_url, int stock) async {
-    await deleteItem(item_name);
-    return await userCollection.doc(uid).update({
-      'items': FieldValue.arrayUnion([
         {
           'item_name': item_name,
           'description': description,
           'price': price,
           'image_url': image_url,
           'stock': stock,
+          'category': category
         }
       ])
     });
   }
+
+  // Future updateItem(String item_name, String description, int price,
+  //     String image_url, int stock) async {
+  //   await deleteItem(item_name);
+  //   return await userCollection.doc(uid).update({
+  //     'items': FieldValue.arrayUnion([
+  //       {
+  //         'item_name': item_name,
+  //         'description': description,
+  //         'price': price,
+  //         'image_url': image_url,
+  //         'stock': stock,
+  //       }
+  //     ])
+  //   });
+  // }
 
   Future<List<Item>> getItems() async {
     DocumentSnapshot snapshot = await userCollection.doc(uid).get();

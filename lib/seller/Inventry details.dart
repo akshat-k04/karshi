@@ -1,7 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:karshi/app_colors.dart';
+import 'package:karshi/backend/models/models.dart';
+import 'package:karshi/backend/services/shopkeeper_services.dart';
 
 class InventoryDescriptionPage extends StatefulWidget {
+  Item product_detail;
+  String uid;
+  InventoryDescriptionPage({required this.product_detail, required this.uid});
+
   @override
   _InventoryDescriptionPageState createState() =>
       _InventoryDescriptionPageState();
@@ -16,6 +22,23 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
   int completedOrders = 50;
   int pendingOrders = 20;
   int shippedOrders = 30;
+  String url = "";
+  @override
+  void initState() {
+    // TODO: here i need to find the pending and shipping order
+    set_data();
+    super.initState();
+  }
+
+  void set_data() {
+    name = widget.product_detail.item_name;
+    price = widget.product_detail.price.toString();
+    description = widget.product_detail.description;
+    category = widget.product_detail.category;
+    availableStock = widget.product_detail.stock;
+    url = widget.product_detail.image_url;
+    setState(() {});
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +59,16 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
       body: ListView(
         padding: EdgeInsets.all(16.0),
         children: [
-          Image.asset(
-            'assets/images/temp.png', // Replace with your image
+          Image(
+            image: NetworkImage(url),
             height: 300.0,
             fit: BoxFit.cover,
           ),
+          // Image.asset(
+          //   'assets/images/temp.png', // Replace with your image
+          //   height: 300.0,
+          //   fit: BoxFit.cover,
+          // ),
           SizedBox(height: 12.0),
           _buildEditableField('Name', name),
           _buildEditableField('Price', price),
@@ -53,7 +81,18 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
           _buildNonEditableField('Shipped Orders', shippedOrders.toString()),
           SizedBox(height: 0.0),
           ElevatedButton(
-            onPressed: () async {},
+            onPressed: () async {
+              dynamic result = await ShopKeeperService(uid: widget.uid)
+                  .deleteItem(
+                      widget.product_detail.item_name,
+                      widget.product_detail.description,
+                      widget.product_detail.price,
+                      widget.product_detail.image_url,
+                      widget.product_detail.stock,
+                      widget.product_detail.category);
+              result = await ShopKeeperService(uid: widget.uid).addItem(
+                  name, description, int.parse(price), url, availableStock, category);
+            },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(
                   MyAppColors.bgGreen), // Background color
@@ -73,7 +112,7 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
               elevation: MaterialStateProperty.all(0),
             ),
             child: Text(
-              'Add Product',
+              'Update Product',
               style: TextStyle(
                 fontWeight: FontWeight.bold, // Makes the text bold
               ),

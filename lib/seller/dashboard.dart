@@ -1,4 +1,6 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:karshi/User/Cart.dart';
@@ -192,10 +194,7 @@ class DashboardBlock extends StatelessWidget {
     double blockWidth = MediaQuery.of(context).size.width * 0.29;
     return GestureDetector(
       onTap: () {
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => InventoryDescriptionPage()),
-        );
+        
       },
       child: Container(
         width: blockWidth,
@@ -262,74 +261,83 @@ class InventryItem extends StatefulWidget {
 }
 
 class _InventryItemState extends State<InventryItem> {
-  int availableStock = 100;
   int pendingOrders = 20;
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10.0),
-      decoration: BoxDecoration(
-        color: MyAppColors.bgGreen,
-        borderRadius: BorderRadius.circular(10.0),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black,
-            spreadRadius: 2,
-            blurRadius: 5,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          // Image on the left
+    final user = Provider.of<UserAuth?>(context);
 
-          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            SizedBox(
-              height: 13,
+    return GestureDetector(
+      onTap: ()=>{
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => InventoryDescriptionPage(product_detail : widget.product_details,uid: user!.uid,)),
+        )
+      },
+      child: Container(
+        padding: const EdgeInsets.all(10.0),
+        decoration: BoxDecoration(
+          color: MyAppColors.bgGreen,
+          borderRadius: BorderRadius.circular(10.0),
+          boxShadow: [
+            BoxShadow(
+              color: Colors.black,
+              spreadRadius: 2,
+              blurRadius: 5,
+              offset: const Offset(0, 3),
             ),
-            Container(
-              width: 140.0,
-              height: 140.0,
-              decoration: BoxDecoration(
-                color: Colors.black,
-                borderRadius: BorderRadius.circular(10.0),
-                image: DecorationImage(
-                  image: NetworkImage(widget.product_details.image_url),
-                  fit: BoxFit.cover,
+          ],
+        ),
+        child: Row(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            // Image on the left
+      
+            Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+              SizedBox(
+                height: 13,
+              ),
+              Container(
+                width: 140.0,
+                height: 140.0,
+                decoration: BoxDecoration(
+                  color: Colors.black,
+                  borderRadius: BorderRadius.circular(10.0),
+                  image: DecorationImage(
+                    image: NetworkImage(widget.product_details.image_url),
+                    fit: BoxFit.cover,
+                  ),
                 ),
               ),
+            ]),
+            SizedBox(width: 40.0),
+            // Column on the right
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  // Name
+                  Text(
+                    widget.product_details.item_name,
+                    style: TextStyle(
+                        fontSize: 36.0,
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white),
+                  ),
+                  const SizedBox(height: 10.0),
+                  // Available Stock
+                  _buildInfoBox(
+                      'Available Stock', widget.product_details.stock.toString()),
+                  const SizedBox(height: 10.0),
+                  // Pending Orders
+                  _buildInfoBox('Pending Orders', pendingOrders.toString()),
+                  // const SizedBox(height: 10.0),
+                  // Buttons
+                ],
+              ),
             ),
-          ]),
-          SizedBox(width: 40.0),
-          // Column on the right
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                // Name
-                Text(
-                  widget.product_details.item_name,
-                  style: TextStyle(
-                      fontSize: 36.0,
-                      fontWeight: FontWeight.bold,
-                      color: Colors.white),
-                ),
-                const SizedBox(height: 10.0),
-                // Available Stock
-                _buildInfoBox(
-                    'Available Stock', widget.product_details.stock.toString()),
-                const SizedBox(height: 10.0),
-                // Pending Orders
-                _buildInfoBox('Pending Orders', pendingOrders.toString()),
-                // const SizedBox(height: 10.0),
-                // Buttons
-              ],
-            ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
