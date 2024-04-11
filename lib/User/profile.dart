@@ -37,6 +37,14 @@ class _ProfilePageState extends State<ProfilePage> {
             },
             child: Text('Update Profile'),
           ),
+          SizedBox(height: 16.0),
+          ElevatedButton(
+            onPressed: () {
+              // Handle update profile logic
+              print('Profile updated');
+            },
+            child: Text('Sign out'),
+          ),
         ],
       ),
     );

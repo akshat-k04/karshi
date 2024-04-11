@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:karshi/User/Cart.dart';
 import 'package:karshi/User/Product_details.dart';
 import 'package:karshi/User/profile.dart';
+
+
 
 class HomePage extends StatefulWidget {
   @override
@@ -12,6 +15,11 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   String Selected_catagory = "All";
+  List<Product> tempProducts = [
+    Product('Product 1', 10.0, 2),
+    Product('Product 2', 15.0, 1),
+    Product('Product 3', 20.0, 3),
+  ];
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -126,6 +134,22 @@ class HomePageState extends State<HomePage> {
                   ElevatedButton(
                     onPressed: () {
                       // View cart logic
+                      
+                      Navigator.push(
+                context,
+                PageRouteBuilder(
+                  transitionDuration: Duration(milliseconds: 500),
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      AddToCartPage(products: tempProducts),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
                     },
                     child: const Text('View Cart'),
                   ),
