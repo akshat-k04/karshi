@@ -34,20 +34,47 @@ class CustomerService {
         mobile_number: snapshot['mobile_number']);
   }
 
-  Future addToCart(String item_name, String description, int price,
-      String image_url, int stock, String category) async {
-    return await userCollection.doc(uid).update({
-      'cart': FieldValue.arrayUnion([
-        {
-          'item_name': item_name,
-          'description': description,
-          'price': price,
-          'image_url': image_url,
-          'stock': stock,
-          'category': category,
+  Future addToCart(String item_name, String description, int price, String image_url, int stock, String category) async {
+    DocumentSnapshot snapshot = await userCollection.doc(uid).get();
+    if (snapshot.exists) {
+      List<dynamic> cart = (snapshot.data() as Map<String, dynamic>)['cart'];
+      if (cart != null) {
+        var itemIndex = cart.indexWhere((item) => item['item_name'] == item_name);
+        if (itemIndex != -1) {
+          // Item exists in cart, update stock
+          cart[itemIndex]['stock'] += stock;
+          return await userCollection.doc(uid).update({'cart': cart});
+        } else {
+          // Item does not exist in cart, add it
+          return await userCollection.doc(uid).update({
+            'cart': FieldValue.arrayUnion([
+              {
+                'item_name': item_name,
+                'description': description,
+                'price': price,
+                'image_url': image_url,
+                'stock': stock,
+                'category': category,
+              }
+            ])
+          });
         }
-      ])
-    });
+      } else {
+        // Cart is null, add item
+        return await userCollection.doc(uid).update({
+          'cart': FieldValue.arrayUnion([
+            {
+              'item_name': item_name,
+              'description': description,
+              'price': price,
+              'image_url': image_url,
+              'stock': stock,
+              'category': category,
+            }
+          ])
+        });
+      }
+    }
   }
 
   Future removeFromCart(String item_name, String description, int price,
