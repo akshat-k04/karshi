@@ -112,6 +112,7 @@ class SignupScreenState extends State<SigninScreen> {
                                   await ShopKeeperService(uid: user.uid)
                                       .getItems();
                             }
+                            if (productlist.isEmpty == true) productlist = [];
                             setState(() {
                               isLoading = false;
                             });
