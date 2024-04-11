@@ -19,6 +19,16 @@ class SigninScreen extends StatefulWidget {
   }
 }
 
+class MyAppColors {
+  static const Color textColor =
+      Color.fromRGBO(14, 197, 93, 100); // Custom green color
+  static const Color backgroundColor =
+      Color.fromRGBO(0, 27, 21, 100); // Custom green color
+  // Custom green color
+  static const Color bgGreen =
+      Color.fromRGBO(0, 37, 28, 100); // Custom green color
+}
+
 class SignupScreenState extends State<SigninScreen> {
   TextEditingController email = TextEditingController();
   TextEditingController password = TextEditingController();
@@ -28,7 +38,9 @@ class SignupScreenState extends State<SigninScreen> {
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserAuth?>(context);
+
     return Scaffold(
+      backgroundColor: MyAppColors.backgroundColor,
       body: SafeArea(
         child: isLoading
             ? LoadingPage()
@@ -43,11 +55,19 @@ class SignupScreenState extends State<SigninScreen> {
                     ),
                     const Text(
                       'Welcome To Krashi app',
-                      textAlign: TextAlign.center,
+                      textAlign: TextAlign.left,
                       style: TextStyle(
-                        fontSize: 20.0,
-                        fontWeight: FontWeight.bold,
-                      ),
+                          fontSize: 28.0,
+                          fontWeight: FontWeight.bold,
+                          color: Colors.white),
+                    ),
+                    const Text(
+                      'Login to your account',
+                      textAlign: TextAlign.left,
+                      style: TextStyle(
+                          fontSize: 14.0,
+                          fontWeight: FontWeight.bold,
+                          color: MyAppColors.textColor),
                     ),
                     const SizedBox(height: 20.0),
                     TextField(
@@ -66,6 +86,10 @@ class SignupScreenState extends State<SigninScreen> {
                     ),
                     const SizedBox(height: 20.0),
                     ElevatedButton(
+                      style: ButtonStyle(
+                          backgroundColor: MaterialStateProperty.all<Color>(
+                              MyAppColors.bgGreen)), // Custom background color
+
                       onPressed: () async {
                         // Add your sign in logic here
                         setState(() {
@@ -116,13 +140,19 @@ class SignupScreenState extends State<SigninScreen> {
                           isLoading = false;
                         });
                       },
-                      child: const Text('Sign in'),
+                      child: const Text(
+                        'Sign in',
+                        style: TextStyle(color: MyAppColors.textColor),
+                      ),
                     ),
                     const SizedBox(height: 10.0),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: <Widget>[
-                        const Text("Don't have an account?"),
+                        const Text(
+                          "Don't have an account?",
+                          style: TextStyle(color: MyAppColors.textColor),
+                        ),
                         TextButton(
                           onPressed: () {
                             Navigator.push(
@@ -142,7 +172,10 @@ class SignupScreenState extends State<SigninScreen> {
                               ),
                             );
                           },
-                          child: const Text('Sign Up'),
+                          child: const Text(
+                            'Sign Up',
+                            style: TextStyle(color: Colors.white),
+                          ),
                         ),
                       ],
                     ),
@@ -167,7 +200,10 @@ class SignupScreenState extends State<SigninScreen> {
                           ),
                         );
                       },
-                      child: const Text('Forgot Password?'),
+                      child: const Text(
+                        'Forgot Password?',
+                        style: TextStyle(color: MyAppColors.textColor),
+                      ),
                     ),
                   ],
                 ),
