@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:karshi/backend/models/models.dart';
+import 'package:uuid/uuid.dart';
 
 class CustomerService {
 
@@ -47,11 +48,16 @@ class CustomerService {
     });
   }
 
-  Future removeFromCart(String item_name) async{
+  Future removeFromCart(String item_name, String description, int price, String image_url, int stock, String category) async{
     return await userCollection.doc(uid).update({
       'cart': FieldValue.arrayRemove([
         {
           'item_name': item_name,
+          'description': description,
+          'price': price,
+          'image_url': image_url,
+          'stock': stock,
+          'category': category,
         }
       ])
     });
@@ -77,7 +83,7 @@ class CustomerService {
     return items;
   }
 
-  Future addToWishlist(String item_name, String description, int price, String image_url, int stock) async{
+  Future addToWishlist(String item_name, String description, int price, String image_url, int stock, String category) async{
     return await userCollection.doc(uid).update({
       'wishlist': FieldValue.arrayUnion([
         {
@@ -86,27 +92,32 @@ class CustomerService {
           'price': price,
           'image_url': image_url,
           'stock': stock,
-          'category': 'category',
+          'category': category
         }
       ])
     });
   }
 
-  Future removeFromWishlist(String item_name) async{
+  Future removeFromWishlist(String item_name, String description, int price, String image_url, int stock, String category) async{
     return await userCollection.doc(uid).update({
       'wishlist': FieldValue.arrayRemove([
         {
           'item_name': item_name,
+          'description': description,
+          'price': price,
+          'image_url': image_url,
+          'stock': stock,
+          'category': category
         }
       ])
     });
   }
 
-  Future getWhishlist() async{
+  Future getWishlist() async{
     DocumentSnapshot snapshot = await userCollection.doc(uid).get();
     List<Item> items = [];
     if (snapshot.exists) {
-      List<dynamic> itemList = (snapshot.data() as Map<String, dynamic>)['whishlist'];
+      List<dynamic> itemList = (snapshot.data() as Map<String, dynamic>)['wishlist'];
       if (itemList != null) {
         items = itemList.map((item) => Item(
           item_name: item['item_name'],
@@ -149,6 +160,7 @@ class CustomerService {
       List<dynamic> itemList = (snapshot.data() as Map<String, dynamic>)['cart'];
       if (itemList != null) {
         CollectionReference shopCollection = FirebaseFirestore.instance.collection('ShopKeeper_Data');
+        CollectionReference orderCollection = FirebaseFirestore.instance.collection('Orders');
         QuerySnapshot shopSnapshot = await shopCollection.get();
         List<DocumentSnapshot> shopDocs = shopSnapshot.docs;
         itemList.forEach((item) async {
@@ -184,6 +196,13 @@ class CustomerService {
               }
             ])
           });
+          await orderCollection.doc(Uuid().v4()).set({
+                'cutomer_uid': uid,
+                'shopkeeper_uid': shop.id,
+                'item_name': item['item_name'],
+                'stock': item['stock'],
+                'price': item['price']  
+              });
               }
             }
           }
