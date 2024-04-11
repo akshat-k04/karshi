@@ -12,6 +12,9 @@ class CustomerService {
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('Customer_Data');
 
+  final CollectionReference orderCollection =
+      FirebaseFirestore.instance.collection('Orders');
+
   Future updateCustomerData(String email, String customer_name,
       String customer_address, int mobile_number) async {
     return await userCollection.doc(uid).set({
@@ -202,8 +205,6 @@ class CustomerService {
       if (itemList != null) {
         CollectionReference shopCollection =
             FirebaseFirestore.instance.collection('ShopKeeper_Data');
-        CollectionReference orderCollection =
-            FirebaseFirestore.instance.collection('Orders');
         QuerySnapshot shopSnapshot = await shopCollection.get();
         List<DocumentSnapshot> shopDocs = shopSnapshot.docs;
         itemList.forEach((item) async {
@@ -215,7 +216,7 @@ class CustomerService {
               List<dynamic> shopItems = shop['items'];
               var shopItem = shopItems.firstWhere(
                   (shopItem) => shopItem['item_name'] == item['item_name']);
-              if (shopItem != null && shopItem['stock'] > 0) {
+              if (shopItem != null && shopItem['stock'] - item['stock'] >= 0) {
                 var temp = shopItem['stock'];
                 await shopCollection.doc(shop.id).update({
                   'items': FieldValue.arrayRemove([
@@ -248,13 +249,14 @@ class CustomerService {
                   'stock': item['stock'],
                   'price': item['price']
                 });
+                await removeFromCart(item['item_name'], item['description'], item['price'], item['image_url'], item['stock'], item['category']);
               }
             }
           }
         });
-        return await userCollection
-            .doc(uid)
-            .update({'cart': FieldValue.delete()});
+        // return await userCollection
+        //     .doc(uid)
+        //     .update({'cart': FieldValue.delete()});
       }
       return null;
     }
