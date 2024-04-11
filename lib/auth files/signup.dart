@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:karshi/User/Home_page.dart';
+import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/auth.dart';
 import 'package:karshi/seller/dashboard.dart';
 
@@ -11,7 +12,6 @@ class SignupPage extends StatefulWidget {
 class _SignupPageState extends State<SignupPage> {
   final AuthService _auth = AuthService();
   bool isUserSignup = true;
-
   String _owner_name = '';
   String _customer_name = '';
   String _shop_name = '';
@@ -188,7 +188,7 @@ class _SignupPageState extends State<SignupPage> {
                       PageRouteBuilder(
                         transitionDuration: Duration(milliseconds: 500),
                         pageBuilder: (context, animation, secondaryAnimation) =>
-                            isUserSignup? HomePage():Dashboard(),
+                            isUserSignup ? HomePage() : Dashboard(products: []),
                         transitionsBuilder:
                             (context, animation, secondaryAnimation, child) {
                           return FadeTransition(

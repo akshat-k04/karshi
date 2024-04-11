@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:karshi/User/Cart.dart';
+import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/seller/Add%20inventry.dart';
 import 'package:karshi/seller/Inventry%20details.dart';
 
 class Dashboard extends StatefulWidget {
+  final List<Item> products;
+  Dashboard({super.key, required this.products});
   @override
   _DashboardState createState() => _DashboardState();
 }
@@ -12,6 +17,13 @@ class _DashboardState extends State<Dashboard> {
   int pendingOrders = 5;
   int shippedOrders = 8;
   String Selected_catagory = "All";
+  List<Item> showproduct = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    showproduct = widget.products;
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -20,26 +32,25 @@ class _DashboardState extends State<Dashboard> {
         title: Text('Shop name Dashboard'),
         automaticallyImplyLeading: false, // Remove the back button icon
       ),
-      
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           // Add your action here
-          
+
           Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: Duration(milliseconds: 500),
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          AddInventoryPage(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
+            context,
+            PageRouteBuilder(
+              transitionDuration: Duration(milliseconds: 500),
+              pageBuilder: (context, animation, secondaryAnimation) =>
+                  AddInventoryPage(),
+              transitionsBuilder:
+                  (context, animation, secondaryAnimation, child) {
+                return FadeTransition(
+                  opacity: animation,
+                  child: child,
+                );
+              },
+            ),
+          );
         },
         child: Icon(Icons.add),
         backgroundColor: Colors.blue,
@@ -123,7 +134,7 @@ class _DashboardState extends State<Dashboard> {
           }).toList(),
         ),
         const SizedBox(height: 20.0),
-        InventoryListPage(),
+        InventoryListPage(showproduct: showproduct),
       ]),
     );
   }
@@ -181,31 +192,20 @@ class DashboardBlock extends StatelessWidget {
 }
 
 class InventoryListPage extends StatefulWidget {
+  final List<Item> showproduct;
+  InventoryListPage({required this.showproduct});
   @override
   _InventoryListPageState createState() => _InventoryListPageState();
 }
 
 class _InventoryListPageState extends State<InventoryListPage> {
-  List<String> items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-    'Item 6',
-    'Item 7',
-    'Item 8',
-    'Item 9',
-    'Item 10',
-  ];
-
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: ListView.builder(
-        itemCount: items.length,
+        itemCount: widget.showproduct.length,
         itemBuilder: (context, index) {
-          return InventryItem();
+          return InventryItem( product_details: (widget.showproduct)[index]);
         },
       ),
     );
@@ -213,9 +213,12 @@ class _InventoryListPageState extends State<InventoryListPage> {
 }
 
 class InventryItem extends StatefulWidget {
+  Item product_details;
+  InventryItem({required this.product_details});
   @override
   _InventryItemState createState() => _InventryItemState();
 }
+
 class _InventryItemState extends State<InventryItem> {
   int availableStock = 100;
   int pendingOrders = 20;
@@ -240,7 +243,7 @@ class _InventryItemState extends State<InventryItem> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            'Product Name', // Replace with actual product name
+            widget.product_details.item_name, // Replace with actual product name
             style: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.bold,
@@ -288,7 +291,7 @@ class _InventryItemState extends State<InventryItem> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildInfoBox('Available Stock', availableStock.toString()),
+              _buildInfoBox('Available Stock', widget.product_details.stock.toString()),
               SizedBox(width: 10),
               _buildInfoBox('Pending Orders', pendingOrders.toString()),
             ],

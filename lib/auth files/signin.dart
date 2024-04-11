@@ -6,6 +6,7 @@ import 'package:karshi/auth%20files/forgotPassword.dart';
 import 'package:karshi/auth%20files/signup.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/auth.dart';
+import 'package:karshi/backend/services/shopkeeper_services.dart';
 import 'package:karshi/custom%20widgets/loading_page.dart';
 import 'package:karshi/seller/dashboard.dart';
 import 'package:provider/provider.dart';
@@ -77,7 +78,13 @@ class SignupScreenState extends State<SigninScreen> {
 
                           print(user_role!.role);
                           isCustomer = user_role.role == 'Customer';
-
+                          List<Item> productlist;
+                          if (isCustomer) {
+                            productlist = [];
+                          } else {
+                            productlist = await ShopKeeperService(uid: user.uid)
+                                .getItems();
+                          }
                           setState(() {
                             isLoading = false;
                           });
@@ -87,7 +94,7 @@ class SignupScreenState extends State<SigninScreen> {
                               transitionDuration: Duration(milliseconds: 500),
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                      isCustomer? HomePage():Dashboard(),
+                                      isCustomer ? HomePage() : Dashboard(products: productlist),
                               transitionsBuilder: (context, animation,
                                   secondaryAnimation, child) {
                                 return FadeTransition(

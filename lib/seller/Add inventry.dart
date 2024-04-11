@@ -111,10 +111,19 @@ class _AddInventoryPageState extends State<AddInventoryPage> {
                       _formKey.currentState!.save();
                       // Add your logic to save the form data
                       dynamic result = await ShopKeeperService(uid: user!.uid)
-                          .addItem(
-                              productName, description, price, imageUrl, availableStock);
+                          .addItem(productName, description, price, imageUrl,
+                              availableStock);
                       print('Form submitted');
                       
+                      _formKey.currentState!.reset();
+                      setState(() {
+                        imageUrl = '';
+                        productName = '';
+                        price = 0;
+                        description = '';
+                        category = '';
+                        availableStock = 0;
+                      });
                     }
                   },
                   child: Text('Add'),
