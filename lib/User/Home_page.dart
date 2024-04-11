@@ -306,7 +306,6 @@ class _ProductItemState extends State<ProductItem> {
               ),
               ElevatedButton(
                 onPressed: () {
-                  // Add to cart logic
                   setState(() {
                     quantity = 1;
                   });
