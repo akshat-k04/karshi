@@ -20,6 +20,45 @@ class ShopKeeperService {
     });
   }
 
+  Future addItem(String item_name, String description, int price, String image_url, int stock) async{
+    return await userCollection.doc(uid).update({
+      'items': FieldValue.arrayUnion([
+      {
+        'item_name': item_name,
+        'description': description,
+        'price': price,
+        'image_url': image_url,
+        'stock': stock,
+      }
+      ])
+    });
+  }
+
+  Future deleteItem(String item_name) async{
+    return await userCollection.doc(uid).update({
+      'items': FieldValue.arrayRemove([
+        {
+          'item_name': item_name,
+        }
+      ])
+    });
+  }
+
+  Future updateItem(String item_name, String description, int price, String image_url, int stock) async{
+    await deleteItem(item_name);
+    return await userCollection.doc(uid).update({
+      'items': FieldValue.arrayUnion([
+        {
+          'item_name': item_name,
+          'description': description,
+          'price': price,
+          'image_url': image_url,
+          'stock': stock,
+        }
+      ])
+    });
+  }
+
   ShopKeeperData _dataCollectionFromSnapshot(DocumentSnapshot snapshot){
     // print(snapshot['role']);
     return ShopKeeperData(
