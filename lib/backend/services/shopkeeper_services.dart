@@ -58,6 +58,23 @@ class ShopKeeperService {
       ])
     });
   }
+  Future<List<Item>> getItems() async {
+    DocumentSnapshot snapshot = await userCollection.doc(uid).get();
+    List<Item> items = [];
+    if (snapshot.exists) {
+      List<dynamic> itemList = (snapshot.data() as Map<String, dynamic>)['items'];
+      if (itemList != null) {
+        items = itemList.map((item) => Item(
+          item_name: item['item_name'],
+          description: item['description'],
+          price: item['price'],
+          image_url: item['image_url'],
+          stock: item['stock'],
+        )).toList();
+      }
+    }
+    return items;
+  }
 
   ShopKeeperData _dataCollectionFromSnapshot(DocumentSnapshot snapshot){
     // print(snapshot['role']);
