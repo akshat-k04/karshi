@@ -20,18 +20,28 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.backgroundColor,
       appBar: AppBar(
-        title: Text('Inventory Details'),
+        title: Text(
+          'Krishi',
+          style: TextStyle(
+            color: MyAppColors.textColor, // Text color set to white
+            fontSize: 36.0, // Choose the size that fits your design
+            fontWeight: FontWeight.bold, // Text weight set to bold
+          ),
+        ),
+        automaticallyImplyLeading: false, // Remove the back button icon
+        backgroundColor: MyAppColors.backgroundColor,
       ),
       body: ListView(
         padding: EdgeInsets.all(16.0),
         children: [
           Image.asset(
             'assets/images/temp.png', // Replace with your image
-            height: 200.0,
+            height: 300.0,
             fit: BoxFit.cover,
           ),
-          SizedBox(height: 16.0),
+          SizedBox(height: 12.0),
           _buildEditableField('Name', name),
           _buildEditableField('Price', price),
           _buildEditableField('Description', description, maxLines: 3),
@@ -41,12 +51,33 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
               'Completed Orders', completedOrders.toString()),
           _buildNonEditableField('Pending Orders', pendingOrders.toString()),
           _buildNonEditableField('Shipped Orders', shippedOrders.toString()),
-          SizedBox(height: 16.0),
+          SizedBox(height: 0.0),
           ElevatedButton(
-            onPressed: () {
-              // Handle update details button
-            },
-            child: Text('Update Details'),
+            onPressed: () async {},
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                  MyAppColors.bgGreen), // Background color
+              foregroundColor: MaterialStateProperty.all(
+                  MyAppColors.textColor), // Text color
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  side:
+                      BorderSide(color: MyAppColors.selectedGreen, width: 2.0),
+                  borderRadius: BorderRadius.circular(10), // Corner radius
+                ),
+              ),
+              // If you need to adjust the button's padding:
+              padding: MaterialStateProperty.all(
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0)),
+              // If you need to adjust the button's elevation (shadow):
+              elevation: MaterialStateProperty.all(0),
+            ),
+            child: Text(
+              'Add Product',
+              style: TextStyle(
+                fontWeight: FontWeight.bold, // Makes the text bold
+              ),
+            ),
           ),
         ],
       ),
@@ -57,6 +88,7 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
     return TextFormField(
       initialValue: value,
       maxLines: maxLines,
+      style: TextStyle(color: Colors.white),
       decoration: InputDecoration(
           labelText: label,
           labelStyle: TextStyle(color: MyAppColors.textColor)),
@@ -82,9 +114,33 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
   }
 
   Widget _buildNonEditableField(String label, String value) {
-    return ListTile(
-      title: Text(label),
-      subtitle: Text(value),
+    return Padding(
+      padding: EdgeInsets.symmetric(
+          horizontal: 20.0, vertical: 20), // Add horizontal padding
+      child: Row(
+        children: [
+          Text(
+            label,
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 16.0, // Adjust the font size as needed
+              // Make the label bold
+            ),
+          ),
+          Expanded(
+            child: Text(
+              value,
+              textAlign: TextAlign
+                  .right, // Aligns the text to the right side of the Row
+              style: TextStyle(
+                color: MyAppColors.textColor,
+                fontSize:
+                    16.0, // Ensure both label and value have the same font size
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

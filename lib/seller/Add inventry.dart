@@ -86,6 +86,7 @@ class _AddInventoryPageState extends State<AddInventoryPage> {
                   decoration: InputDecoration(
                       labelText: 'Image URL',
                       labelStyle: TextStyle(color: Colors.white)),
+                  style: TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the image URL';
@@ -100,6 +101,7 @@ class _AddInventoryPageState extends State<AddInventoryPage> {
                   decoration: InputDecoration(
                       labelText: 'Product Name',
                       labelStyle: TextStyle(color: Colors.white)),
+                  style: TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the product name';
@@ -114,6 +116,7 @@ class _AddInventoryPageState extends State<AddInventoryPage> {
                   decoration: InputDecoration(
                       labelText: 'Price',
                       labelStyle: TextStyle(color: Colors.white)),
+                  style: TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the price';
@@ -128,6 +131,7 @@ class _AddInventoryPageState extends State<AddInventoryPage> {
                   decoration: InputDecoration(
                       labelText: 'Description',
                       labelStyle: TextStyle(color: Colors.white)),
+                  style: TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the description';
@@ -142,6 +146,7 @@ class _AddInventoryPageState extends State<AddInventoryPage> {
                   decoration: InputDecoration(
                       labelText: 'Category',
                       labelStyle: TextStyle(color: Colors.white)),
+                  style: TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the category';
@@ -156,6 +161,7 @@ class _AddInventoryPageState extends State<AddInventoryPage> {
                   decoration: InputDecoration(
                       labelText: 'Available Stock',
                       labelStyle: TextStyle(color: Colors.white)),
+                  style: TextStyle(color: Colors.white),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter the available stock';
