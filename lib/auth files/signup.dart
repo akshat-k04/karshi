@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:karshi/User/Cart.dart';
 import 'package:karshi/User/Home_page.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/auth.dart';
+import 'package:karshi/backend/services/customer_services.dart';
 import 'package:karshi/seller/dashboard.dart';
 import 'app_colors.dart';
 
@@ -28,9 +30,11 @@ class _SignupPageState extends State<SignupPage> {
   String? _addressError;
   String? _mobileNumberError;
   String? _emailError;
-
+  List<Item> product = [];
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserAuth?>(context);
+
     return Scaffold(
       backgroundColor: MyAppColors.backgroundColor,
       body: SingleChildScrollView(
@@ -193,12 +197,22 @@ class _SignupPageState extends State<SignupPage> {
                   if (result == null) {
                     print("Not Signed in");
                   } else {
+                    if (isUserSignup) {
+                      setState(() async {
+                        product =
+                            await CustomerService(uid: user!.uid).getAllItems();
+                      });
+                    }
                     Navigator.push(
                       context,
                       PageRouteBuilder(
                         transitionDuration: Duration(milliseconds: 500),
                         pageBuilder: (context, animation, secondaryAnimation) =>
-                            isUserSignup ? HomePage() : Dashboard(products: []),
+                            isUserSignup
+                                ? HomePage(
+                                    products: product,
+                                  )
+                                : Dashboard(products: []),
                         transitionsBuilder:
                             (context, animation, secondaryAnimation, child) {
                           return FadeTransition(

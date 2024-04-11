@@ -24,9 +24,9 @@ class ShopKeeperData {
 }
 
 class Item {
-  final String item_name, description, image_url;
+  final String item_name, description, image_url, category;
   final int price, stock;
 
-  Item({required this.description, required this.item_name, required this.price, required this.image_url, required this.stock});
+  Item({required this.description, required this.item_name, required this.price, required this.image_url, required this.stock, required this.category});
 }
 

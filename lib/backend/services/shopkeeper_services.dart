@@ -70,6 +70,7 @@ class ShopKeeperService {
           price: item['price'],
           image_url: item['image_url'],
           stock: item['stock'],
+          category: item['category']
         )).toList();
       }
     }

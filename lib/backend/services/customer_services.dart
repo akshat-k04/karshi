@@ -32,7 +32,7 @@ class CustomerService {
     );
   }
 
-  Future addToCart(String item_name, String description, int price, String image_url, int stock) async{
+  Future addToCart(String item_name, String description, int price, String image_url, int stock, String category) async{
     return await userCollection.doc(uid).update({
       'cart': FieldValue.arrayUnion([
         {
@@ -41,6 +41,7 @@ class CustomerService {
           'price': price,
           'image_url': image_url,
           'stock': stock,
+          'category': category,
         }
       ])
     });
@@ -69,6 +70,7 @@ class CustomerService {
           price: item['price'],
           image_url: item['image_url'],
           stock: item['stock'],
+          category: item['category'],
         )).toList();
       }
     }
@@ -84,6 +86,7 @@ class CustomerService {
           'price': price,
           'image_url': image_url,
           'stock': stock,
+          'category': 'category',
         }
       ])
     });
@@ -111,6 +114,7 @@ class CustomerService {
           price: item['price'],
           image_url: item['image_url'],
           stock: item['stock'],
+          category: item['category'],
         )).toList();
       }
     }
@@ -129,7 +133,8 @@ class CustomerService {
         item_name: item['item_name'],
         price: item['price'],
         image_url: item['image_url'],
-        stock: item['stock']
+        stock: item['stock'],
+        category: item['category'],
       );
       items.add(newItem);
       });
@@ -164,6 +169,7 @@ class CustomerService {
                           'price': shopItem['price'],
                           'image_url': shopItem['image_url'],
                           'stock': shopItem['stock'],
+                          'category': shopItem['category'],
                         }
                       ])
                     });
@@ -175,6 +181,7 @@ class CustomerService {
                           'price': item['price'],
                           'image_url': item['image_url'],
                           'stock': temp - 1,
+                          'category': item['category'],
                         }
                       ])
                     });
