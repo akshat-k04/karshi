@@ -2,8 +2,10 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:karshi/User/Cart.dart';
+import 'package:karshi/app_colors.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/shopkeeper_services.dart';
+import 'package:karshi/main.dart';
 import 'package:karshi/seller/Add%20inventry.dart';
 import 'package:karshi/seller/Inventry%20details.dart';
 import 'package:provider/provider.dart';
@@ -22,18 +24,27 @@ class _DashboardState extends State<Dashboard> {
   String Selected_catagory = "All";
   List<Item> showproduct = [];
   @override
-  void initState()  {
+  void initState() {
     // TODO: implement initState
     showproduct = widget.products;
     super.initState();
   }
+
   @override
   Widget build(BuildContext context) {
-    
     return Scaffold(
+      backgroundColor: MyAppColors.backgroundColor,
       appBar: AppBar(
-        title: Text('Shop name Dashboard'),
+        title: Text(
+          'Krishi',
+          style: TextStyle(
+            color: MyAppColors.textColor, // Text color set to white
+            fontSize: 36.0, // Choose the size that fits your design
+            fontWeight: FontWeight.bold, // Text weight set to bold
+          ),
+        ),
         automaticallyImplyLeading: false, // Remove the back button icon
+        backgroundColor: MyAppColors.backgroundColor,
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
@@ -59,6 +70,31 @@ class _DashboardState extends State<Dashboard> {
         backgroundColor: Colors.blue,
       ),
       body: Column(children: [
+        SizedBox(height: 40),
+        Text(
+          "Shopkeeper Dashboard",
+          style: TextStyle(
+              color: Colors.white, fontWeight: FontWeight.bold, fontSize: 30),
+        ),
+        SizedBox(height: 40),
+        Padding(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: TextField(
+            decoration: InputDecoration(
+              hintText: 'Search by Products',
+              hintStyle: TextStyle(color: Colors.white),
+              prefixStyle: TextStyle(color: MyAppColors.textColor),
+              prefixIcon: const Icon(
+                Icons.search,
+              ),
+              contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
+              border: OutlineInputBorder(
+                borderRadius: BorderRadius.circular(10.0),
+              ),
+            ),
+          ),
+        ),
+        SizedBox(height: 30),
         Padding(
           padding: EdgeInsets.all(20.0),
           child: SizedBox(
@@ -94,48 +130,6 @@ class _DashboardState extends State<Dashboard> {
             ),
           ),
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: TextField(
-            decoration: InputDecoration(
-              hintText: 'Search...',
-              prefixIcon: const Icon(Icons.search),
-              contentPadding: const EdgeInsets.symmetric(vertical: 5.0),
-              border: OutlineInputBorder(
-                borderRadius: BorderRadius.circular(20.0),
-              ),
-            ),
-          ),
-        ),
-        const SizedBox(height: 20.0),
-        DropdownButton<String>(
-          value: Selected_catagory, // Maintain original variable name
-          icon: const Icon(Icons.arrow_drop_down), // Down arrow icon
-          iconSize: 24.0, // Icon size
-          elevation: 16, // Shadow effect
-          // Customize the style to match your UI
-          style: const TextStyle(
-            color: Colors.black, // Adjust text color
-            fontSize: 16.0, // Adjust font size
-          ),
-          underline: Container(
-            height: 2.0, // Thickness of the underline
-            color: Colors.grey, // Adjust underline color
-          ),
-          onChanged: (String? newValue) {
-            setState(() {
-              Selected_catagory = newValue!;
-            });
-          },
-          items:
-              <String>['All', 'One', 'Two', 'Three'] // List of dropdown options
-                  .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        ),
         const SizedBox(height: 20.0),
         InventoryListPage(showproduct: showproduct),
       ]),
@@ -163,7 +157,7 @@ class DashboardBlock extends StatelessWidget {
         width: blockWidth,
         height: blockWidth,
         decoration: BoxDecoration(
-          color: Colors.blue,
+          color: MyAppColors.bgGreen,
           borderRadius: BorderRadius.circular(10.0),
         ),
         child: Center(
@@ -171,19 +165,19 @@ class DashboardBlock extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             children: <Widget>[
               Text(
-                title,
+                value,
                 style: TextStyle(
-                  color: Colors.white,
+                  color: MyAppColors.textColor,
+                  fontSize: 55.0,
                   fontWeight: FontWeight.bold,
-                  fontSize: 13.0,
                 ),
               ),
               SizedBox(height: 5.0),
               Text(
-                value,
+                title,
                 style: TextStyle(
                   color: Colors.white,
-                  fontSize: 18.0,
+                  fontSize: 12.0,
                 ),
               ),
             ],
@@ -215,128 +209,6 @@ class _InventoryListPageState extends State<InventoryListPage> {
   }
 }
 
-// class InventryItem extends StatefulWidget {
-//   Item product_details;
-//   InventryItem({required this.product_details});
-//   @override
-//   _InventryItemState createState() => _InventryItemState();
-// }
-
-// class _InventryItemState extends State<InventryItem> {
-//   int availableStock = 100;
-//   int pendingOrders = 20;
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Container(
-//       padding: const EdgeInsets.all(10.0),
-//       decoration: BoxDecoration(
-//         color: Colors.white,
-//         borderRadius: BorderRadius.circular(10.0),
-//         boxShadow: [
-//           BoxShadow(
-//             color: Colors.grey.withOpacity(0.5),
-//             spreadRadius: 2,
-//             blurRadius: 5,
-//             offset: const Offset(0, 3),
-//           ),
-//         ],
-//       ),
-//       child: Column(
-//         crossAxisAlignment: CrossAxisAlignment.stretch,
-//         children: [
-//           Text(
-//             widget
-//                 .product_details.item_name, // Replace with actual product name
-//             style: TextStyle(
-//               fontSize: 18.0,
-//               fontWeight: FontWeight.bold,
-//             ),
-//           ),
-//           const SizedBox(height: 10.0),
-//           Stack(
-//             alignment: Alignment.topRight,
-//             children: [
-//               GestureDetector(
-//                 onTap: () {
-//                   // Add your function here
-//                   Navigator.push(
-//                     context,
-//                     PageRouteBuilder(
-//                       transitionDuration: Duration(milliseconds: 500),
-//                       pageBuilder: (context, animation, secondaryAnimation) =>
-//                           InventoryDescriptionPage(),
-//                       transitionsBuilder:
-//                           (context, animation, secondaryAnimation, child) {
-//                         return FadeTransition(
-//                           opacity: animation,
-//                           child: child,
-//                         );
-//                       },
-//                     ),
-//                   );
-//                   print('Image clicked!');
-//                 },
-//                 child: Container(
-//                   height: 250.0,
-//                   decoration: BoxDecoration(
-//                     borderRadius: BorderRadius.circular(10.0),
-//                     image: DecorationImage(
-//                       image: NetworkImage(widget.product_details.image_url), // Replace with your image
-//                       fit: BoxFit.cover,
-//                     ),
-//                   ),
-//                 ),
-//               ),
-//             ],
-//           ),
-//           const SizedBox(height: 10.0),
-//           Row(
-//             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-//             children: [
-//               _buildInfoBox(
-//                   'Available Stock', widget.product_details.stock.toString()),
-//               SizedBox(width: 10),
-//               _buildInfoBox('Pending Orders', pendingOrders.toString()),
-//             ],
-//           ),
-//         ],
-//       ),
-//     );
-//   }
-
-//   Widget _buildInfoBox(String title, String value) {
-//     return Expanded(
-//       child: Container(
-//         padding: EdgeInsets.all(8.0),
-//         decoration: BoxDecoration(
-//           color: Colors.blue,
-//           borderRadius: BorderRadius.circular(5.0),
-//         ),
-//         child: Column(
-//           crossAxisAlignment: CrossAxisAlignment.start,
-//           children: [
-//             Text(
-//               title,
-//               style: TextStyle(
-//                 color: Colors.white,
-//                 fontWeight: FontWeight.bold,
-//               ),
-//             ),
-//             SizedBox(height: 5),
-//             Text(
-//               value,
-//               style: TextStyle(
-//                 color: Colors.white,
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class InventryItem extends StatefulWidget {
   Item product_details;
   InventryItem({required this.product_details});
@@ -354,11 +226,11 @@ class _InventryItemState extends State<InventryItem> {
     return Container(
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: MyAppColors.bgGreen,
         borderRadius: BorderRadius.circular(10.0),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.5),
+            color: Colors.black,
             spreadRadius: 2,
             blurRadius: 5,
             offset: const Offset(0, 3),
@@ -366,17 +238,15 @@ class _InventryItemState extends State<InventryItem> {
         ],
       ),
       child: Row(
-        
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           // Image on the left
-         
-          Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              SizedBox(height: 13,),
-              Container(
-              
+
+          Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+            SizedBox(
+              height: 13,
+            ),
+            Container(
               width: 140.0,
               height: 140.0,
               decoration: BoxDecoration(
@@ -388,22 +258,20 @@ class _InventryItemState extends State<InventryItem> {
                 ),
               ),
             ),
-            ]
-          ),
-          SizedBox(width: 10.0),
+          ]),
+          SizedBox(width: 40.0),
           // Column on the right
           Expanded(
             child: Column(
-              
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 // Name
                 Text(
                   widget.product_details.item_name,
                   style: TextStyle(
-                    fontSize: 18.0,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      fontSize: 36.0,
+                      fontWeight: FontWeight.bold,
+                      color: Colors.white),
                 ),
                 const SizedBox(height: 10.0),
                 // Available Stock
@@ -414,7 +282,6 @@ class _InventryItemState extends State<InventryItem> {
                 _buildInfoBox('Pending Orders', pendingOrders.toString()),
                 // const SizedBox(height: 10.0),
                 // Buttons
-                
               ],
             ),
           ),
@@ -427,10 +294,9 @@ class _InventryItemState extends State<InventryItem> {
     return Container(
       padding: EdgeInsets.all(8.0),
       decoration: BoxDecoration(
-        color: Colors.blue,
         borderRadius: BorderRadius.circular(5.0),
       ),
-      child: Column(
+      child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
@@ -438,9 +304,10 @@ class _InventryItemState extends State<InventryItem> {
             style: TextStyle(
               color: Colors.white,
               fontWeight: FontWeight.bold,
+              fontSize: 15,
             ),
           ),
-          SizedBox(height: 5),
+          SizedBox(width: 10),
           Text(
             value,
             style: TextStyle(

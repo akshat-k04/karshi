@@ -20,7 +20,7 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Inventory Description'),
+        title: Text('Inventory Details'),
       ),
       body: ListView(
         padding: EdgeInsets.all(16.0),
@@ -87,4 +87,3 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
     );
   }
 }
-
