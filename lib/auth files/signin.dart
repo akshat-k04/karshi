@@ -32,11 +32,11 @@ class SignupScreenState extends State<SigninScreen> {
 
     return Scaffold(
       backgroundColor: MyAppColors.backgroundColor,
-      body: SingleChildScrollView(
-        child: SafeArea(
-          child: isLoading
-              ? LoadingPage()
-              : Padding(
+      body: SafeArea(
+        child: isLoading
+            ? LoadingPage()
+            : SingleChildScrollView(
+              child: Padding(
                   padding: const EdgeInsets.all(20.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
@@ -67,6 +67,7 @@ class SignupScreenState extends State<SigninScreen> {
                         decoration: InputDecoration(
                           labelText: 'E-mail',
                         ),
+                        style: TextStyle(color: Colors.white),
                       ),
                       const SizedBox(height: 10.0),
                       TextField(
@@ -75,27 +76,30 @@ class SignupScreenState extends State<SigninScreen> {
                         decoration: InputDecoration(
                           labelText: 'Password',
                         ),
+                        style: TextStyle(color: Colors.white),
                       ),
                       const SizedBox(height: 20.0),
                       ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
                                 MyAppColors.bgGreen)), // Custom background color
-        
+                    
                         onPressed: () async {
                           // Add your sign in logic here
                           setState(() {
                             isLoading = true;
                           });
+                    
                           dynamic result =
                               await _auth.signIn(email.text, password.text);
-        
+                    
                           if (user != null) {
                             // signin successful
                             // fetch data code here
+
                             RoleModel? user_role =
                                 await Role(uid: user.uid).getRole();
-        
+                    
                             print(user_role!.role);
                             isCustomer = user_role.role == 'Customer';
                             List<Item> productlist;
@@ -109,6 +113,7 @@ class SignupScreenState extends State<SigninScreen> {
                             setState(() {
                               isLoading = false;
                             });
+                            
                             Navigator.push(
                               context,
                               PageRouteBuilder(
@@ -200,7 +205,7 @@ class SignupScreenState extends State<SigninScreen> {
                     ],
                   ),
                 ),
-        ),
+            ),
       ),
     );
   }
