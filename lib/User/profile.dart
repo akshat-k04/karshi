@@ -13,6 +13,7 @@ class ProfilePage extends StatefulWidget {
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  CustomerData? user = null;
   void initState() {
     super.initState();
     fetchData();
@@ -27,11 +28,11 @@ class _ProfilePageState extends State<ProfilePage> {
   final AuthService _auth = AuthService();
 
   void fetchData() async {
-    CustomerData user = await CustomerService(uid: widget.uid).getUserData();
-    _nameController.text = user.customer_name;
-    _addressController.text = user.customer_address;
-    _mobileController.text = user.mobile_number.toString();
-    print(user.mobile_number);
+    user = await CustomerService(uid: widget.uid).getUserData();
+    _nameController.text = user!.customer_name;
+    _addressController.text = user!.customer_address;
+    _mobileController.text = user!.mobile_number.toString();
+    // print(user.mobile_number);
   }
 
   @override
@@ -55,8 +56,14 @@ class _ProfilePageState extends State<ProfilePage> {
               TextEditingController(text: "example@example.com"), false),
           SizedBox(height: 16.0),
           ElevatedButton(
-            onPressed: () {
+            onPressed: () async {
               // Handle update profile logic
+              dynamic result = CustomerService(uid: widget.uid)
+                  .updateCustomerData(
+                      user!.email,
+                      _nameController.text,
+                      _addressController.text,
+                      int.parse(_mobileController.text));
               print('Profile updated');
             },
             child: Text('Update Profile'),
