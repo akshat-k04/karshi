@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:karshi/app_colors.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/shopkeeper_services.dart';
+import 'package:karshi/seller/dashboard.dart';
 
 class InventoryDescriptionPage extends StatefulWidget {
   Item product_detail;
@@ -92,6 +93,24 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
                       widget.product_detail.category);
               result = await ShopKeeperService(uid: widget.uid).addItem(
                   name, description, int.parse(price), url, availableStock, category);
+
+              Navigator.pushAndRemoveUntil(
+                context,
+                PageRouteBuilder(
+                  transitionDuration: Duration(milliseconds: 500),
+                  pageBuilder:
+                      (context, animation, secondaryAnimation) =>
+                          Dashboard(uid: widget.uid),
+                  transitionsBuilder: (context, animation,
+                      secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
+                (route) => false,
+              );
             },
             style: ButtonStyle(
               backgroundColor: MaterialStateProperty.all(
@@ -118,6 +137,62 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
               ),
             ),
           ),
+          ElevatedButton( // Delete Button
+            onPressed: () async {
+              dynamic result = await ShopKeeperService(uid: widget.uid)
+                  .deleteItem(
+                      widget.product_detail.item_name,
+                      widget.product_detail.description,
+                      widget.product_detail.price,
+                      widget.product_detail.image_url,
+                      widget.product_detail.stock,
+                      widget.product_detail.category);
+              // result = await ShopKeeperService(uid: widget.uid).addItem(
+              //     name, description, int.parse(price), url, availableStock, category);
+
+              Navigator.pushAndRemoveUntil(
+                context,
+                PageRouteBuilder(
+                  transitionDuration: Duration(milliseconds: 500),
+                  pageBuilder:
+                      (context, animation, secondaryAnimation) =>
+                          Dashboard(uid: widget.uid),
+                  transitionsBuilder: (context, animation,
+                      secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
+                (route) => false,
+              );
+            },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                  MyAppColors.bgGreen), // Background color
+              foregroundColor: MaterialStateProperty.all(
+                  MyAppColors.textColor), // Text color
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  side:
+                      BorderSide(color: MyAppColors.selectedGreen, width: 2.0),
+                  borderRadius: BorderRadius.circular(10), // Corner radius
+                ),
+              ),
+              // If you need to adjust the button's padding:
+              padding: MaterialStateProperty.all(
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0)),
+              // If you need to adjust the button's elevation (shadow):
+              elevation: MaterialStateProperty.all(0),
+            ),
+            child: Text(
+              'Delete Product',
+              style: TextStyle(
+                fontWeight: FontWeight.bold, // Makes the text bold
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -132,8 +207,7 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
           labelText: label,
           labelStyle: TextStyle(color: MyAppColors.textColor)),
       onChanged: (newValue) {
-        setState(() {
-          switch (label) {
+        switch (label) {
             case 'Name':
               name = newValue;
               break;
@@ -146,8 +220,11 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
             case 'Category':
               category = newValue;
               break;
+            case 'Available Stock':
+              availableStock = int.parse(newValue);
+              break;
           }
-        });
+        setState(() {});
       },
     );
   }
