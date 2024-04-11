@@ -67,6 +67,7 @@ class SignupScreenState extends State<SigninScreen> {
                         decoration: InputDecoration(
                           labelText: 'E-mail',
                         ),
+                        style: TextStyle(color: Colors.white),
                       ),
                       const SizedBox(height: 10.0),
                       TextField(
@@ -75,13 +76,15 @@ class SignupScreenState extends State<SigninScreen> {
                         decoration: InputDecoration(
                           labelText: 'Password',
                         ),
+                        style: TextStyle(color: Colors.white),
                       ),
                       const SizedBox(height: 20.0),
                       ElevatedButton(
                         style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all<Color>(
-                                MyAppColors.bgGreen)), // Custom background color
-        
+                                MyAppColors
+                                    .bgGreen)), // Custom background color
+
                         onPressed: () async {
                           // Add your sign in logic here
                           setState(() {
@@ -89,13 +92,13 @@ class SignupScreenState extends State<SigninScreen> {
                           });
                           dynamic result =
                               await _auth.signIn(email.text, password.text);
-        
+
                           if (user != null) {
                             // signin successful
                             // fetch data code here
                             RoleModel? user_role =
                                 await Role(uid: user.uid).getRole();
-        
+
                             print(user_role!.role);
                             isCustomer = user_role.role == 'Customer';
                             List<Item> productlist;
@@ -103,8 +106,9 @@ class SignupScreenState extends State<SigninScreen> {
                               productlist = await CustomerService(uid: user.uid)
                                   .getAllItems();
                             } else {
-                              productlist = await ShopKeeperService(uid: user.uid)
-                                  .getItems();
+                              productlist =
+                                  await ShopKeeperService(uid: user.uid)
+                                      .getItems();
                             }
                             setState(() {
                               isLoading = false;
@@ -150,10 +154,11 @@ class SignupScreenState extends State<SigninScreen> {
                               Navigator.push(
                                 context,
                                 PageRouteBuilder(
-                                  transitionDuration: Duration(milliseconds: 500),
-                                  pageBuilder:
-                                      (context, animation, secondaryAnimation) =>
-                                          SignupPage(),
+                                  transitionDuration:
+                                      Duration(milliseconds: 500),
+                                  pageBuilder: (context, animation,
+                                          secondaryAnimation) =>
+                                      SignupPage(),
                                   transitionsBuilder: (context, animation,
                                       secondaryAnimation, child) {
                                     return FadeTransition(

@@ -5,6 +5,7 @@ import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/auth.dart';
 import 'package:karshi/backend/services/customer_services.dart';
 import 'package:karshi/seller/dashboard.dart';
+import 'package:provider/provider.dart';
 import 'app_colors.dart';
 
 class SignupPage extends StatefulWidget {
@@ -38,51 +39,71 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
       backgroundColor: MyAppColors.backgroundColor,
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(20.0),
+        padding: EdgeInsets.all(30.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
+            Image(
+              image: AssetImage('assets/images/loginbg.png'),
+            ),
+            const Text(
+              'Welcome To Krashi app',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  fontSize: 28.0,
+                  fontWeight: FontWeight.bold,
+                  color: Colors.white),
+            ),
+            const Text(
+              'Create your account',
+              textAlign: TextAlign.left,
+              style: TextStyle(
+                  fontSize: 14.0,
+                  fontWeight: FontWeight.bold,
+                  color: MyAppColors.textColor),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  isUserSignup = true;
+                });
+              },
+              style: TextButton.styleFrom(
+                backgroundColor:
+                    isUserSignup ? Colors.white : MyAppColors.bgGreen,
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(5.0), // Set the corner radius here
+                ),
+              ),
+              child: Text(
+                'Signup as Buyer',
+                style: TextStyle(color: MyAppColors.textColor),
+              ),
+            ),
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  isUserSignup = false;
+                });
+              },
+              style: TextButton.styleFrom(
+                backgroundColor:
+                    !isUserSignup ? Colors.white : MyAppColors.bgGreen,
+                shape: RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.circular(5.0), // Set the corner radius here
+                ),
+              ),
+              child: Text(
+                'Signup as Seller',
+                style: TextStyle(color: MyAppColors.textColor),
+              ),
+            ),
             const SizedBox(height: 100.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      isUserSignup = true;
-                    });
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: isUserSignup
-                        ? MyAppColors.bgGreen
-                        : MyAppColors.bgGreen,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          5.0), // Set the corner radius here
-                    ),
-                  ),
-                  child: Text(
-                    'Signup as Buyer',
-                    style: TextStyle(color: MyAppColors.textColor),
-                  ),
-                ),
-                TextButton(
-                  onPressed: () {
-                    setState(() {
-                      isUserSignup = false;
-                    });
-                  },
-                  style: TextButton.styleFrom(
-                    backgroundColor: !isUserSignup
-                        ? MyAppColors.bgGreen
-                        : MyAppColors.bgGreen,
-                  ),
-                  child: Text(
-                    'Signup as Seller',
-                    style: TextStyle(color: MyAppColors.textColor),
-                  ),
-                ),
-              ],
+              children: [],
             ),
             SizedBox(height: 20.0),
             if (!isUserSignup)
@@ -146,6 +167,14 @@ class _SignupPageState extends State<SignupPage> {
             ),
             SizedBox(height: 20.0),
             ElevatedButton(
+              style: ButtonStyle(
+                  backgroundColor:
+                      MaterialStateProperty.all<Color>(MyAppColors.bgGreen),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(20), // Corner radius
+                    ),
+                  )),
               onPressed: () async {
                 setState(() {
                   _ownerNameError = isUserSignup
@@ -225,18 +254,27 @@ class _SignupPageState extends State<SignupPage> {
                   }
                 }
               },
-              child: Text('Sign Up'),
+              child: Text(
+                'Sign Up',
+                style: TextStyle(color: MyAppColors.textColor),
+              ),
             ),
             const SizedBox(height: 10.0),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: <Widget>[
-                const Text('Already have an account?'),
+                const Text(
+                  'Already have an account?',
+                  style: TextStyle(color: MyAppColors.textColor),
+                ),
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context);
                   },
-                  child: Text('Sign In'),
+                  child: Text(
+                    'Sign In',
+                    style: const TextStyle(color: Colors.white),
+                  ),
                 ),
               ],
             ),
