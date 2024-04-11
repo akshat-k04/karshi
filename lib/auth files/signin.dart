@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'app_colors.dart';
 import 'package:karshi/User/Home_page.dart';
 import 'package:karshi/auth%20files/forgotPassword.dart';
 import 'package:karshi/auth%20files/signup.dart';
@@ -17,16 +18,6 @@ class SigninScreen extends StatefulWidget {
   State<StatefulWidget> createState() {
     return SignupScreenState();
   }
-}
-
-class MyAppColors {
-  static const Color textColor =
-      Color.fromRGBO(14, 197, 93, 100); // Custom green color
-  static const Color backgroundColor =
-      Color.fromRGBO(0, 27, 21, 100); // Custom green color
-  // Custom green color
-  static const Color bgGreen =
-      Color.fromRGBO(0, 37, 28, 100); // Custom green color
 }
 
 class SignupScreenState extends State<SigninScreen> {

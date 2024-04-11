@@ -3,6 +3,7 @@ import 'package:karshi/User/Home_page.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/auth.dart';
 import 'package:karshi/seller/dashboard.dart';
+import 'app_colors.dart';
 
 class SignupPage extends StatefulWidget {
   @override
@@ -31,6 +32,7 @@ class _SignupPageState extends State<SignupPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.backgroundColor,
       body: SingleChildScrollView(
         padding: EdgeInsets.all(20.0),
         child: Column(
@@ -47,11 +49,17 @@ class _SignupPageState extends State<SignupPage> {
                     });
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: isUserSignup ? Colors.blue : Colors.grey,
+                    backgroundColor: isUserSignup
+                        ? MyAppColors.bgGreen
+                        : MyAppColors.bgGreen,
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(
+                          5.0), // Set the corner radius here
+                    ),
                   ),
                   child: Text(
-                    'Signup as User',
-                    style: TextStyle(color: Colors.white),
+                    'Signup as Buyer',
+                    style: TextStyle(color: MyAppColors.textColor),
                   ),
                 ),
                 TextButton(
@@ -61,11 +69,13 @@ class _SignupPageState extends State<SignupPage> {
                     });
                   },
                   style: TextButton.styleFrom(
-                    backgroundColor: !isUserSignup ? Colors.blue : Colors.grey,
+                    backgroundColor: !isUserSignup
+                        ? MyAppColors.bgGreen
+                        : MyAppColors.bgGreen,
                   ),
                   child: Text(
                     'Signup as Seller',
-                    style: TextStyle(color: Colors.white),
+                    style: TextStyle(color: MyAppColors.textColor),
                   ),
                 ),
               ],
