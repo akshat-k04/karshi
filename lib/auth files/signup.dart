@@ -39,7 +39,7 @@ class _SignupPageState extends State<SignupPage> {
     return Scaffold(
       backgroundColor: MyAppColors.backgroundColor,
       body: SingleChildScrollView(
-        padding: EdgeInsets.all(30.0),
+        padding: EdgeInsets.all(20.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
@@ -51,6 +51,7 @@ class _SignupPageState extends State<SignupPage> {
               textAlign: TextAlign.left,
               style: TextStyle(
                   fontSize: 28.0,
+                  fontFamily: 'Outfit',
                   fontWeight: FontWeight.bold,
                   color: Colors.white),
             ),
@@ -59,8 +60,12 @@ class _SignupPageState extends State<SignupPage> {
               textAlign: TextAlign.left,
               style: TextStyle(
                   fontSize: 14.0,
+                  fontFamily: 'Outfit',
                   fontWeight: FontWeight.bold,
                   color: MyAppColors.textColor),
+            ),
+            SizedBox(
+              height: 40,
             ),
             TextButton(
               onPressed: () {
@@ -69,17 +74,24 @@ class _SignupPageState extends State<SignupPage> {
                 });
               },
               style: TextButton.styleFrom(
-                backgroundColor:
-                    isUserSignup ? Colors.white : MyAppColors.bgGreen,
+                backgroundColor: isUserSignup
+                    ? MyAppColors.selectedGreen
+                    : MyAppColors.bgGreen,
                 shape: RoundedRectangleBorder(
                   borderRadius:
-                      BorderRadius.circular(5.0), // Set the corner radius here
+                      BorderRadius.circular(10), // Set the corner radius here
                 ),
               ),
               child: Text(
                 'Signup as Buyer',
-                style: TextStyle(color: MyAppColors.textColor),
+                style: TextStyle(
+                  color: MyAppColors.textColor,
+                  fontFamily: 'Outfit',
+                ),
               ),
+            ),
+            SizedBox(
+              height: 20,
             ),
             TextButton(
               onPressed: () {
@@ -88,11 +100,12 @@ class _SignupPageState extends State<SignupPage> {
                 });
               },
               style: TextButton.styleFrom(
-                backgroundColor:
-                    !isUserSignup ? Colors.white : MyAppColors.bgGreen,
+                backgroundColor: !isUserSignup
+                    ? MyAppColors.selectedGreen
+                    : MyAppColors.bgGreen,
                 shape: RoundedRectangleBorder(
                   borderRadius:
-                      BorderRadius.circular(5.0), // Set the corner radius here
+                      BorderRadius.circular(10), // Set the corner radius here
                 ),
               ),
               child: Text(
@@ -100,17 +113,13 @@ class _SignupPageState extends State<SignupPage> {
                 style: TextStyle(color: MyAppColors.textColor),
               ),
             ),
-            const SizedBox(height: 100.0),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              children: [],
-            ),
-            SizedBox(height: 20.0),
             if (!isUserSignup)
               TextField(
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                    labelText: 'Owner Name', errorText: _ownerNameError),
+                    labelText: 'Owner Name',
+                    errorText: _ownerNameError,
+                    labelStyle: TextStyle(color: Colors.white)),
                 onChanged: (val) {
                   setState(() => _owner_name = val);
                 },
@@ -120,7 +129,9 @@ class _SignupPageState extends State<SignupPage> {
               TextField(
                 style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
-                    labelText: 'Shop Name', errorText: _shopNameError),
+                    labelText: 'Shop Name',
+                    errorText: _shopNameError,
+                    labelStyle: TextStyle(color: Colors.white)),
                 onChanged: (val) {
                   setState(() => _shop_name = val);
                 },
@@ -129,8 +140,10 @@ class _SignupPageState extends State<SignupPage> {
             if (isUserSignup)
               TextField(
                 style: TextStyle(color: Colors.white),
-                decoration:
-                    InputDecoration(labelText: 'Name', errorText: _nameError),
+                decoration: InputDecoration(
+                    labelText: 'Name',
+                    errorText: _nameError,
+                    labelStyle: TextStyle(color: Colors.white)),
                 onChanged: (val) {
                   setState(() => _customer_name = val);
                 },
@@ -139,7 +152,9 @@ class _SignupPageState extends State<SignupPage> {
             TextField(
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                  labelText: 'Password', errorText: _passwordError),
+                  labelText: 'Password',
+                  errorText: _passwordError,
+                  labelStyle: TextStyle(color: Colors.white)),
               obscureText: true,
               onChanged: (val) {
                 setState(() => _password = val);
@@ -148,8 +163,10 @@ class _SignupPageState extends State<SignupPage> {
             SizedBox(height: 10.0),
             TextField(
               style: TextStyle(color: Colors.white),
-              decoration:
-                  InputDecoration(labelText: 'Email', errorText: _emailError),
+              decoration: InputDecoration(
+                  labelText: 'Email',
+                  errorText: _emailError,
+                  labelStyle: TextStyle(color: Colors.white)),
               onChanged: (val) {
                 setState(() => _email = val);
               },
@@ -158,7 +175,9 @@ class _SignupPageState extends State<SignupPage> {
             TextField(
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                  labelText: 'Address', errorText: _addressError),
+                  labelText: 'Address',
+                  errorText: _addressError,
+                  labelStyle: TextStyle(color: Colors.white)),
               onChanged: (val) {
                 setState(() => _address = val);
               },
@@ -167,7 +186,9 @@ class _SignupPageState extends State<SignupPage> {
             TextField(
               style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
-                  labelText: 'Mobile Number', errorText: _mobileNumberError),
+                  labelText: 'Mobile Number',
+                  errorText: _mobileNumberError,
+                  labelStyle: TextStyle(color: Colors.white)),
               onChanged: (val) {
                 setState(() => _mobile_number = int.tryParse(val) ?? 0);
               },
@@ -179,7 +200,7 @@ class _SignupPageState extends State<SignupPage> {
                       MaterialStateProperty.all<Color>(MyAppColors.bgGreen),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(20), // Corner radius
+                      borderRadius: BorderRadius.circular(10), // Corner radius
                     ),
                   )),
               onPressed: () async {

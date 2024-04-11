@@ -65,8 +65,8 @@ class SignupScreenState extends State<SigninScreen> {
                       TextField(
                         controller: email,
                         decoration: InputDecoration(
-                          labelText: 'E-mail',
-                        ),
+                            labelText: 'E-mail',
+                            labelStyle: TextStyle(color: Colors.white)),
                         style: TextStyle(color: Colors.white),
                       ),
                       const SizedBox(height: 10.0),
@@ -74,8 +74,8 @@ class SignupScreenState extends State<SigninScreen> {
                         controller: password,
                         obscureText: true,
                         decoration: InputDecoration(
-                          labelText: 'Password',
-                        ),
+                            labelText: 'Password',
+                            labelStyle: TextStyle(color: Colors.white)),
                         style: TextStyle(color: Colors.white),
                       ),
                       const SizedBox(height: 20.0),
