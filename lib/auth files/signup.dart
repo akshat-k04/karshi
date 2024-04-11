@@ -5,6 +5,7 @@ import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/auth.dart';
 import 'package:karshi/backend/services/customer_services.dart';
 import 'package:karshi/seller/dashboard.dart';
+import 'package:provider/provider.dart';
 import 'app_colors.dart';
 
 class SignupPage extends StatefulWidget {
