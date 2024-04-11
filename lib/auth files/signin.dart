@@ -38,6 +38,9 @@ class SignupScreenState extends State<SigninScreen> {
                   mainAxisAlignment: MainAxisAlignment.center,
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    Image(
+                      image: AssetImage('assets/images/loginbg.png'),
+                    ),
                     const Text(
                       'Welcome To Krashi app',
                       textAlign: TextAlign.center,
