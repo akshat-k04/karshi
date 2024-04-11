@@ -71,7 +71,7 @@ class SignupScreenState extends State<SigninScreen> {
                         dynamic result =
                             await _auth.signIn(email.text, password.text);
 
-                        if (user != null ) {
+                        if (user != null) {
                           // signin successful
                           // fetch data code here
                           RoleModel? user_role =
@@ -81,7 +81,8 @@ class SignupScreenState extends State<SigninScreen> {
                           isCustomer = user_role.role == 'Customer';
                           List<Item> productlist;
                           if (isCustomer) {
-                            productlist = await CustomerService(uid: user.uid).getAllItems();
+                            productlist = await CustomerService(uid: user.uid)
+                                .getAllItems();
                           } else {
                             productlist = await ShopKeeperService(uid: user.uid)
                                 .getItems();
@@ -95,7 +96,9 @@ class SignupScreenState extends State<SigninScreen> {
                               transitionDuration: Duration(milliseconds: 500),
                               pageBuilder:
                                   (context, animation, secondaryAnimation) =>
-                                      isCustomer ? HomePage() : Dashboard(products: productlist),
+                                      isCustomer
+                                          ? HomePage()
+                                          : Dashboard(products: productlist),
                               transitionsBuilder: (context, animation,
                                   secondaryAnimation, child) {
                                 return FadeTransition(
