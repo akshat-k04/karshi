@@ -154,39 +154,36 @@ class CustomerService {
         itemList.forEach((item) async {
           // Random random = Random();
           if (shopDocs.isNotEmpty) {
-            for(var shop in shopDocs) {
+            var shop = shopDocs.firstWhere((shop) => shop['items'].any((shopItem) => shopItem['item_name'] == item['item_name']));
+            if (shop != null) {
               List<dynamic> shopItems = shop['items'];
-              var shopItem;
-              for(shopItem in shopItems) {
-                if (shopItem['item_name'] == item['item_name']) {
-                  if (shopItem['stock'] > 0) {
-                    var temp = shopItem['stock'];
-                    await shopCollection.doc(shop.id).update({
-                      'items': FieldValue.arrayRemove([
-                        {
-                          'item_name': shopItem['item_name'],
-                          'description': shopItem['description'],
-                          'price': shopItem['price'],
-                          'image_url': shopItem['image_url'],
-                          'stock': shopItem['stock'],
-                          'category': shopItem['category'],
-                        }
-                      ])
-                    });
-                    await shopCollection.doc(shop.id).update({
-                      'items': FieldValue.arrayUnion([
-                        {
-                          'item_name': item['item_name'],
-                          'description': item['description'],
-                          'price': item['price'],
-                          'image_url': item['image_url'],
-                          'stock': temp - 1,
-                          'category': item['category'],
-                        }
-                      ])
-                    });
-                  }
-                }
+              var shopItem = shopItems.firstWhere((shopItem) => shopItem['item_name'] == item['item_name']);
+              if (shopItem != null && shopItem['stock'] > 0) {
+          var temp = shopItem['stock'];
+          await shopCollection.doc(shop.id).update({
+            'items': FieldValue.arrayRemove([
+              {
+                'item_name': shopItem['item_name'],
+                'description': shopItem['description'],
+                'price': shopItem['price'],
+                'image_url': shopItem['image_url'],
+                'stock': shopItem['stock'],
+                'category': shopItem['category'],
+              }
+            ])
+          });
+          await shopCollection.doc(shop.id).update({
+            'items': FieldValue.arrayUnion([
+              {
+                'item_name': item['item_name'],
+                'description': item['description'],
+                'price': item['price'],
+                'image_url': item['image_url'],
+                'stock': temp - item['stock'],
+                'category': item['category'],
+              }
+            ])
+          });
               }
             }
           }
@@ -198,10 +195,6 @@ class CustomerService {
       return null;
     }
   }
-
-
-
-
 
   Stream<CustomerData> get userInformation{
     return userCollection.doc(uid).snapshots()

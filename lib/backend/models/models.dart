@@ -1,3 +1,4 @@
+import 'package:uuid/uuid.dart';
 class UserAuth{
   final String uid;
   UserAuth({required this.uid});
@@ -28,5 +29,14 @@ class Item {
   final int price, stock;
 
   Item({required this.description, required this.item_name, required this.price, required this.image_url, required this.stock, required this.category});
+}
+
+class Order {
+  final String customer_uid, shopkeeper_uid, item_name;
+  final int stock, price;
+  final String orderNumber;
+
+  Order({required this.customer_uid, required this.shopkeeper_uid, required this.item_name, required this.stock, required this.price,
+  }) : orderNumber = Uuid().v4();
 }
 
