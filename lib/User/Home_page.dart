@@ -202,22 +202,25 @@ class HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(20),
                 itemCount: show_products.length,
                 itemBuilder: (context, index) {
-                  return Container(
-                      margin: const EdgeInsets.only(bottom: 20.0),
-                      decoration: BoxDecoration(
-                        color: MyAppColors.bgGreen,
-                        borderRadius: BorderRadius.circular(10.0),
-                        boxShadow: [
-                          BoxShadow(
-                            color: MyAppColors.bgGreen,
-                            spreadRadius: 2,
-                            blurRadius: 5,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child:
-                          ProductItem(product_details: (show_products)[index]));
+                  return 
+                          ProductItem(product_details: (show_products)[index]);
+
+                  // Container(
+                  //     margin: const EdgeInsets.only(bottom: 20.0),
+                  //     decoration: BoxDecoration(
+                  //       color: MyAppColors.bgGreen,
+                  //       borderRadius: BorderRadius.circular(10.0),
+                  //       boxShadow: [
+                  //         BoxShadow(
+                  //           color: MyAppColors.bgGreen,
+                  //           spreadRadius: 2,
+                  //           blurRadius: 5,
+                  //           offset: const Offset(0, 3),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //     child:
+                  //         ProductItem(product_details: (show_products)[index]));
                 },
               ),
             ),
@@ -251,20 +254,24 @@ class _ProductItemState extends State<ProductItem> {
           decoration: BoxDecoration(
             color: MyAppColors.bgGreen,
             borderRadius: BorderRadius.circular(10.0),
-            boxShadow: [
-              BoxShadow(
-                color: MyAppColors.bgGreen,
-                spreadRadius: 2,
-                blurRadius: 5,
-                offset: const Offset(0, 3),
-              ),
-            ],
+            border: Border.all(
+              color: Color.fromARGB(255, 66, 184, 113), // Set border color here
+              width: 1.0, // Set border width here
+            ),
+            // boxShadow: [
+            //   BoxShadow(
+            //     color: MyAppColors.bgGreen,
+            //     spreadRadius: 2,
+            //     blurRadius: 5,
+            //     offset: const Offset(0, 3),
+            //   ),
+            // ],
           ),
           child: Row(
             children: [
               Container(
-                width: 140.0,
-                height: 140.0,
+                width: 130.0,
+                height: 130.0,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(10.0),
                   image: DecorationImage(
@@ -282,46 +289,54 @@ class _ProductItemState extends State<ProductItem> {
                       Text(
                         widget.product_details.item_name,
                         style: TextStyle(
-                            fontSize: 36.0,
+                            fontSize: 20.0,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
                       Text(
                         widget.product_details.description,
                         style: TextStyle(
-                            fontSize: 20.0, color: MyAppColors.textColor),
+                            fontSize: 16.0, color: MyAppColors.textColor),
                       ),
                       Text(
                         "★★★★☆",
-                        style: TextStyle(color: Colors.yellowAccent),
+                        style: TextStyle(color: Colors.yellowAccent,fontSize: 12),
                       ), // Placeholder for rating
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              dynamic result =
-                                  CustomerService(uid: user!.uid).addToCart(
-                                widget.product_details.item_name,
-                                widget.product_details.description,
-                                widget.product_details.price,
-                                widget.product_details.image_url,
-                                quantity,
-                                widget.product_details.category,
-                              );
-                              setState(() {
-                                quantity = 1;
-                              });
-                            },
-                            style: ElevatedButton.styleFrom(
-                              backgroundColor: Colors.green, // Background color
-                              shape: RoundedRectangleBorder(
-                                borderRadius: BorderRadius.circular(20.0),
+                          SizedBox(
+                            height: 50,
+                            width: 90,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                dynamic result =
+                                    CustomerService(uid: user!.uid).addToCart(
+                                  widget.product_details.item_name,
+                                  widget.product_details.description,
+                                  widget.product_details.price,
+                                  widget.product_details.image_url,
+                                  quantity,
+                                  widget.product_details.category,
+                                );
+                                setState(() {
+                                  quantity = 1;
+                                });
+                              },
+                              style: ElevatedButton.styleFrom(
+                                backgroundColor: Colors.green, // Background color
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(4.0),
+                                  
+                                ),
+                                padding: EdgeInsets.all(2)
                               ),
-                            ),
-                            child: const Text(
-                              'Add to Cart',
-                              style: TextStyle(color: Colors.white),
+                              
+    
+                              child: const Text(
+                                'Add to Cart',
+                                style: TextStyle(color: Colors.white,fontSize: 10),
+                              ),
                             ),
                           ),
                           IconButton(
@@ -359,15 +374,35 @@ class _ProductItemState extends State<ProductItem> {
           ),
         ),
         Positioned(
-          right: 20,
+          right: 0,
           top: 20,
           child: IconButton(
             icon: Icon(
               isFavorite ? Icons.favorite : Icons.favorite_border,
               color: isFavorite ? Colors.red : Colors.grey,
-              size: 36,
+              size: 30,
             ),
             onPressed: () {
+              if (!isFavorite) {
+                dynamic result = CustomerService(uid: user!.uid).addToWishlist(
+                  widget.product_details.item_name,
+                  widget.product_details.description,
+                  widget.product_details.price,
+                  widget.product_details.image_url,
+                  widget.product_details.stock,
+                  widget.product_details.category,
+                );
+              } else {
+                dynamic result =
+                    CustomerService(uid: user!.uid).removeFromWishlist(
+                  widget.product_details.item_name,
+                  widget.product_details.description,
+                  widget.product_details.price,
+                  widget.product_details.image_url,
+                  widget.product_details.stock,
+                  widget.product_details.category,
+                );
+              }
               setState(() {
                 isFavorite = !isFavorite;
               });
