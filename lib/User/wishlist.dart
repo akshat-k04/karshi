@@ -67,21 +67,21 @@ class _ProductItemState extends State<ProductItem> {
               GestureDetector(
                 onTap: () {
                   // Add your function here
-                  Navigator.push(
-                    context,
-                    PageRouteBuilder(
-                      transitionDuration: Duration(milliseconds: 500),
-                      pageBuilder: (context, animation, secondaryAnimation) =>
-                          ProductDetailsPage(),
-                      transitionsBuilder:
-                          (context, animation, secondaryAnimation, child) {
-                        return FadeTransition(
-                          opacity: animation,
-                          child: child,
-                        );
-                      },
-                    ),
-                  );
+                  // Navigator.push(
+                  //   context,
+                  //   PageRouteBuilder(
+                  //     transitionDuration: Duration(milliseconds: 500),
+                  //     pageBuilder: (context, animation, secondaryAnimation) =>
+                  //         ProductDetailsPage(),
+                  //     transitionsBuilder:
+                  //         (context, animation, secondaryAnimation, child) {
+                  //       return FadeTransition(
+                  //         opacity: animation,
+                  //         child: child,
+                  //       );
+                  //     },
+                  //   ),
+                  // );
 
                   print('Image clicked!');
                 },

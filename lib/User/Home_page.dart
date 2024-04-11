@@ -1,11 +1,16 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:karshi/User/Cart.dart';
 import 'package:karshi/User/Product_details.dart';
 import 'package:karshi/User/profile.dart';
 import 'package:karshi/User/wishlist.dart';
+import 'package:karshi/backend/models/models.dart';
 
 class HomePage extends StatefulWidget {
+  List<Item> products;
+  HomePage({super.key, required this.products});
+
   @override
   State<StatefulWidget> createState() {
     return HomePageState();
@@ -104,7 +109,7 @@ class HomePageState extends State<HomePage> {
             Expanded(
               child: ListView.builder(
                 padding: const EdgeInsets.all(20),
-                itemCount: 10,
+                itemCount: widget.products.length,
                 itemBuilder: (context, index) {
                   return Container(
                       margin: const EdgeInsets.only(bottom: 20.0),
@@ -120,7 +125,7 @@ class HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                      child: ProductItem());
+                      child: ProductItem(product_details: (widget.products)[index]));
                 },
               ),
             ),
@@ -187,6 +192,8 @@ class HomePageState extends State<HomePage> {
 }
 
 class ProductItem extends StatefulWidget {
+  Item product_details;
+  ProductItem({required this.product_details});
   @override
   _ProductItemState createState() => _ProductItemState();
 }
@@ -213,8 +220,8 @@ class _ProductItemState extends State<ProductItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          const Text(
-            'Product Name', // Replace with actual product name
+           Text(
+            widget.product_details.item_name, // Replace with actual product name
             style: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.bold,
@@ -232,7 +239,7 @@ class _ProductItemState extends State<ProductItem> {
                     PageRouteBuilder(
                       transitionDuration: Duration(milliseconds: 500),
                       pageBuilder: (context, animation, secondaryAnimation) =>
-                          ProductDetailsPage(),
+                          ProductDetailsPage(product_detail : widget.product_details),
                       transitionsBuilder:
                           (context, animation, secondaryAnimation, child) {
                         return FadeTransition(
@@ -258,7 +265,9 @@ class _ProductItemState extends State<ProductItem> {
                 ),
               ),
               IconButton(
-                icon: isFavorite? Icon(Icons.favorite, color: Colors.red): Icon(Icons.favorite_border),
+                icon: isFavorite
+                    ? Icon(Icons.favorite, color: Colors.red)
+                    : Icon(Icons.favorite_border),
                 onPressed: () {
                   // Add to wishlist logic
                   setState(() {
