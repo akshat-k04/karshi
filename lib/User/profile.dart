@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
-
-
+import 'package:karshi/auth%20files/signin.dart';
+import 'package:karshi/backend/models/models.dart';
+import 'package:karshi/backend/services/auth.dart';
+import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
   @override
@@ -11,9 +13,10 @@ class _ProfilePageState extends State<ProfilePage> {
   TextEditingController _nameController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
-
+  final AuthService _auth = AuthService();
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserAuth?>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
@@ -39,8 +42,26 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           SizedBox(height: 16.0),
           ElevatedButton(
-            onPressed: () {
+            onPressed: ()async {
               // Handle update profile logic
+              await _auth.signOut();
+              Navigator.pushAndRemoveUntil(
+                context,
+                PageRouteBuilder(
+                  transitionDuration: Duration(milliseconds: 500),
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      SigninScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
+                (route) => false,
+              );
+
               print('Profile updated');
             },
             child: Text('Sign out'),

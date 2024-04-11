@@ -2,8 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:karshi/User/Cart.dart';
 import 'package:karshi/backend/models/models.dart';
+import 'package:karshi/backend/services/shopkeeper_services.dart';
 import 'package:karshi/seller/Add%20inventry.dart';
 import 'package:karshi/seller/Inventry%20details.dart';
+import 'package:provider/provider.dart';
 
 class Dashboard extends StatefulWidget {
   final List<Item> products;
@@ -19,14 +21,14 @@ class _DashboardState extends State<Dashboard> {
   String Selected_catagory = "All";
   List<Item> showproduct = [];
   @override
-  void initState() {
+  void initState()  {
     // TODO: implement initState
     showproduct = widget.products;
     super.initState();
   }
-
   @override
   Widget build(BuildContext context) {
+    
     return Scaffold(
       appBar: AppBar(
         title: Text('Shop name Dashboard'),
@@ -205,7 +207,7 @@ class _InventoryListPageState extends State<InventoryListPage> {
       child: ListView.builder(
         itemCount: widget.showproduct.length,
         itemBuilder: (context, index) {
-          return InventryItem( product_details: (widget.showproduct)[index]);
+          return InventryItem(product_details: (widget.showproduct)[index]);
         },
       ),
     );
@@ -243,7 +245,8 @@ class _InventryItemState extends State<InventryItem> {
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
           Text(
-            widget.product_details.item_name, // Replace with actual product name
+            widget
+                .product_details.item_name, // Replace with actual product name
             style: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.bold,
@@ -291,7 +294,8 @@ class _InventryItemState extends State<InventryItem> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              _buildInfoBox('Available Stock', widget.product_details.stock.toString()),
+              _buildInfoBox(
+                  'Available Stock', widget.product_details.stock.toString()),
               SizedBox(width: 10),
               _buildInfoBox('Pending Orders', pendingOrders.toString()),
             ],

@@ -6,6 +6,7 @@ import 'package:karshi/auth%20files/forgotPassword.dart';
 import 'package:karshi/auth%20files/signup.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/auth.dart';
+import 'package:karshi/backend/services/customer_services.dart';
 import 'package:karshi/backend/services/shopkeeper_services.dart';
 import 'package:karshi/custom%20widgets/loading_page.dart';
 import 'package:karshi/seller/dashboard.dart';
@@ -70,7 +71,7 @@ class SignupScreenState extends State<SigninScreen> {
                         dynamic result =
                             await _auth.signIn(email.text, password.text);
 
-                        if (user != null && result != null) {
+                        if (user != null ) {
                           // signin successful
                           // fetch data code here
                           RoleModel? user_role =
@@ -80,7 +81,7 @@ class SignupScreenState extends State<SigninScreen> {
                           isCustomer = user_role.role == 'Customer';
                           List<Item> productlist;
                           if (isCustomer) {
-                            productlist = [];
+                            productlist = await CustomerService(uid: user.uid).getAllItems();
                           } else {
                             productlist = await ShopKeeperService(uid: user.uid)
                                 .getItems();
