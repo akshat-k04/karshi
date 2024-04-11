@@ -16,7 +16,8 @@ class ShopKeeperService {
       'email': email,
       'shop_name': shop_name,
       'latitude': latitude,
-      'longitude': longitude
+      'longitude': longitude,
+      'items':[]
     });
   }
 

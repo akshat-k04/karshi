@@ -108,6 +108,7 @@ class _SignupPageState extends State<SignupPage> {
             SizedBox(height: 20.0),
             if (!isUserSignup)
               TextField(
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                     labelText: 'Owner Name', errorText: _ownerNameError),
                 onChanged: (val) {
@@ -117,6 +118,7 @@ class _SignupPageState extends State<SignupPage> {
             if (!isUserSignup) SizedBox(height: 10.0),
             if (!isUserSignup)
               TextField(
+                style: TextStyle(color: Colors.white),
                 decoration: InputDecoration(
                     labelText: 'Shop Name', errorText: _shopNameError),
                 onChanged: (val) {
@@ -126,6 +128,7 @@ class _SignupPageState extends State<SignupPage> {
             if (isUserSignup) SizedBox(height: 10.0),
             if (isUserSignup)
               TextField(
+                style: TextStyle(color: Colors.white),
                 decoration:
                     InputDecoration(labelText: 'Name', errorText: _nameError),
                 onChanged: (val) {
@@ -134,6 +137,7 @@ class _SignupPageState extends State<SignupPage> {
               ),
             SizedBox(height: 10.0),
             TextField(
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                   labelText: 'Password', errorText: _passwordError),
               obscureText: true,
@@ -143,6 +147,7 @@ class _SignupPageState extends State<SignupPage> {
             ),
             SizedBox(height: 10.0),
             TextField(
+              style: TextStyle(color: Colors.white),
               decoration:
                   InputDecoration(labelText: 'Email', errorText: _emailError),
               onChanged: (val) {
@@ -151,6 +156,7 @@ class _SignupPageState extends State<SignupPage> {
             ),
             SizedBox(height: 10.0),
             TextField(
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                   labelText: 'Address', errorText: _addressError),
               onChanged: (val) {
@@ -159,6 +165,7 @@ class _SignupPageState extends State<SignupPage> {
             ),
             SizedBox(height: 10.0),
             TextField(
+              style: TextStyle(color: Colors.white),
               decoration: InputDecoration(
                   labelText: 'Mobile Number', errorText: _mobileNumberError),
               onChanged: (val) {
