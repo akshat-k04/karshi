@@ -1,17 +1,10 @@
 import 'package:flutter/material.dart';
-
-class Product {
-  final String name;
-  final double price;
-  final int quantity;
-
-  Product(this.name, this.price, this.quantity);
-}
+import 'package:karshi/backend/models/models.dart';
+import 'package:karshi/backend/services/customer_services.dart';
 
 class AddToCartPage extends StatefulWidget {
-  final List<Product> products;
-
-  AddToCartPage({required this.products});
+  String uid;
+  AddToCartPage({required this.uid});
 
   @override
   _AddToCartPageState createState() => _AddToCartPageState();
@@ -19,18 +12,29 @@ class AddToCartPage extends StatefulWidget {
 
 class _AddToCartPageState extends State<AddToCartPage> {
   double grandTotal = 0.0;
-
+  List<Item> cart_product = [];
   @override
   void initState() {
     super.initState();
-    calculateGrandTotal();
+    fetchData();
+    // () async =>
+    //     {cart_product = await CustomerService(uid: widget.uid).getCart()};
+    // calculateGrandTotal();
   }
 
   void calculateGrandTotal() {
-    grandTotal = widget.products.fold<double>(
+    print(cart_product);
+    grandTotal = cart_product.fold<double>(
         0.0,
         (previousValue, element) =>
-            previousValue + (element.price * element.quantity));
+            previousValue + (element.price * element.stock));
+  }
+
+  void fetchData() async {
+    cart_product = await CustomerService(uid: widget.uid).getCart();
+    calculateGrandTotal();
+    // Since we updated the state, we need to call setState
+    setState(() {});
   }
 
   @override
@@ -46,14 +50,14 @@ class _AddToCartPageState extends State<AddToCartPage> {
           children: <Widget>[
             Expanded(
               child: ListView.builder(
-                itemCount: widget.products.length,
+                itemCount: cart_product.length,
                 itemBuilder: (context, index) {
-                  final product = widget.products[index];
-                  final totalPrice = product.price * product.quantity;
+                  final product = cart_product[index];
+                  final totalPrice = product.price * product.stock;
                   return ListTile(
-                    title: Text(product.name),
+                    title: Text(product.item_name),
                     subtitle: Text(
-                        'Price: \$${product.price} Quantity: ${product.quantity} Total: \$${totalPrice.toStringAsFixed(2)}'),
+                        'Price: \$${product.price} Quantity: ${product.stock} Total: \$${totalPrice.toStringAsFixed(2)}'),
                   );
                 },
               ),
@@ -73,4 +77,3 @@ class _AddToCartPageState extends State<AddToCartPage> {
     );
   }
 }
-

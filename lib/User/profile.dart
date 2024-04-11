@@ -2,21 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:karshi/auth%20files/signin.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/auth.dart';
+import 'package:karshi/backend/services/customer_services.dart';
 import 'package:provider/provider.dart';
 
 class ProfilePage extends StatefulWidget {
+  String uid;
+  ProfilePage({required this.uid});
   @override
   _ProfilePageState createState() => _ProfilePageState();
 }
 
 class _ProfilePageState extends State<ProfilePage> {
+  void initState() {
+    super.initState();
+    fetchData();
+    // () async =>
+    //     {cart_product = await CustomerService(uid: widget.uid).getCart()};
+    // calculateGrandTotal();
+  }
+
   TextEditingController _nameController = TextEditingController();
   TextEditingController _addressController = TextEditingController();
   TextEditingController _mobileController = TextEditingController();
   final AuthService _auth = AuthService();
+
+  void fetchData() async {
+    CustomerData user = await CustomerService(uid: widget.uid).getUserData();
+    _nameController.text = user.customer_name;
+    _addressController.text = user.customer_address;
+    _mobileController.text = user.mobile_number.toString();
+    print(user.mobile_number);
+  }
+
   @override
   Widget build(BuildContext context) {
-    final user = Provider.of<UserAuth?>(context);
+    // final user = Provider.of<UserAuth?>(context);
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Profile'),
@@ -42,7 +63,7 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
           SizedBox(height: 16.0),
           ElevatedButton(
-            onPressed: ()async {
+            onPressed: () async {
               // Handle update profile logic
               await _auth.signOut();
               Navigator.pushAndRemoveUntil(

@@ -9,18 +9,6 @@ class ProductDetailsPage extends StatefulWidget {
 }
 
 class _ProductDetailsPageState extends State<ProductDetailsPage> {
-  // Example product data
-  // String productName =widget.product_detail.item_name;
-  // String productImageUrl = 'https://example.com/product-image.jpg';
-  // double productPrice = 100.0;
-  // String productCategory = 'Product Category';
-  // String productDescription =
-  //     'Lorem ipsum dolor sit amet, consectetur adipiscing elit. '
-  //     'Pellentesque commodo mauris sit amet diam tristique, '
-  //     'et lacinia lorem dictum. Integer fermentum vulputate metus, '
-  //     'et aliquet metus faucibus at. Vivamus lacinia interdum purus, '
-  //     'quis cursus nisl condimentum a. Ut nec diam eleifend, '
-  //     'consequat risus sed, hendrerit libero.';
 
   @override
   Widget build(BuildContext context) {

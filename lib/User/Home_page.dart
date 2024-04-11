@@ -22,11 +22,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   String Selected_catagory = "All";
   List<Item> show_products = [];
-  List<Product> tempProducts = [
-    Product('Product 1', 10.0, 2),
-    Product('Product 2', 15.0, 1),
-    Product('Product 3', 20.0, 3),
-  ];
+
 
   
 
@@ -60,7 +56,7 @@ class HomePageState extends State<HomePage> {
                 PageRouteBuilder(
                   transitionDuration: Duration(milliseconds: 500),
                   pageBuilder: (context, animation, secondaryAnimation) =>
-                      ProfilePage(),
+                      ProfilePage(uid : user!.uid),
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
                     return FadeTransition(
@@ -138,7 +134,7 @@ class HomePageState extends State<HomePage> {
                           transitionDuration: Duration(milliseconds: 500),
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
-                                  AddToCartPage(products: tempProducts),
+                                  AddToCartPage(uid : user!.uid),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
                             return FadeTransition(
@@ -152,16 +148,16 @@ class HomePageState extends State<HomePage> {
                     child: const Text('View Cart'),
                   ),
                   ElevatedButton(
-                    onPressed: () {
+                    onPressed: () async{
                       // Wishlist logic
-
+                      List<Item> wishlist_user = await CustomerService(uid: user!.uid).getWishlist() ;
                       Navigator.push(
                         context,
                         PageRouteBuilder(
                           transitionDuration: Duration(milliseconds: 500),
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
-                                  WishlistPage(),
+                                  WishlistPage(wishlist : wishlist_user),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
                             return FadeTransition(
