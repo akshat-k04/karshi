@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:karshi/backend/models/models.dart';
+import 'package:karshi/backend/services/shopkeeper_services.dart';
+import 'package:provider/provider.dart';
 
 class AddInventoryPage extends StatefulWidget {
   @override
@@ -9,13 +12,14 @@ class _AddInventoryPageState extends State<AddInventoryPage> {
   final _formKey = GlobalKey<FormState>();
   String imageUrl = '';
   String productName = '';
-  String price = '';
+  int price = 0;
   String description = '';
   String category = '';
-  String availableStock = '';
+  int availableStock = 0;
 
   @override
   Widget build(BuildContext context) {
+    final user = Provider.of<UserAuth?>(context);
     return Scaffold(
       appBar: AppBar(
         title: Text('Add Inventory'),
@@ -61,7 +65,7 @@ class _AddInventoryPageState extends State<AddInventoryPage> {
                     return null;
                   },
                   onSaved: (value) {
-                    price = value!;
+                    price = int.parse(value!);
                   },
                 ),
                 TextFormField(
@@ -97,16 +101,20 @@ class _AddInventoryPageState extends State<AddInventoryPage> {
                     return null;
                   },
                   onSaved: (value) {
-                    availableStock = value!;
+                    availableStock = int.parse(value!);
                   },
                 ),
                 SizedBox(height: 16.0),
                 ElevatedButton(
-                  onPressed: () {
+                  onPressed: () async {
                     if (_formKey.currentState!.validate()) {
                       _formKey.currentState!.save();
                       // Add your logic to save the form data
+                      dynamic result = await ShopKeeperService(uid: user!.uid)
+                          .addItem(
+                              productName, description, price, imageUrl, availableStock);
                       print('Form submitted');
+                      
                     }
                   },
                   child: Text('Add'),

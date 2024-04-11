@@ -3,8 +3,7 @@ import 'package:flutter/widgets.dart';
 import 'package:karshi/User/Cart.dart';
 import 'package:karshi/User/Product_details.dart';
 import 'package:karshi/User/profile.dart';
-
-
+import 'package:karshi/User/wishlist.dart';
 
 class HomePage extends StatefulWidget {
   @override
@@ -134,28 +133,46 @@ class HomePageState extends State<HomePage> {
                   ElevatedButton(
                     onPressed: () {
                       // View cart logic
-                      
+
                       Navigator.push(
-                context,
-                PageRouteBuilder(
-                  transitionDuration: Duration(milliseconds: 500),
-                  pageBuilder: (context, animation, secondaryAnimation) =>
-                      AddToCartPage(products: tempProducts),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  },
-                ),
-              );
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: Duration(milliseconds: 500),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  AddToCartPage(products: tempProducts),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
                     },
                     child: const Text('View Cart'),
                   ),
                   ElevatedButton(
                     onPressed: () {
                       // Wishlist logic
+
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: Duration(milliseconds: 500),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  WishlistPage(),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                        ),
+                      );
                     },
                     child: const Text('Wishlist'),
                   ),
@@ -168,6 +185,7 @@ class HomePageState extends State<HomePage> {
     );
   }
 }
+
 class ProductItem extends StatefulWidget {
   @override
   _ProductItemState createState() => _ProductItemState();
@@ -175,7 +193,7 @@ class ProductItem extends StatefulWidget {
 
 class _ProductItemState extends State<ProductItem> {
   int quantity = 1;
-
+  bool isFavorite = false;
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -195,7 +213,7 @@ class _ProductItemState extends State<ProductItem> {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.stretch,
         children: [
-          Text(
+          const Text(
             'Product Name', // Replace with actual product name
             style: TextStyle(
               fontSize: 18.0,
@@ -240,9 +258,12 @@ class _ProductItemState extends State<ProductItem> {
                 ),
               ),
               IconButton(
-                icon: const Icon(Icons.favorite_border),
+                icon: isFavorite? Icon(Icons.favorite, color: Colors.red): Icon(Icons.favorite_border),
                 onPressed: () {
                   // Add to wishlist logic
+                  setState(() {
+                    isFavorite = !isFavorite;
+                  });
                 },
               ),
             ],
