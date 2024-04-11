@@ -32,6 +32,7 @@ class _DashboardState extends State<Dashboard> {
   String Selected_catagory = "All";
   final AuthService _auth = AuthService();
   List<Item> showproduct = [];
+  List<Item> Allproduct = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -42,7 +43,23 @@ class _DashboardState extends State<Dashboard> {
 
   void fetchData() async {
     showproduct = await ShopKeeperService(uid: widget.uid).getItems();
+    Allproduct = showproduct;
     setState(() {});
+  }
+
+  void filter_product_func(String value) {
+    print('hiii');
+    showproduct = [];
+    for (Item product in Allproduct) {
+      if (product.category.contains(value) ||
+          product.description.contains(value) ||
+          product.item_name.contains(value)) {
+        showproduct.add(product);
+      }
+    }
+    print('bye');
+    setState(() {});
+    print('oooooo');
   }
 
   @override
@@ -61,7 +78,7 @@ class _DashboardState extends State<Dashboard> {
         actions: <Widget>[
           IconButton(
             icon: Icon(Icons.logout),
-            onPressed: () async{
+            onPressed: () async {
               // Add sign-out logic here
               await _auth.signOut();
               Navigator.pushAndRemoveUntil(
@@ -121,6 +138,7 @@ class _DashboardState extends State<Dashboard> {
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 20),
           child: TextField(
+            onChanged: (value) => {filter_product_func(value)},
             decoration: InputDecoration(
               hintText: 'Search by Products',
               hintStyle: TextStyle(color: Colors.white),
@@ -193,9 +211,7 @@ class DashboardBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     double blockWidth = MediaQuery.of(context).size.width * 0.29;
     return GestureDetector(
-      onTap: () {
-        
-      },
+      onTap: () {},
       child: Container(
         width: blockWidth,
         height: blockWidth,
@@ -268,10 +284,14 @@ class _InventryItemState extends State<InventryItem> {
     final user = Provider.of<UserAuth?>(context);
 
     return GestureDetector(
-      onTap: ()=>{
+      onTap: () => {
         Navigator.push(
           context,
-          MaterialPageRoute(builder: (context) => InventoryDescriptionPage(product_detail : widget.product_details,uid: user!.uid,)),
+          MaterialPageRoute(
+              builder: (context) => InventoryDescriptionPage(
+                    product_detail: widget.product_details,
+                    uid: user!.uid,
+                  )),
         )
       },
       child: Container(
@@ -292,7 +312,7 @@ class _InventryItemState extends State<InventryItem> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             // Image on the left
-      
+
             Column(mainAxisAlignment: MainAxisAlignment.center, children: [
               SizedBox(
                 height: 13,
@@ -326,8 +346,8 @@ class _InventryItemState extends State<InventryItem> {
                   ),
                   const SizedBox(height: 10.0),
                   // Available Stock
-                  _buildInfoBox(
-                      'Available Stock', widget.product_details.stock.toString()),
+                  _buildInfoBox('Available Stock',
+                      widget.product_details.stock.toString()),
                   const SizedBox(height: 10.0),
                   // Pending Orders
                   _buildInfoBox('Pending Orders', pendingOrders.toString()),

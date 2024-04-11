@@ -23,6 +23,7 @@ class HomePage extends StatefulWidget {
 
 class HomePageState extends State<HomePage> {
   List<Item> show_products = [];
+  List<Item> Allproduct = [];
 
   @override
   void initState() {
@@ -33,25 +34,24 @@ class HomePageState extends State<HomePage> {
 
   void fetch() async {
     show_products = await CustomerService(uid: widget.uid).getAllItems();
+    Allproduct = show_products;
+    setState(() {});
+  }
+
+  void filter_products(String value) {
+    show_products = [];
+    for (Item product in Allproduct) {
+      if (product.category.contains(value) ||
+          product.description.contains(value) ||
+          product.item_name.contains(value)) {
+        show_products.add(product);
+      }
+    }
     setState(() {});
   }
 
   Widget build(BuildContext context) {
     final user = Provider.of<UserAuth?>(context);
-
-    List<Item> filter_products(String value) {
-      if (value == "") return show_products;
-
-      List<Item> filtered_product = [];
-      for (Item product in show_products) {
-        if (product.category.contains(value) ||
-            product.description.contains(value) ||
-            product.item_name.contains(value)) {
-          filtered_product.add(product);
-        }
-      }
-      return filtered_product;
-    }
 
     return Scaffold(
       backgroundColor: MyAppColors.backgroundColor,
@@ -102,6 +102,7 @@ class HomePageState extends State<HomePage> {
                 children: [
                   Expanded(
                     child: TextField(
+                      onChanged: (value) => {filter_products(value)},
                       decoration: InputDecoration(
                         hintText: 'Search Products',
                         hintStyle: TextStyle(color: Colors.white),
