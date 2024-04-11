@@ -1,4 +1,5 @@
 import 'dart:async';
+// import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:karshi/backend/models/models.dart';
@@ -130,13 +131,68 @@ class CustomerService {
         image_url: item['image_url'],
         stock: item['stock']
       );
-      if (!items.contains(newItem)) {
-        items.add(newItem);
-      }
+      items.add(newItem);
       });
     });
     return items;
   }
+
+  Future buyItems() async {
+    DocumentSnapshot snapshot = await userCollection.doc(uid).get();
+    // List<Item> items = [];
+    if (snapshot.exists) {
+      List<dynamic> itemList = (snapshot.data() as Map<String, dynamic>)['cart'];
+      if (itemList != null) {
+        CollectionReference shopCollection = FirebaseFirestore.instance.collection('ShopKeeper_Data');
+        QuerySnapshot shopSnapshot = await shopCollection.get();
+        List<DocumentSnapshot> shopDocs = shopSnapshot.docs;
+        itemList.forEach((item) async {
+          // Random random = Random();
+          if (shopDocs.isNotEmpty) {
+            for(var shop in shopDocs) {
+              List<dynamic> shopItems = shop['items'];
+              var shopItem;
+              for(shopItem in shopItems) {
+                if (shopItem['item_name'] == item['item_name']) {
+                  if (shopItem['stock'] > 0) {
+                    var temp = shopItem['stock'];
+                    await shopCollection.doc(shop.id).update({
+                      'items': FieldValue.arrayRemove([
+                        {
+                          'item_name': shopItem['item_name'],
+                          'description': shopItem['description'],
+                          'price': shopItem['price'],
+                          'image_url': shopItem['image_url'],
+                          'stock': shopItem['stock'],
+                        }
+                      ])
+                    });
+                    await shopCollection.doc(shop.id).update({
+                      'items': FieldValue.arrayUnion([
+                        {
+                          'item_name': item['item_name'],
+                          'description': item['description'],
+                          'price': item['price'],
+                          'image_url': item['image_url'],
+                          'stock': temp - 1,
+                        }
+                      ])
+                    });
+                  }
+                }
+              }
+            }
+          }
+        });
+        return await userCollection.doc(uid).update({
+          'cart': FieldValue.delete()
+        });
+      }
+      return null;
+    }
+  }
+
+
 
 
 
