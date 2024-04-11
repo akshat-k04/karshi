@@ -47,11 +47,16 @@ class CustomerService {
     });
   }
 
-  Future removeFromCart(String item_name) async{
+  Future removeFromCart(String item_name, String description, int price, String image_url, int stock, String category) async{
     return await userCollection.doc(uid).update({
       'cart': FieldValue.arrayRemove([
         {
           'item_name': item_name,
+          'description': description,
+          'price': price,
+          'image_url': image_url,
+          'stock': stock,
+          'category': category,
         }
       ])
     });
@@ -77,7 +82,7 @@ class CustomerService {
     return items;
   }
 
-  Future addToWishlist(String item_name, String description, int price, String image_url, int stock) async{
+  Future addToWishlist(String item_name, String description, int price, String image_url, int stock, String category) async{
     return await userCollection.doc(uid).update({
       'wishlist': FieldValue.arrayUnion([
         {
@@ -86,27 +91,32 @@ class CustomerService {
           'price': price,
           'image_url': image_url,
           'stock': stock,
-          'category': 'category',
+          'category': category
         }
       ])
     });
   }
 
-  Future removeFromWishlist(String item_name) async{
+  Future removeFromWishlist(String item_name, String description, int price, String image_url, int stock, String category) async{
     return await userCollection.doc(uid).update({
       'wishlist': FieldValue.arrayRemove([
         {
           'item_name': item_name,
+          'description': description,
+          'price': price,
+          'image_url': image_url,
+          'stock': stock,
+          'category': category
         }
       ])
     });
   }
 
-  Future getWhishlist() async{
+  Future getWishlist() async{
     DocumentSnapshot snapshot = await userCollection.doc(uid).get();
     List<Item> items = [];
     if (snapshot.exists) {
-      List<dynamic> itemList = (snapshot.data() as Map<String, dynamic>)['whishlist'];
+      List<dynamic> itemList = (snapshot.data() as Map<String, dynamic>)['wishlist'];
       if (itemList != null) {
         items = itemList.map((item) => Item(
           item_name: item['item_name'],

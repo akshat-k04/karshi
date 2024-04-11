@@ -6,6 +6,8 @@ import 'package:karshi/User/Product_details.dart';
 import 'package:karshi/User/profile.dart';
 import 'package:karshi/User/wishlist.dart';
 import 'package:karshi/backend/models/models.dart';
+import 'package:karshi/backend/services/customer_services.dart';
+import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
   List<Item> products;
@@ -203,6 +205,8 @@ class _ProductItemState extends State<ProductItem> {
   bool isFavorite = false;
   @override
   Widget build(BuildContext context) {
+    // print(widget.product_details);
+    final user = Provider.of<UserAuth?>(context);
     return Container(
       padding: const EdgeInsets.all(10.0),
       decoration: BoxDecoration(
@@ -256,9 +260,8 @@ class _ProductItemState extends State<ProductItem> {
                   height: 250.0,
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(10.0),
-                    image: const DecorationImage(
-                      image: AssetImage(
-                          "assets/images/temp.png"), // Replace with your image
+                    image: DecorationImage(
+                      image: NetworkImage(widget.product_details.image_url), // Replace with your image
                       fit: BoxFit.cover,
                     ),
                   ),
@@ -270,6 +273,27 @@ class _ProductItemState extends State<ProductItem> {
                     : Icon(Icons.favorite_border),
                 onPressed: () {
                   // Add to wishlist logic
+                  
+                  if(!isFavorite){
+                    dynamic result = CustomerService(uid: user!.uid).addToWishlist(
+                    widget.product_details.item_name,
+                    widget.product_details.description,
+                    widget.product_details.price,
+                    widget.product_details.image_url,
+                    widget.product_details.stock,
+                    widget.product_details.category,
+                  );
+                  }
+                  else{
+                    dynamic result = CustomerService(uid: user!.uid).removeFromWishlist(
+                    widget.product_details.item_name,
+                    widget.product_details.description,
+                    widget.product_details.price,
+                    widget.product_details.image_url,
+                    widget.product_details.stock,
+                    widget.product_details.category,
+                  );
+                  }
                   setState(() {
                     isFavorite = !isFavorite;
                   });
@@ -306,6 +330,14 @@ class _ProductItemState extends State<ProductItem> {
               ),
               ElevatedButton(
                 onPressed: () {
+                  dynamic result = CustomerService(uid: user!.uid).addToCart(
+                    widget.product_details.item_name,
+                    widget.product_details.description,
+                    widget.product_details.price,
+                    widget.product_details.image_url,
+                    quantity,
+                    widget.product_details.category,
+                  );
                   setState(() {
                     quantity = 1;
                   });
