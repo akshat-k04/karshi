@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:karshi/User/checkout.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/customer_services.dart';
 
@@ -67,6 +68,21 @@ class _AddToCartPageState extends State<AddToCartPage> {
             ElevatedButton(
               onPressed: () {
                 // Add your logic for checkout
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    transitionDuration: Duration(milliseconds: 500),
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        CheckoutPage(uid: widget.uid,cartProducts: cart_product,grandTotal:grandTotal),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                  ),
+                );
                 print('Checkout');
               },
               child: Text('Checkout'),

@@ -91,28 +91,32 @@ class SignupScreenState extends State<SigninScreen> {
                             isLoading = true;
                           });
 
-                          dynamic result =
+                          UserAuth result =
                               await _auth.signIn(email.text, password.text);
-
-                          if (user != null) {
+                          print('hello hii1245');
+                          // setState(() {});
+                          if (result != null) {
                             // signin successful
+                            print('hello hii');
                             // fetch data code here
 
                             RoleModel? user_role =
-                                await Role(uid: user.uid).getRole();
-
+                                await Role(uid: result.uid).getRole();
+                            print("bye");
                             print(user_role!.role);
-                            isCustomer = user_role.role == 'Customer';
-                            List<Item> productlist;
-                            if (isCustomer) {
-                              productlist = await CustomerService(uid: user.uid)
-                                  .getAllItems();
-                            } else {
-                              productlist =
-                                  await ShopKeeperService(uid: user.uid)
-                                      .getItems();
-                            }
-                            if (productlist.isEmpty == true) productlist = [];
+                            isCustomer = (user_role.role == 'Customer');
+                            // setState(() {});
+
+                            // List<Item> productlist;
+                            // if (isCustomer) {
+                            //   productlist = await CustomerService(uid: result.uid)
+                            //       .getAllItems();
+                            // } else {
+                            //   productlist =
+                            //       await ShopKeeperService(uid: result.uid)
+                            //           .getItems();
+                            // }
+                            // if (productlist.isEmpty == true) productlist = [];
                             setState(() {
                               isLoading = false;
                             });
@@ -124,8 +128,10 @@ class SignupScreenState extends State<SigninScreen> {
                                 pageBuilder:
                                     (context, animation, secondaryAnimation) =>
                                         isCustomer
-                                            ? HomePage(products: productlist)
-                                            : Dashboard(products: productlist),
+                                            ? HomePage(
+                                                uid: result.uid,
+                                              )
+                                            : Dashboard(uid: result.uid),
                                 transitionsBuilder: (context, animation,
                                     secondaryAnimation, child) {
                                   return FadeTransition(
@@ -199,7 +205,6 @@ class SignupScreenState extends State<SigninScreen> {
                                   child: child,
                                 );
                               },
-                              
                             ),
                             (route) => false,
                           );

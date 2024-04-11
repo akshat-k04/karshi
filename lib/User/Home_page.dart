@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -10,8 +12,8 @@ import 'package:karshi/backend/services/customer_services.dart';
 import 'package:provider/provider.dart';
 
 class HomePage extends StatefulWidget {
-  List<Item> products;
-  HomePage({super.key, required this.products});
+  String uid;
+  HomePage({super.key, required this.uid});
 
   @override
   State<StatefulWidget> createState() {
@@ -20,17 +22,28 @@ class HomePage extends StatefulWidget {
 }
 
 class HomePageState extends State<HomePage> {
-  String Selected_catagory = "All";
   List<Item> show_products = [];
 
+  @override
+  void initState() {
+    // TODO: implement initState
+    fetch();
+    super.initState();
+  }
 
-  
+  void fetch() async {
+    show_products = await CustomerService(uid: widget.uid).getAllItems();
+    setState(() {});
+  }
 
   Widget build(BuildContext context) {
     final user = Provider.of<UserAuth?>(context);
+
     List<Item> filter_products(String value) {
+      if (value == "") return show_products;
+
       List<Item> filtered_product = [];
-      for (Item product in widget.products) {
+      for (Item product in show_products) {
         if (product.category.contains(value) ||
             product.description.contains(value) ||
             product.item_name.contains(value)) {
@@ -39,9 +52,7 @@ class HomePageState extends State<HomePage> {
       }
       return filtered_product;
     }
-    setState(() {
-      show_products = widget.products;
-    });
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('Krashi'),
@@ -56,7 +67,7 @@ class HomePageState extends State<HomePage> {
                 PageRouteBuilder(
                   transitionDuration: Duration(milliseconds: 500),
                   pageBuilder: (context, animation, secondaryAnimation) =>
-                      ProfilePage(uid : user!.uid),
+                      ProfilePage(uid: user!.uid),
                   transitionsBuilder:
                       (context, animation, secondaryAnimation, child) {
                     return FadeTransition(
@@ -134,7 +145,7 @@ class HomePageState extends State<HomePage> {
                           transitionDuration: Duration(milliseconds: 500),
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
-                                  AddToCartPage(uid : user!.uid),
+                                  AddToCartPage(uid: user!.uid),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
                             return FadeTransition(
@@ -148,16 +159,17 @@ class HomePageState extends State<HomePage> {
                     child: const Text('View Cart'),
                   ),
                   ElevatedButton(
-                    onPressed: () async{
+                    onPressed: () async {
                       // Wishlist logic
-                      List<Item> wishlist_user = await CustomerService(uid: user!.uid).getWishlist() ;
+                      List<Item> wishlist_user =
+                          await CustomerService(uid: user!.uid).getWishlist();
                       Navigator.push(
                         context,
                         PageRouteBuilder(
                           transitionDuration: Duration(milliseconds: 500),
                           pageBuilder:
                               (context, animation, secondaryAnimation) =>
-                                  WishlistPage(wishlist : wishlist_user),
+                                  WishlistPage(wishlist: wishlist_user),
                           transitionsBuilder:
                               (context, animation, secondaryAnimation, child) {
                             return FadeTransition(

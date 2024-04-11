@@ -42,7 +42,8 @@ class AuthService {
         // await DataBaseLaundry(uid: user.uid,bhawan: bhawan).updateData(name,room_number, '', false);
         // await DatabaseEntryExit(uid: user.uid,Bhawan: bhawan).statusUserEntry(bhawan, false,false);
       }
-      return _userFromFirebaseUser(user);
+      UserAuth user_shopkeeper = UserAuth(uid: user!.uid);
+      return user_shopkeeper;
     } catch (e) {
       print(e.toString());
       return null;
@@ -62,7 +63,8 @@ class AuthService {
         // await DataBaseLaundry(uid: user.uid,bhawan: bhawan).updateData(name,room_number, '', false);
         // await DatabaseEntryExit(uid: user.uid,Bhawan: bhawan).statusUserEntry(bhawan, false,false);
       }
-      return _userFromFirebaseUser(user);
+      UserAuth user_customer = UserAuth(uid: user!.uid);
+      return user_customer;
     } catch (e) {
       print(e.toString());
       return null;
@@ -74,7 +76,11 @@ class AuthService {
       UserCredential result = await _auth.signInWithEmailAndPassword(
           email: email, password: password);
       User? user = result.user;
-      return _userFromFirebaseUser(user);
+      if (user != null) {
+        UserAuth user_obj = UserAuth(uid: user.uid);
+        return user_obj;
+      }
+      return null;
     } catch (e) {
       print(e.toString());
       return null;

@@ -235,7 +235,7 @@ class _SignupPageState extends State<SignupPage> {
                     _emailError == null &&
                     _addressError == null &&
                     _mobileNumberError == null) {
-                  dynamic result;
+                  UserAuth result;
                   if (!isUserSignup) {
                     result = await _auth.register_shopkeeper(
                         _email,
@@ -253,23 +253,17 @@ class _SignupPageState extends State<SignupPage> {
 
                   if (result == null) {
                     print("Not Signed in");
-                  } else {
-                    if (isUserSignup) {
-                      setState(() async {
-                        product =
-                            await CustomerService(uid: user!.uid).getAllItems();
-                      });
-                    }
+                  }
+                   else {
+                    
                     Navigator.push(
                       context,
                       PageRouteBuilder(
                         transitionDuration: Duration(milliseconds: 500),
                         pageBuilder: (context, animation, secondaryAnimation) =>
                             isUserSignup
-                                ? HomePage(
-                                    products: product,
-                                  )
-                                : Dashboard(products: []),
+                                ? HomePage(uid: result.uid,)
+                                : Dashboard(uid: result.uid ),
                         transitionsBuilder:
                             (context, animation, secondaryAnimation, child) {
                           return FadeTransition(

@@ -3,7 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:karshi/User/Cart.dart';
 import 'package:karshi/app_colors.dart';
+import 'package:karshi/auth%20files/signin.dart';
 import 'package:karshi/backend/models/models.dart';
+import 'package:karshi/backend/services/auth.dart';
+import 'package:karshi/backend/services/customer_services.dart';
 import 'package:karshi/backend/services/shopkeeper_services.dart';
 import 'package:karshi/main.dart';
 import 'package:karshi/seller/Add%20inventry.dart';
@@ -11,8 +14,11 @@ import 'package:karshi/seller/Inventry%20details.dart';
 import 'package:provider/provider.dart';
 
 class Dashboard extends StatefulWidget {
-  final List<Item> products;
-  Dashboard({super.key, required this.products});
+  // final List<Item> products;
+  // Dashboard({super.key, required this.products});
+
+  final String uid;
+  Dashboard({required this.uid});
   @override
   _DashboardState createState() => _DashboardState();
 }
@@ -22,12 +28,19 @@ class _DashboardState extends State<Dashboard> {
   int pendingOrders = 5;
   int shippedOrders = 8;
   String Selected_catagory = "All";
+  final AuthService _auth = AuthService();
   List<Item> showproduct = [];
   @override
   void initState() {
     // TODO: implement initState
-    showproduct = widget.products;
+    // showproduct = widget.products;
+    fetchData();
     super.initState();
+  }
+
+  void fetchData() async {
+    showproduct = await ShopKeeperService(uid: widget.uid).getItems();
+    setState(() {});
   }
 
   @override
@@ -43,6 +56,32 @@ class _DashboardState extends State<Dashboard> {
             fontWeight: FontWeight.bold, // Text weight set to bold
           ),
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () async{
+              // Add sign-out logic here
+              await _auth.signOut();
+              Navigator.pushAndRemoveUntil(
+                context,
+                PageRouteBuilder(
+                  transitionDuration: Duration(milliseconds: 500),
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      SigninScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
+                (route) => false,
+              );
+              print('Sign out');
+            },
+          ),
+        ],
         automaticallyImplyLeading: false, // Remove the back button icon
         backgroundColor: MyAppColors.backgroundColor,
       ),
