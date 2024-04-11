@@ -253,7 +253,7 @@ class _ProductItemState extends State<ProductItem> {
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
-                color: Colors.grey.withOpacity(0.5),
+                color: MyAppColors.bgGreen,
                 spreadRadius: 2,
                 blurRadius: 5,
                 offset: const Offset(0, 3),
@@ -282,7 +282,7 @@ class _ProductItemState extends State<ProductItem> {
                       Text(
                         widget.product_details.item_name,
                         style: TextStyle(
-                            fontSize: 40.0,
+                            fontSize: 36.0,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
@@ -359,12 +359,13 @@ class _ProductItemState extends State<ProductItem> {
           ),
         ),
         Positioned(
-          right: 10,
-          top: 10,
+          right: 20,
+          top: 20,
           child: IconButton(
             icon: Icon(
               isFavorite ? Icons.favorite : Icons.favorite_border,
               color: isFavorite ? Colors.red : Colors.grey,
+              size: 36,
             ),
             onPressed: () {
               setState(() {
@@ -374,12 +375,12 @@ class _ProductItemState extends State<ProductItem> {
           ),
         ),
         Positioned(
-          right: 10,
-          top: 50,
+          right: 20,
+          top: 80,
           child: Text(
             '\$${widget.product_details.price}', // Assuming you have a price field
             style: TextStyle(
-              fontSize: 18.0,
+              fontSize: 25.0,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
