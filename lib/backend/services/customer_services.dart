@@ -184,7 +184,7 @@ class CustomerService {
     DocumentSnapshot snapshot = await userCollection.doc(uid).get();
     List<Item> items = [];
     if (snapshot.exists) {
-      List<dynamic> itemList =
+      List<dynamic>? itemList =
           (snapshot.data() as Map<String, dynamic>)['wishlist'];
       if (itemList != null) {
         items = itemList
@@ -287,8 +287,8 @@ class CustomerService {
                 return;
               }
 
-                double shopLatitude = double.parse(shop['latitude']);
-                double shopLongitude = double.parse(shop['longitude']);
+                double shopLatitude = double.parse(shop['latitude'].toString());
+                double shopLongitude = double.parse(shop['longitude'].toString());
 
               double distance = _calculateDistance(
                   latitude, longitude, shopLatitude, shopLongitude);
