@@ -1,17 +1,12 @@
-// import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:karshi/backend/models/models.dart';
-// import 'package:flutter/material.dart';
-// import 'package:location/location.dart';
+
 
 class ShopKeeperService {
   final String uid;
   ShopKeeperService({required this.uid});
-
-  // late String lat;
-  //   late String long;
 
   Future<Position> _getCurrentPosition() async {
     bool serviceEnabled = await Geolocator.isLocationServiceEnabled();

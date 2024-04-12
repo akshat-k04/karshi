@@ -259,16 +259,6 @@ class CustomerService {
     print(latitude);
     print(longitude);
     DocumentSnapshot snapshot = await userCollection.doc(uid).get();
-    // List<Item> items = [];
-    // print("in buy items");
-
-    // LocationData? locationData = await _getCurrentLocation();
-
-    // if (locationData != null) {
-    //   print(locationData.latitude);
-    //   print(locationData.longitude);
-    // }
-
     if (snapshot.exists) {
       List<dynamic> itemList =
           (snapshot.data() as Map<String, dynamic>)['cart'];

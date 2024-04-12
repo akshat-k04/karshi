@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/admin_services.dart';
+import 'package:karshi/backend/services/customer_services.dart';
 
 class OrdersPage extends StatefulWidget {
   String uid;
@@ -85,8 +86,10 @@ class OrderItem extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
-                      onPressed: () {
+                      onPressed: () async {
                         // Handle contact seller action
+                        Future result =  await CustomerService(uid: "").callShopkeeper(orderDetail.shopkeeper_uid);
+                        
                       },
                       child: Text('Contact Seller'),
                     ),
