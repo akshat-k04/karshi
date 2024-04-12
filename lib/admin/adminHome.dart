@@ -1,9 +1,13 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:js_interop';
+// import 'dart:js_interop';
 
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:flutter/widgets.dart';
+import 'package:karshi/Admin/All_user.dart';
+import 'package:karshi/Admin/Store.dart';
 import 'package:karshi/admin/adminHome.dart';
 import 'package:karshi/app_colors.dart';
 import 'package:karshi/backend/models/models.dart';
@@ -86,18 +90,104 @@ class _AdminViewState extends State<AdminView> {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceEvenly,
               children: [
-                IconCard(
-                  icon: Icons.person,
-                  iconColor: Colors.white,
-                  label: 'User',
+                GestureDetector(
+                  onTap: ()=>{
+                    Navigator.pushAndRemoveUntil(
+                              context,
+                              PageRouteBuilder(
+                                transitionDuration: Duration(milliseconds: 500),
+                                pageBuilder:
+                                    (context, animation, secondaryAnimation) =>
+                                        UserListPage(),
+                                transitionsBuilder: (context, animation,
+                                    secondaryAnimation, child) {
+                                  return FadeTransition(
+                                    opacity: animation,
+                                    child: child,
+                                  );
+                                },
+                              ),
+                              (route) => false,
+                            )
+                  },
+                  child: GestureDetector(
+                    onTap: (){
+                      Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: Duration(milliseconds: 500),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  UserListPage(),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                        ),
+                       
+                      );
+                    },
+                    child: IconCard(
+                      
+                      icon: Icons.person,
+                      iconColor: Colors.white,
+                      label: 'User',
+                    ),
+                  ),
                 ),
-                IconCard(
-                  icon: Icons.store,
-                  label: 'Store',
+                GestureDetector(
+                  onTap: (){
+                    
+                    Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: Duration(milliseconds: 500),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  StoreListPage(),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                        ),
+                       
+                      );
+                  },
+                  child: IconCard(
+                    icon: Icons.store,
+                    label: 'Store',
+                  ),
                 ),
-                IconCard(
-                  icon: Icons.shopping_bag,
-                  label: 'Product',
+                GestureDetector(
+                  onTap: ()=>{
+                    Navigator.push(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: Duration(milliseconds: 500),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  StoreListPage(),
+                          transitionsBuilder:
+                              (context, animation, secondaryAnimation, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                        ),
+                       
+                      )
+                  },
+                  child: IconCard(
+                    icon: Icons.shopping_bag,
+                    label: 'Product',
+                  ),
                 ),
               ],
             ),
