@@ -272,8 +272,8 @@ class CustomerService {
                 return;
               }
 
-              double shopLatitude = shop['latitude'];
-              double shopLongitude = shop['longitude'];
+                double shopLatitude = double.parse(shop['latitude']);
+                double shopLongitude = double.parse(shop['longitude']);
 
               double distance = _calculateDistance(
                   latitude, longitude, shopLatitude, shopLongitude);

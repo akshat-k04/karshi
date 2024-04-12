@@ -67,7 +67,7 @@ class _OrdersDetailsListState extends State<OrdersDetailsList> {
             ],
             rows: widget.Order_list.map((order) {
               return DataRow(cells: [
-                DataCell(Text(order.orderNumber)),
+                DataCell(Text("${order.orderNumber.substring(0, 8)}...")),
                 DataCell(Text(order.item_name)),
                 DataCell(Text(order.stock.toString())),
                 DataCell(_statusIcon(order.status)),
