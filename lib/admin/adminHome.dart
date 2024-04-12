@@ -1,9 +1,15 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:karshi/admin/adminHome.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/admin_services.dart';
+
+class AdminView extends StatefulWidget {
+  @override
+  _AdminViewState createState() => _AdminViewState();
+}
+
 
 class DashboardBlock extends StatelessWidget {
   final String title;
