@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:karshi/app_colors.dart';
 import 'package:karshi/auth%20files/signin.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/auth.dart';
@@ -40,12 +41,36 @@ class _ProfilePageState extends State<ProfilePage> {
     // final user = Provider.of<UserAuth?>(context);
 
     return Scaffold(
+      backgroundColor: MyAppColors.backgroundColor,
       appBar: AppBar(
-        title: Text('Profile'),
+        backgroundColor: MyAppColors.backgroundColor,
+        title: Text(
+          'Krashi',
+          style: TextStyle(
+            color: MyAppColors.textColor, // Text color set to white
+            fontSize: 36.0, // Choose the size that fits your design
+            fontWeight: FontWeight.bold, // Text weight set to bold
+          ),
+        ),
       ),
       body: ListView(
         padding: EdgeInsets.all(16.0),
         children: <Widget>[
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 20.0),
+            child: Text(
+              "Profile",
+              style: TextStyle(
+                color: Colors
+                    .white, // Ensure this is visible against your app's theme
+                fontWeight: FontWeight.bold,
+                fontSize: 30, // Adjusted for better visual balance
+              ),
+            ),
+          ),
+          SizedBox(
+            height: 20,
+          ),
           _buildTextField("Name", _nameController, true),
           SizedBox(height: 16.0),
           _buildTextField("Address", _addressController, true),
@@ -66,6 +91,24 @@ class _ProfilePageState extends State<ProfilePage> {
                       int.parse(_mobileController.text));
               print('Profile updated');
             },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                  MyAppColors.bgGreen), // Background color
+              foregroundColor: MaterialStateProperty.all(
+                  MyAppColors.textColor), // Text color
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  side:
+                      BorderSide(color: MyAppColors.selectedGreen, width: 2.0),
+                  borderRadius: BorderRadius.circular(10), // Corner radius
+                ),
+              ),
+              // If you need to adjust the button's padding:
+              padding: MaterialStateProperty.all(
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0)),
+              // If you need to adjust the button's elevation (shadow):
+              elevation: MaterialStateProperty.all(0),
+            ),
             child: Text('Update Profile'),
           ),
           SizedBox(height: 16.0),
@@ -92,6 +135,24 @@ class _ProfilePageState extends State<ProfilePage> {
 
               print('Profile updated');
             },
+            style: ButtonStyle(
+              backgroundColor: MaterialStateProperty.all(
+                  MyAppColors.bgGreen), // Background color
+              foregroundColor: MaterialStateProperty.all(
+                  MyAppColors.textColor), // Text color
+              shape: MaterialStateProperty.all(
+                RoundedRectangleBorder(
+                  side:
+                      BorderSide(color: MyAppColors.selectedGreen, width: 2.0),
+                  borderRadius: BorderRadius.circular(10), // Corner radius
+                ),
+              ),
+              // If you need to adjust the button's padding:
+              padding: MaterialStateProperty.all(
+                  EdgeInsets.symmetric(horizontal: 16.0, vertical: 8.0)),
+              // If you need to adjust the button's elevation (shadow):
+              elevation: MaterialStateProperty.all(0),
+            ),
             child: Text('Sign out'),
           ),
         ],
@@ -104,10 +165,19 @@ class _ProfilePageState extends State<ProfilePage> {
     return TextField(
       controller: controller,
       enabled: editable,
-      decoration: InputDecoration(
-        labelText: label,
-        border: OutlineInputBorder(),
+      style: TextStyle(
+        fontSize: 20,
+
+        color: Colors.white, // Ensuring the color matches the white theme
       ),
+      decoration: InputDecoration(
+          labelText: label,
+          border: OutlineInputBorder(),
+          labelStyle: TextStyle(
+              color: MyAppColors.textColor, fontSize: 20), // Label color
+          enabledBorder: OutlineInputBorder(
+            borderSide: BorderSide(color: MyAppColors.selectedGreen),
+          )),
     );
   }
 
