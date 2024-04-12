@@ -14,6 +14,7 @@ import 'package:karshi/backend/services/shopkeeper_services.dart';
 import 'package:karshi/main.dart';
 import 'package:karshi/seller/Add%20inventry.dart';
 import 'package:karshi/seller/Inventry%20details.dart';
+import 'package:karshi/seller/Order_details.dart';
 import 'package:provider/provider.dart';
 
 class Dashboard extends StatefulWidget {
@@ -229,7 +230,7 @@ class DashboardBlock extends StatelessWidget {
           context,
           PageRouteBuilder(
             transitionDuration: Duration(milliseconds: 500),
-            pageBuilder: (context, animation, secondaryAnimation) => ,
+            pageBuilder: (context, animation, secondaryAnimation) => OrdersDetailsList(),
             transitionsBuilder:
                 (context, animation, secondaryAnimation, child) {
               return FadeTransition(
