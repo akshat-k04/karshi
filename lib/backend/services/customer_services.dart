@@ -38,7 +38,22 @@ class CustomerService {
         customer_name: snapshot['customer_name'],
         customer_address: snapshot['customer_address'],
         email: snapshot['email'],
-        mobile_number: snapshot['mobile_number']);
+        mobile_number: snapshot['mobile_number'],
+        uid: snapshot.id);
+  }
+
+  Future<List<CustomerData>> getAllCustomers() async {
+    QuerySnapshot snapshot = await userCollection.get();
+    List<CustomerData> customers = [];
+    snapshot.docs.forEach((doc) {
+      customers.add(CustomerData(
+          customer_name: doc['customer_name'],
+          customer_address: doc['customer_address'],
+          email: doc['email'],
+          mobile_number: doc['mobile_number'],
+          uid: doc.id));
+    });
+    return customers;
   }
 
   Future addToCart(String item_name, String description, int price,
@@ -339,8 +354,4 @@ class CustomerService {
     }
   }
 
-  // Stream<CustomerData> get userInformation{
-  //   return userCollection.doc(uid).snapshots()
-  //       .map(_dataCollectionFromSnapshot);
-  // }
 }
