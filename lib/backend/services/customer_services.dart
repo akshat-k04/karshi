@@ -1,9 +1,11 @@
 import 'dart:async';
+// import 'dart:html';
 // import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:uuid/uuid.dart';
+// import 'package:location/location.dart';
 
 class CustomerService {
   final String uid;
@@ -14,6 +16,7 @@ class CustomerService {
 
   final CollectionReference orderCollection =
       FirebaseFirestore.instance.collection('Orders');
+
 
   Future updateCustomerData(String email, String customer_name,
       String customer_address, int mobile_number) async {
@@ -190,7 +193,11 @@ class CustomerService {
           stock: item['stock'],
           category: item['category'],
         );
-        items.add(newItem);
+        if (newItem.stock != 0) {
+          if (!items.any((existingItem) => existingItem.item_name == newItem.item_name)) {
+            items.add(newItem);
+          }
+        }
       });
     });
     return items;
@@ -199,6 +206,15 @@ class CustomerService {
   Future buyItems() async {
     DocumentSnapshot snapshot = await userCollection.doc(uid).get();
     // List<Item> items = [];
+    // print("in buy items");
+
+    // LocationData? locationData = await _getCurrentLocation();
+
+    // if (locationData != null) {
+    //   print(locationData.latitude);
+    //   print(locationData.longitude);
+    // }
+
     if (snapshot.exists) {
       List<dynamic> itemList =
           (snapshot.data() as Map<String, dynamic>)['cart'];
@@ -209,10 +225,13 @@ class CustomerService {
         List<DocumentSnapshot> shopDocs = shopSnapshot.docs;
         itemList.forEach((item) async {
           // Random random = Random();
+          print(item['item_name']);
           if (shopDocs.isNotEmpty) {
             var shop = shopDocs.firstWhere((shop) => shop['items']
-                .any((shopItem) => shopItem['item_name'] == item['item_name']));
+                .any((shopItem) {return shopItem['item_name'] == item['item_name'] && shopItem['stock']-item['stock']>=0;}));
+            // print(shop);
             if (shop != null) {
+              print(shop.id);
               List<dynamic> shopItems = shop['items'];
               var shopItem = shopItems.firstWhere(
                   (shopItem) => shopItem['item_name'] == item['item_name']);

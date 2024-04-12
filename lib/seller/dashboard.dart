@@ -113,7 +113,7 @@ class _DashboardState extends State<Dashboard> {
             PageRouteBuilder(
               transitionDuration: Duration(milliseconds: 500),
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  AddInventoryPage(),
+                  AddInventoryPage(uid: widget.uid,),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
                 return FadeTransition(
