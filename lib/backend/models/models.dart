@@ -1,6 +1,6 @@
-import 'dart:js_interop';
+// import 'dart:js_interop';
 
-import 'package:uuid/uuid.dart';
+// import 'package:uuid/uuid.dart';
 class UserAuth{
   final String uid;
   UserAuth({required this.uid});
