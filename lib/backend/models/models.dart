@@ -34,8 +34,7 @@ class Item {
 class Order_Model {
   final String customer_uid, shopkeeper_uid, item_name;
   final int stock, price;
-  final String orderNumber;
-  final bool completed;
+  final String orderNumber, status;
 
-  Order_Model({required this.customer_uid, required this.shopkeeper_uid, required this.item_name, required this.stock, required this.price, required this.orderNumber, required this.completed});
+  Order_Model({required this.customer_uid, required this.shopkeeper_uid, required this.item_name, required this.stock, required this.price, required this.orderNumber,required this.status});
 }
