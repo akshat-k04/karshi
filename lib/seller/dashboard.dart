@@ -49,6 +49,7 @@ class _DashboardState extends State<Dashboard> {
     showproduct = await ShopKeeperService(uid: widget.uid).getItems();
     Allproduct = showproduct;
     All_Order = await Orders_Services().getOrders();
+    print(All_Order.length);
     All_Order =
         All_Order.where((order) => order.shopkeeper_uid == widget.uid).toList();
     pendingOrders =
@@ -188,7 +189,8 @@ class _DashboardState extends State<Dashboard> {
                       PageRouteBuilder(
                         transitionDuration: Duration(milliseconds: 500),
                         pageBuilder: (context, animation, secondaryAnimation) =>
-                            OrdersDetailsList( Order_list: All_Order.where(
+                            OrdersDetailsList(
+                                Order_list: All_Order.where(
                                         (order) => order.status == "completed")
                                     .toList()),
                         transitionsBuilder:
@@ -213,8 +215,10 @@ class _DashboardState extends State<Dashboard> {
                       PageRouteBuilder(
                         transitionDuration: Duration(milliseconds: 500),
                         pageBuilder: (context, animation, secondaryAnimation) =>
-                            OrdersDetailsList(Order_list: All_Order.where(
-                              (order) => order.status == "pending").toList(),),
+                            OrdersDetailsList(
+                          Order_list: All_Order.where(
+                              (order) => order.status == "pending").toList(),
+                        ),
                         transitionsBuilder:
                             (context, animation, secondaryAnimation, child) {
                           return FadeTransition(
@@ -237,8 +241,10 @@ class _DashboardState extends State<Dashboard> {
                       PageRouteBuilder(
                         transitionDuration: Duration(milliseconds: 500),
                         pageBuilder: (context, animation, secondaryAnimation) =>
-                            OrdersDetailsList(Order_list: All_Order.where(
-                              (order) => order.status == "shipped").toList(),),
+                            OrdersDetailsList(
+                          Order_list: All_Order.where(
+                              (order) => order.status == "shipped").toList(),
+                        ),
                         transitionsBuilder:
                             (context, animation, secondaryAnimation, child) {
                           return FadeTransition(
@@ -255,7 +261,10 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
         const SizedBox(height: 20.0),
-        InventoryListPage(showproduct: showproduct, All_orders: All_Order,),
+        InventoryListPage(
+          showproduct: showproduct,
+          All_orders: All_Order,
+        ),
       ]),
     );
   }
@@ -343,7 +352,10 @@ class InventryItem extends StatefulWidget {
   Item product_details;
   int pending_orders;
   List<Order_Model> all_order;
-  InventryItem({required this.product_details, required this.pending_orders,required this.all_order});
+  InventryItem(
+      {required this.product_details,
+      required this.pending_orders,
+      required this.all_order});
 
   @override
   _InventryItemState createState() => _InventryItemState();
