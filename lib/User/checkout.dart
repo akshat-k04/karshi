@@ -293,7 +293,7 @@ class _CheckoutPageState extends State<CheckoutPage> {
                             ),
                             child: Text(
                               'Continue Shopping!',
-                              style: TextStyle(color: MyAppColors.bgGreen),
+                              style: TextStyle(color: Colors.green),
                             ),
                           ),
                         ],
