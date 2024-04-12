@@ -149,14 +149,6 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                 ),
                 Container(
                   padding: EdgeInsets.all(8),
-                  decoration: BoxDecoration(
-                    color: MyAppColors.backgroundColor,
-                    border: Border.all(
-                      color: Colors.green,
-                      width: 2,
-                    ),
-                    borderRadius: BorderRadius.circular(5),
-                  ),
                   child: IconButton(
                     icon: const Icon(
                       Icons.add,
