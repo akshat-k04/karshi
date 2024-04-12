@@ -118,8 +118,8 @@ class ShopKeeperService {
           owner_name: doc['owner_name'],
           shop_name: doc['shop_name'],
           shop_address: doc['shop_address'],
-          latitude: doc['latitude'],
-          longitude: doc['longitude'],
+          latitude: doc['latitude'].toString(),
+          longitude: doc['longitude'].toString(),
           email: doc['email'],
           mobile_number: doc['mobile_number'],
           uid: doc.id));

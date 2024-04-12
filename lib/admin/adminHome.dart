@@ -8,6 +8,7 @@ import 'package:flutter/widgets.dart';
 import 'package:karshi/Admin/All_user.dart';
 import 'package:karshi/Admin/Store.dart';
 import 'package:karshi/admin/adminHome.dart';
+import 'package:karshi/admin/product.dart';
 import 'package:karshi/app_colors.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/admin_services.dart';
@@ -164,7 +165,7 @@ class _AdminViewState extends State<AdminView> {
                       PageRouteBuilder(
                         transitionDuration: Duration(milliseconds: 500),
                         pageBuilder: (context, animation, secondaryAnimation) =>
-                            StoreListPage(),
+                            ProductListPage(),
                         transitionsBuilder:
                             (context, animation, secondaryAnimation, child) {
                           return FadeTransition(
