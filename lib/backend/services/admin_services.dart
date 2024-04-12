@@ -2,12 +2,13 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:karshi/backend/models/models.dart';
 
 class Orders_Services{
+  
   final CollectionReference orderCollection = FirebaseFirestore.instance.collection('Orders');
 
 
   Future getOrders() async{
     QuerySnapshot snapshot = await orderCollection.get();
-    List<Order_Model> orders = snapshot.docs.map((doc) => Order_Model(customer_uid: doc['customer_uid'], shopkeeper_uid: doc['shopkeeper_uid'], item_name: doc['item_name'], stock: doc['stock'], price: doc['price'])).toList();
+    List<Order_Model> orders = snapshot.docs.map((doc) => Order_Model(customer_uid: doc['customer_uid'], shopkeeper_uid: doc['shopkeeper_uid'], item_name: doc['item_name'], stock: doc['stock'], price: doc['price'], orderNumber: doc.id, completed: doc['compmleted'])).toList();
     return orders;
   }
 
@@ -17,7 +18,8 @@ class Orders_Services{
       'shopkeeper_uid': shopkeeper_uid,
       'item_name': item_name,
       'stock': stock,
-      'price': price
+      'price': price,
+      'completed': false
     });
   } 
 }

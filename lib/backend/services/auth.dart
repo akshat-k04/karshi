@@ -36,9 +36,7 @@ class AuthService {
             owner_name,
             shop_address,
             mobile_number,
-            shop_name,
-            latitude,
-            longitude);
+            shop_name);
         // await DataBaseLaundry(uid: user.uid,bhawan: bhawan).updateData(name,room_number, '', false);
         // await DatabaseEntryExit(uid: user.uid,Bhawan: bhawan).statusUserEntry(bhawan, false,false);
       }
