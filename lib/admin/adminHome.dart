@@ -10,8 +10,10 @@ import 'package:karshi/Admin/Store.dart';
 import 'package:karshi/admin/adminHome.dart';
 import 'package:karshi/admin/product.dart';
 import 'package:karshi/app_colors.dart';
+import 'package:karshi/auth%20files/signin.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/admin_services.dart';
+import 'package:karshi/backend/services/auth.dart';
 
 class AdminView extends StatefulWidget {
   @override
@@ -20,6 +22,8 @@ class AdminView extends StatefulWidget {
 
 class _AdminViewState extends State<AdminView> {
   List<Order_Model> All_orders = [];
+  final AuthService _auth = AuthService();
+
   @override
   void initState() {
     // TODO: implement initState
@@ -38,6 +42,32 @@ class _AdminViewState extends State<AdminView> {
     return Scaffold(
       backgroundColor: MyAppColors.backgroundColor,
       appBar: AppBar(
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(Icons.logout),
+            onPressed: () async {
+              // Add sign-out logic here
+              await _auth.signOut();
+              Navigator.pushAndRemoveUntil(
+                context,
+                PageRouteBuilder(
+                  transitionDuration: Duration(milliseconds: 500),
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      SigninScreen(),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
+                (route) => false,
+              );
+              print('Sign out');
+            },
+          ),
+        ],
         title: Text(
           'Krishi',
           style: TextStyle(
@@ -252,16 +282,16 @@ class PieChartWidget extends StatelessWidget {
       height: 200,
       child: PieChart(PieChartData(
         sections: [
-          PieChartSectionData(color: Colors.red, value: 4, title: '4'),
+          PieChartSectionData(color: Colors.red, value: 17, title: '17'),
           PieChartSectionData(
             color: Colors.yellow,
-            value: 2,
-            title: '2',
+            value: 63,
+            title: '63',
           ),
           PieChartSectionData(
             color: Colors.green,
-            value: 2,
-            title: '2',
+            value: 128,
+            title: '128',
           ),
         ],
       )),
