@@ -4,6 +4,7 @@ import 'dart:math';
 // import 'dart:math';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter_phone_direct_caller/flutter_phone_direct_caller.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:uuid/uuid.dart';
 // import 'package:location/location.dart';
@@ -28,6 +29,15 @@ class CustomerService {
       'whishlist': [],
       'cart': []
     });
+  }
+
+  Future callShopkeeper(String shopkeeper_uid) async {
+    DocumentSnapshot snapshot =
+        await FirebaseFirestore.instance.collection('ShopKeeper_Data').doc(shopkeeper_uid).get();
+    // return snapshot;
+    int mobile_number = snapshot['mobile_number'];
+
+    await FlutterPhoneDirectCaller.callNumber(mobile_number.toString());
   }
 
   Future getUserData() async {

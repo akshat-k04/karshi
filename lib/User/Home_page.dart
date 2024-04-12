@@ -326,7 +326,7 @@ class _ProductItemState extends State<ProductItem> {
                             color: Colors.white),
                       ),
                       Text(
-                        widget.product_details.description,
+                        widget.product_details.category,
                         style: TextStyle(
                             fontSize: 16.0, color: MyAppColors.textColor),
                       ),

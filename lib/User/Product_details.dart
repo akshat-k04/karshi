@@ -15,7 +15,7 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
 
   @override
   Widget build(BuildContext context) {
-    var quantity = 0;
+    var quantity = 5;
     return Scaffold(
       backgroundColor: MyAppColors.backgroundColor,
       appBar: AppBar(
@@ -156,7 +156,9 @@ class _ProductDetailsPageState extends State<ProductDetailsPage> {
                       size: 24,
                     ),
                     onPressed: () {
+                      
                       setState(() {
+                        print("Increased");
                         quantity++;
                       });
                     },
