@@ -19,10 +19,17 @@ class _WishlistPageState extends State<WishlistPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.backgroundColor,
       appBar: AppBar(
-        title: Text('Wishlist'),
-        backgroundColor:
-            MyAppColors.bgGreen, // Example background color for AppBar
+        backgroundColor: MyAppColors.backgroundColor,
+        title: Text(
+          'Krashi',
+          style: TextStyle(
+            color: MyAppColors.textColor, // Text color set to white
+            fontSize: 36.0, // Choose the size that fits your design
+            fontWeight: FontWeight.bold, // Text weight set to bold
+          ),
+        ),
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
@@ -32,7 +39,7 @@ class _WishlistPageState extends State<WishlistPage> {
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),
               child: Text(
-                "Products",
+                "WishList",
                 style: TextStyle(
                   color: Colors
                       .white, // Ensure this is visible against your app's theme
