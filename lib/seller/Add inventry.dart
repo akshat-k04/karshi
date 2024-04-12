@@ -6,6 +6,8 @@ import 'package:provider/provider.dart';
 import 'package:karshi/app_colors.dart';
 
 class AddInventoryPage extends StatefulWidget {
+  final String uid;
+  AddInventoryPage({required this.uid});
   @override
   _AddInventoryPageState createState() => _AddInventoryPageState();
 }
@@ -192,6 +194,24 @@ class _AddInventoryPageState extends State<AddInventoryPage> {
                         category = '';
                         availableStock = 0;
                       });
+
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        PageRouteBuilder(
+                          transitionDuration: Duration(milliseconds: 500),
+                          pageBuilder:
+                              (context, animation, secondaryAnimation) =>
+                                  Dashboard(uid: widget.uid),
+                          transitionsBuilder: (context, animation,
+                              secondaryAnimation, child) {
+                            return FadeTransition(
+                              opacity: animation,
+                              child: child,
+                            );
+                          },
+                        ),
+                        (route) => false,
+                      );
                     }
                   },
                   style: ButtonStyle(

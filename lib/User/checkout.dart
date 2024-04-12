@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/customer_services.dart';
+// import 'package:location/location.dart';
 
 class CheckoutPage extends StatefulWidget {
   final String uid;
@@ -46,6 +48,37 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   @override
   Widget build(BuildContext context) {
+
+    late String lat;
+    late String long;
+    
+    Future<Position> _getCurrentPosition() async {
+      bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+      if (!serviceEnabled){
+        return Future.error('Location services are disabled.');
+      }
+       
+      LocationPermission permission = await Geolocator.checkPermission();
+
+      if(permission == LocationPermission.denied){
+        permission = await Geolocator.requestPermission();
+        if(permission == LocationPermission.denied){
+          return Future.error('Location permissions are denied');
+        }
+      }
+
+      if(permission == LocationPermission.deniedForever){
+        return Future.error('Location permissions are permanently denied, we cannot request permissions.');
+      }
+
+      return await Geolocator.getCurrentPosition();
+    }
+
+
+
+
+
+
     return Scaffold(
       appBar: AppBar(
         title: Text('Checkout'),
@@ -98,6 +131,11 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ElevatedButton(
               onPressed: () async {
                 // Add your logic for checkout
+                _getCurrentPosition().then((value){
+                  lat = '${value.latitude}';
+                  long = '${value.longitude}';
+                  print('Latitude: $lat, Longitude: $long');
+                });
                 dynamic result = await CustomerService(uid: widget.uid).buyItems();
                 print('Place Order');
               },

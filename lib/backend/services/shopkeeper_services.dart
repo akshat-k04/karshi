@@ -1,9 +1,50 @@
+// import 'dart:html';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:karshi/backend/models/models.dart';
+// import 'package:flutter/material.dart';
+// import 'package:location/location.dart';
 
 class ShopKeeperService {
   final String uid;
   ShopKeeperService({required this.uid});
+
+  // Location location = Location();
+
+
+  // void _getLocationPermission() async {
+  //   bool _serviceEnabled;
+  //   PermissionStatus _permissionGranted;
+  //   _serviceEnabled = await location.serviceEnabled();
+  //   if (!_serviceEnabled) {
+  //     _serviceEnabled = await location.requestService();
+  //     if (!_serviceEnabled) {
+  //       return;
+  //     }
+  //   }
+  //   _permissionGranted = await location.hasPermission();
+  //   if (_permissionGranted == PermissionStatus.denied) {
+  //     _permissionGranted = await location.requestPermission();
+  //     if (_permissionGranted != PermissionStatus.granted) {
+  //       return;
+  //     }
+  //   }
+  // }
+
+  // void _getCurrentLocation() async {
+  //   LocationData? locationData;
+  //   try {
+  //     locationData = await location.getLocation();
+  //   } catch (e) {
+  //     print("Error getting location: $e");
+  //     locationData = null;
+  //   }
+  //   if (locationData != null) {
+  //     double? latitude = locationData.latitude;
+  //     double? longitude = locationData.longitude;
+  //     print("Latitude: $latitude, Longitude: $longitude");
+  //   }
+  // }
 
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('ShopKeeper_Data');
