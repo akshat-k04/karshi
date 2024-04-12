@@ -203,7 +203,7 @@ class CustomerService {
     return items;
   }
 
-  Future buyItems() async {
+  Future buyItems(double latitude, double longitude) async {
     DocumentSnapshot snapshot = await userCollection.doc(uid).get();
     // List<Item> items = [];
     // print("in buy items");
@@ -262,7 +262,7 @@ class CustomerService {
                   ])
                 });
                 await orderCollection.doc(Uuid().v4()).set({
-                  'cutomer_uid': uid,
+                  'customer_uid': uid,
                   'shopkeeper_uid': shop.id,
                   'item_name': item['item_name'],
                   'stock': item['stock'],

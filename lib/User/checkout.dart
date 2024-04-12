@@ -52,8 +52,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
 
   @override
   Widget build(BuildContext context) {
-    late String lat;
-    late String long;
+    // late String lat;
+    // late String long;
 
     Future<Position> _getCurrentPosition() async {
       bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
@@ -245,13 +245,9 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ElevatedButton(
               onPressed: () async {
                 // Add your logic for checkout
-                _getCurrentPosition().then((value) {
-                  lat = '${value.latitude}';
-                  long = '${value.longitude}';
-                  print('Latitude: $lat, Longitude: $long');
-                });
+                Position position = await _getCurrentPosition();
                 dynamic result =
-                    await CustomerService(uid: widget.uid).buyItems();
+                    await CustomerService(uid: widget.uid).buyItems(position.latitude, position.longitude);
                 showDialog(
                   context: context,
                   builder: (BuildContext context) {
