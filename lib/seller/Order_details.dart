@@ -1,7 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:karshi/app_colors.dart';
+import 'package:karshi/backend/models/models.dart';
 
 class OrdersDetailsList extends StatefulWidget {
+  final List<Order_Model> Order_list;
+
+  OrdersDetailsList({required this.Order_list});
+
   @override
   _OrdersDetailsListState createState() => _OrdersDetailsListState();
 }
@@ -11,13 +16,13 @@ class _OrdersDetailsListState extends State<OrdersDetailsList> {
   Widget _statusIcon(String status) {
     Color statusColor;
     switch (status) {
-      case 'Shipped':
+      case 'shipped':
         statusColor = Colors.green;
         break;
-      case 'Pending':
+      case 'pending':
         statusColor = Colors.orange;
         break;
-      case 'Delivered':
+      case 'completed':
         statusColor = Colors.blue;
         break;
       default:
@@ -60,43 +65,16 @@ class _OrdersDetailsListState extends State<OrdersDetailsList> {
               DataColumn(label: Text('Date')),
               DataColumn(label: Text('Revenue')),
             ],
-            rows: [
-              DataRow(cells: [
-                DataCell(Text('#530002')),
-                DataCell(Text('Product 1')),
-                DataCell(Text('20')),
-                DataCell(_statusIcon('Shipped')),
-                DataCell(Text('10/3/24')),
-                DataCell(Text('\$30')),
-              ]),
-              DataRow(cells: [
-                DataCell(Text('#530002')),
-                DataCell(Text('Product 2')),
-                DataCell(Text('20')),
-                DataCell(_statusIcon('Delivered')),
-                DataCell(Text('10/3/24')),
-                DataCell(Text('\$30')),
-              ]),
-              DataRow(cells: [
-                DataCell(Text('#530002')),
-                DataCell(Text('Product 3')),
-                DataCell(Text('20')),
-                DataCell(_statusIcon('Shipped')),
-                DataCell(Text('10/3/24')),
-                DataCell(Text('\$30')),
-              ]),
-
-              DataRow(cells: [
-                DataCell(Text('#530002')),
-                DataCell(Text('Product 4')),
-                DataCell(Text('20')),
-                DataCell(_statusIcon('Pending')),
-                DataCell(Text('10/3/24')),
-                DataCell(Text('\$30')),
-              ]),
-              // Repeat DataRow for each order, altering the details as necessary
-              // ...
-            ],
+            rows: widget.Order_list.map((order) {
+              return DataRow(cells: [
+                DataCell(Text(order.orderNumber)),
+                DataCell(Text(order.item_name)),
+                DataCell(Text(order.stock.toString())),
+                DataCell(_statusIcon(order.status)),
+                DataCell(Text('12/04/2024')),
+                DataCell(Text('\$${(order.price * order.stock).toString()}')),
+              ]);
+            }).toList(),
           ),
         ],
       ),

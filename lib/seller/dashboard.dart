@@ -188,7 +188,9 @@ class _DashboardState extends State<Dashboard> {
                       PageRouteBuilder(
                         transitionDuration: Duration(milliseconds: 500),
                         pageBuilder: (context, animation, secondaryAnimation) =>
-                            OrdersDetailsList(),
+                            OrdersDetailsList( Order_list: All_Order.where(
+                                        (order) => order.status == "completed")
+                                    .toList()),
                         transitionsBuilder:
                             (context, animation, secondaryAnimation, child) {
                           return FadeTransition(
@@ -211,7 +213,8 @@ class _DashboardState extends State<Dashboard> {
                       PageRouteBuilder(
                         transitionDuration: Duration(milliseconds: 500),
                         pageBuilder: (context, animation, secondaryAnimation) =>
-                            OrdersDetailsList(),
+                            OrdersDetailsList(Order_list: All_Order.where(
+                              (order) => order.status == "pending").toList(),),
                         transitionsBuilder:
                             (context, animation, secondaryAnimation, child) {
                           return FadeTransition(
@@ -234,7 +237,8 @@ class _DashboardState extends State<Dashboard> {
                       PageRouteBuilder(
                         transitionDuration: Duration(milliseconds: 500),
                         pageBuilder: (context, animation, secondaryAnimation) =>
-                            OrdersDetailsList(),
+                            OrdersDetailsList(Order_list: All_Order.where(
+                              (order) => order.status == "shipped").toList(),),
                         transitionsBuilder:
                             (context, animation, secondaryAnimation, child) {
                           return FadeTransition(
