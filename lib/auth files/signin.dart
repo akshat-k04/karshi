@@ -134,7 +134,7 @@ class SignupScreenState extends State<SigninScreen> {
                                                 uid: result.uid,
                                               )
                                             : (user_role.role == 'Admin')
-                                                ? AdminDashboard()
+                                                ? AdminView()
                                                 : Dashboard(uid: result.uid),
                                 transitionsBuilder: (context, animation,
                                     secondaryAnimation, child) {
