@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:karshi/User/my_orders.dart';
 import 'package:karshi/app_colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -37,7 +38,10 @@ class HomePageState extends State<HomePage> {
   void fetch() async {
     show_products = await CustomerService(uid: widget.uid).getAllItems();
     Allproduct = show_products;
+    
     wishlist_user = await CustomerService(uid: widget.uid).getWishlist();
+    print("why");
+
     setState(() {});
   }
 
@@ -80,26 +84,24 @@ class HomePageState extends State<HomePage> {
         automaticallyImplyLeading: false, // Remove the back button icon
         actions: [
           IconButton(
-            onPressed: (){
-              
-              Navigator.push(
-                context,
-                PageRouteBuilder(
-                  transitionDuration: Duration(milliseconds: 500),
-                  pageBuilder: (context, animation, secondaryAnimation) =>
-                      OrdersPage(uid: user!.uid),
-                  transitionsBuilder:
-                      (context, animation, secondaryAnimation, child) {
-                    return FadeTransition(
-                      opacity: animation,
-                      child: child,
-                    );
-                  },
-                ),
-              );
-            }, 
-            icon:Icon(Icons.shopping_cart_rounded)),
-
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  PageRouteBuilder(
+                    transitionDuration: Duration(milliseconds: 500),
+                    pageBuilder: (context, animation, secondaryAnimation) =>
+                        OrdersPage(uid: user!.uid),
+                    transitionsBuilder:
+                        (context, animation, secondaryAnimation, child) {
+                      return FadeTransition(
+                        opacity: animation,
+                        child: child,
+                      );
+                    },
+                  ),
+                );
+              },
+              icon: Icon(Icons.shopping_cart_rounded)),
           IconButton(
             icon: const Icon(Icons.person),
             onPressed: () {
@@ -125,124 +127,138 @@ class HomePageState extends State<HomePage> {
       ),
       body: Padding(
         padding: const EdgeInsets.fromLTRB(0, 20, 0, 0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Padding(
-              padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 10.0),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: TextField(
-                      onChanged: (value) => {filter_products(value)},
-                      style: TextStyle(color: Colors.white),
-                      decoration: InputDecoration(
-                        hintText: 'Search Products',
-                        hintStyle: TextStyle(color: Colors.white),
-                        fillColor: MyAppColors.bgGreen,
-                        filled: true,
-                        prefixIcon: Icon(
-                          Icons.search,
-                          color: MyAppColors.textColor,
-                        ),
-                        contentPadding:
-                            EdgeInsets.symmetric(vertical: 0, horizontal: 10),
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(10.0),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: BorderSide(color: MyAppColors.textColor),
-                          borderRadius: BorderRadius.circular(10.0),
+        child: CustomMaterialIndicator(
+          onRefresh: ()async {
+            fetch();
+          },
+          indicatorBuilder:
+              (BuildContext context, IndicatorController controller) {
+            return Icon(
+              Icons.ac_unit,
+              color: Colors.blue,
+              size: 30,
+            );
+          },
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 20.0, vertical: 10.0),
+                child: Row(
+                  children: [
+                    Expanded(
+                      child: TextField(
+                        onChanged: (value) => {filter_products(value)},
+                        style: TextStyle(color: Colors.white),
+                        decoration: InputDecoration(
+                          hintText: 'Search Products',
+                          hintStyle: TextStyle(color: Colors.white),
+                          fillColor: MyAppColors.bgGreen,
+                          filled: true,
+                          prefixIcon: Icon(
+                            Icons.search,
+                            color: MyAppColors.textColor,
+                          ),
+                          contentPadding:
+                              EdgeInsets.symmetric(vertical: 0, horizontal: 10),
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderSide:
+                                BorderSide(color: MyAppColors.textColor),
+                            borderRadius: BorderRadius.circular(10.0),
+                          ),
                         ),
                       ),
                     ),
-                  ),
-                  SizedBox(width: 10), // Space between search bar and buttons
-                  IconButton(
-                    icon: Icon(
-                      Icons.shopping_cart,
-                      size: 40,
+                    SizedBox(width: 10), // Space between search bar and buttons
+                    IconButton(
+                      icon: Icon(
+                        Icons.shopping_cart,
+                        size: 40,
+                      ),
+                      color: MyAppColors.textColor,
+                      onPressed: () {
+                        // View cart logic
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            transitionDuration: Duration(milliseconds: 500),
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    AddToCartPage(uid: user!.uid),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                          ),
+                        );
+                      },
                     ),
-                    color: MyAppColors.textColor,
-                    onPressed: () {
-                      // View cart logic
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          transitionDuration: Duration(milliseconds: 500),
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  AddToCartPage(uid: user!.uid),
-                          transitionsBuilder:
-                              (context, animation, secondaryAnimation, child) {
-                            return FadeTransition(
-                              opacity: animation,
-                              child: child,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                  SizedBox(width: 10), // Space between two buttons
-                  IconButton(
-                    icon: Icon(
-                      Icons.favorite,
-                      size: 40,
+                    SizedBox(width: 10), // Space between two buttons
+                    IconButton(
+                      icon: Icon(
+                        Icons.favorite,
+                        size: 40,
+                      ),
+                      color: MyAppColors.textColor,
+                      onPressed: () async {
+                        // Wishlist logic
+                        wishlist_user =
+                            await CustomerService(uid: user!.uid).getWishlist();
+                        Navigator.push(
+                          context,
+                          PageRouteBuilder(
+                            transitionDuration: Duration(milliseconds: 500),
+                            pageBuilder:
+                                (context, animation, secondaryAnimation) =>
+                                    WishlistPage(wishlist: wishlist_user),
+                            transitionsBuilder: (context, animation,
+                                secondaryAnimation, child) {
+                              return FadeTransition(
+                                opacity: animation,
+                                child: child,
+                              );
+                            },
+                          ),
+                        );
+                      },
                     ),
-                    color: MyAppColors.textColor,
-                    onPressed: () async {
-                      // Wishlist logic
-                      wishlist_user =
-                          await CustomerService(uid: user!.uid).getWishlist();
-                      Navigator.push(
-                        context,
-                        PageRouteBuilder(
-                          transitionDuration: Duration(milliseconds: 500),
-                          pageBuilder:
-                              (context, animation, secondaryAnimation) =>
-                                  WishlistPage(wishlist: wishlist_user),
-                          transitionsBuilder:
-                              (context, animation, secondaryAnimation, child) {
-                            return FadeTransition(
-                              opacity: animation,
-                              child: child,
-                            );
-                          },
-                        ),
-                      );
-                    },
-                  ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 10.0),
-            Padding(
-              padding:
-                  EdgeInsets.only(left: 20.0), // Adjust the value to your needs
-              child: Text(
-                "Products",
-                style: TextStyle(
-                  color: Colors.white,
-                  fontWeight: FontWeight.bold,
-                  fontSize: 35,
+                  ],
                 ),
               ),
-            ),
-            const SizedBox(height: 10.0),
-            Expanded(
-              child: ListView.builder(
-                padding: const EdgeInsets.all(20),
-                itemCount: show_products.length,
-                itemBuilder: (context, index) {
-                  return ProductItem(
-                      product_details: (show_products)[index],
-                      isfavorite: finder_in_wish(show_products[index]));
-                },
+              const SizedBox(height: 10.0),
+              Padding(
+                padding: EdgeInsets.only(
+                    left: 20.0), // Adjust the value to your needs
+                child: Text(
+                  "Products",
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 35,
+                  ),
+                ),
               ),
-            ),
-          ],
+              const SizedBox(height: 10.0),
+              Expanded(
+                child: ListView.builder(
+                  padding: const EdgeInsets.all(20),
+                  itemCount: show_products.length,
+                  itemBuilder: (context, index) {
+                    return ProductItem(
+                        product_details: (show_products)[index],
+                        isfavorite: finder_in_wish(show_products[index]));
+                  },
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
