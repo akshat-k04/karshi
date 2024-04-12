@@ -140,12 +140,6 @@ class _AddToCartPageState extends State<AddToCartPage> {
   }
 }
 
-
-
-
-
-
-
 class ProductItem extends StatefulWidget {
   Item product_details;
   bool isfavorite;
@@ -241,21 +235,27 @@ class _ProductItemState extends State<ProductItem> {
                       Text(
                         widget.product_details.item_name,
                         style: TextStyle(
-                            fontSize: 20.0,
+                            fontSize: 30.0,
                             fontWeight: FontWeight.bold,
                             color: Colors.white),
                       ),
-                      
+                      Text(
+                        widget.product_details.category,
+                        style: TextStyle(fontSize: 15.0, color: Colors.white),
+                      ),
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                            height: 35,
-                            width: 86,
+                            height: 20,
+                          ),
+                          SizedBox(
+                            height: 40,
+                            width: 100,
                             child: ElevatedButton(
                               onPressed: () {
-                                dynamic result =
-                                    CustomerService(uid: user!.uid).removeFromCart(
+                                dynamic result = CustomerService(uid: user!.uid)
+                                    .removeFromCart(
                                   widget.product_details.item_name,
                                   widget.product_details.description,
                                   widget.product_details.price,
@@ -263,8 +263,6 @@ class _ProductItemState extends State<ProductItem> {
                                   quantity,
                                   widget.product_details.category,
                                 );
-                      
-                                
                               },
                               style: ElevatedButton.styleFrom(
                                   backgroundColor:
@@ -276,39 +274,9 @@ class _ProductItemState extends State<ProductItem> {
                               child: const Text(
                                 'Remove from Cart',
                                 style: TextStyle(
-                                    color: Colors.white, fontSize: 14),
+                                    color: Colors.white, fontSize: 10),
                               ),
                             ),
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.remove,
-                              color: Colors.white,
-                              size: 12,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                if (quantity > 1) {
-                                  quantity--;
-                                }
-                              });
-                            },
-                          ),
-                          Text(
-                            '${widget.product_details.stock}',
-                            style: TextStyle(color: Colors.white, fontSize: 12),
-                          ),
-                          IconButton(
-                            icon: const Icon(
-                              Icons.add,
-                              color: Colors.white,
-                              size: 12,
-                            ),
-                            onPressed: () {
-                              setState(() {
-                                quantity++;
-                              });
-                            },
                           ),
                         ],
                       ),
@@ -319,13 +287,13 @@ class _ProductItemState extends State<ProductItem> {
             ],
           ),
         ),
-               Positioned(
-          right: 40,
-          top: 80,
+        Positioned(
+          right: 50,
+          top: 40,
           child: Text(
-            '\$${widget.product_details.price*widget.product_details.stock}', // Assuming you have a price field
+            '\$${widget.product_details.price * widget.product_details.stock}', // Assuming you have a price field
             style: TextStyle(
-              fontSize: 16.0,
+              fontSize: 20.0,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),

@@ -30,23 +30,23 @@ class _OrdersPageState extends State<OrdersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: MyAppColors.bgGreen,
+      backgroundColor: MyAppColors.backgroundColor,
       appBar: AppBar(
-        title: Text('Your Orders'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.search),
-            onPressed: () {
-              // Handle search action
-            },
+        backgroundColor: MyAppColors.backgroundColor,
+        title: Text(
+          'Krishi',
+          style: TextStyle(
+            color: MyAppColors.textColor, // Text color set to white
+            fontSize: 36.0, // Choose the size that fits your design
+            fontWeight: FontWeight.bold, // Text weight set to bold
           ),
-        ],
+        ),
       ),
       body: ListView.builder(
         itemCount:
             All_order.length, // Replace with your actual order list length
         itemBuilder: (context, index) {
-          return OrderItem(orderDetail :All_order[index]);
+          return OrderItem(orderDetail: All_order[index]);
         },
       ),
     );
@@ -63,13 +63,29 @@ class OrderItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return Card(
       margin: EdgeInsets.all(8),
+      color:
+          MyAppColors.bgGreen, // Set the background color of the card to green
+      shape: RoundedRectangleBorder(
+        side: BorderSide(
+          color:
+              MyAppColors.selectedGreen, // Set the border color to light green
+          width: 2.0, // Set the border width
+        ),
+        borderRadius:
+            BorderRadius.circular(4.0), // Adjust the border radius if needed
+      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
-            title: Text(orderDetail.item_name), // Display product name
+            title: Text(
+              orderDetail.item_name,
+              style: TextStyle(color: Colors.white),
+            ), // Display product name
             subtitle: Text(
-                '${orderDetail.stock} x \$${orderDetail.price}'), // Display quantity and price per quantity
+              '${orderDetail.stock} x \$${orderDetail.price}',
+              style: TextStyle(color: Colors.white),
+            ), // Display quantity and price per quantity
             trailing: Icon(Icons.more_vert),
           ),
           Padding(
@@ -79,19 +95,28 @@ class OrderItem extends StatelessWidget {
               children: [
                 Text(
                   'Seller: ${orderDetail.shopkeeper_uid}', // Display seller's UID
-                  style: TextStyle(fontWeight: FontWeight.bold),
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.white),
                 ),
-                Text(
-                    'Order Status: ${orderDetail.status}'), // Display order status
+                Text('Order Status: ${orderDetail.status}',
+                    style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        color: Colors.white)), // Display order status
                 SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
                     TextButton(
+                      style: TextButton.styleFrom(
+                        foregroundColor: Colors.white, // Text color
+                        backgroundColor:
+                            MyAppColors.greenfill, // Button background color
+                      ),
                       onPressed: () async {
                         // Handle contact seller action
-                        Future result =  await CustomerService(uid: "").callShopkeeper(orderDetail.shopkeeper_uid);
-                        
+                        var result = await CustomerService(uid: "")
+                            .callShopkeeper(orderDetail.shopkeeper_uid);
+                        // Do something with the result if needed
                       },
                       child: Text('Contact Seller'),
                     ),
