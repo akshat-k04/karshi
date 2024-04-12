@@ -1,12 +1,53 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:karshi/admin/adminHome.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/admin_services.dart';
 
-class AdminView extends StatefulWidget {
+class DashboardBlock extends StatelessWidget {
+  final String title;
+  final String value;
+  final VoidCallback onTap;
+
+  DashboardBlock(
+      {required this.title, required this.value, required this.onTap});
+
   @override
-  _AdminViewState createState() => _AdminViewState();
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: Color(0xFF00796B), // Custom card color
+          borderRadius: BorderRadius.circular(10), // Rounded corners
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              title,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              value,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
 class _AdminViewState extends State<AdminView> {

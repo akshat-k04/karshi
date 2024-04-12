@@ -18,7 +18,6 @@ class CustomerService {
   final CollectionReference orderCollection =
       FirebaseFirestore.instance.collection('Orders');
 
-
   Future updateCustomerData(String email, String customer_name,
       String customer_address, int mobile_number) async {
     return await userCollection.doc(uid).set({
@@ -210,7 +209,8 @@ class CustomerService {
           category: item['category'],
         );
         if (newItem.stock != 0) {
-          if (!items.any((existingItem) => existingItem.item_name == newItem.item_name)) {
+          if (!items.any(
+              (existingItem) => existingItem.item_name == newItem.item_name)) {
             items.add(newItem);
           }
         }
@@ -219,7 +219,8 @@ class CustomerService {
     return items;
   }
 
-  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+  double _calculateDistance(
+      double lat1, double lon1, double lat2, double lon2) {
     // Calculate the distance between two coordinates
     double earthRadius = 6371; // Radius of the earth in kilometers
 
@@ -236,7 +237,7 @@ class CustomerService {
     double dLon = lon2Radians - lon1Radians;
 
     double a = pow(sin(dLat / 2), 2) +
-      cos(lat1Radians) * cos(lat2Radians) * pow(sin(dLon / 2), 2);
+        cos(lat1Radians) * cos(lat2Radians) * pow(sin(dLon / 2), 2);
     double c = 2 * atan2(sqrt(a), sqrt(1 - a));
 
     double distance = earthRadius * c;
@@ -276,8 +277,9 @@ class CustomerService {
               List<dynamic> shopItems = shop['items'];
               // print(shopItems);
               bool found = false;
-              shopItems.forEach((element) { 
-                if (element['item_name'] == item['item_name']&&element['stock'] - item['stock'] >= 0) {
+              shopItems.forEach((element) {
+                if (element['item_name'] == item['item_name'] &&
+                    element['stock'] - item['stock'] >= 0) {
                   found = true;
                 }
               });
@@ -288,7 +290,8 @@ class CustomerService {
                 double shopLatitude = double.parse(shop['latitude']);
                 double shopLongitude = double.parse(shop['longitude']);
 
-              double distance = _calculateDistance(latitude, longitude, shopLatitude, shopLongitude);
+              double distance = _calculateDistance(
+                  latitude, longitude, shopLatitude, shopLongitude);
               if (distance < minDistance) {
                 minDistance = distance;
                 nearestShop = shop;
@@ -300,8 +303,6 @@ class CustomerService {
             }
             // print(shop);
 
-
-            
             if (nearestShop != null) {
               print(nearestShop.id);
               List<dynamic> shopItems = nearestShop['items'];
@@ -341,7 +342,13 @@ class CustomerService {
                   'price': item['price'],
                   'status': 'pending'
                 });
-                await removeFromCart(item['item_name'], item['description'], item['price'], item['image_url'], item['stock'], item['category']);
+                await removeFromCart(
+                    item['item_name'],
+                    item['description'],
+                    item['price'],
+                    item['image_url'],
+                    item['stock'],
+                    item['category']);
               }
             }
           }
