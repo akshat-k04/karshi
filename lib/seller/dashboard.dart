@@ -7,12 +7,14 @@ import 'package:karshi/User/Cart.dart';
 import 'package:karshi/app_colors.dart';
 import 'package:karshi/auth%20files/signin.dart';
 import 'package:karshi/backend/models/models.dart';
+import 'package:karshi/backend/services/admin_services.dart';
 import 'package:karshi/backend/services/auth.dart';
 import 'package:karshi/backend/services/customer_services.dart';
 import 'package:karshi/backend/services/shopkeeper_services.dart';
 import 'package:karshi/main.dart';
 import 'package:karshi/seller/Add%20inventry.dart';
 import 'package:karshi/seller/Inventry%20details.dart';
+import 'package:karshi/seller/Order_details.dart';
 import 'package:provider/provider.dart';
 
 class Dashboard extends StatefulWidget {
@@ -33,6 +35,7 @@ class _DashboardState extends State<Dashboard> {
   final AuthService _auth = AuthService();
   List<Item> showproduct = [];
   List<Item> Allproduct = [];
+  List<Order_Model> All_Order = [];
   @override
   void initState() {
     // TODO: implement initState
@@ -44,11 +47,20 @@ class _DashboardState extends State<Dashboard> {
   void fetchData() async {
     showproduct = await ShopKeeperService(uid: widget.uid).getItems();
     Allproduct = showproduct;
+    All_Order = await Orders_Services().getOrders() ;
+    All_Order = All_Order.where((order) => order.shopkeeper_uid == widget.uid).toList();
+    pendingOrders = All_Order.where((order) => order.status == "pending").length;
+    completedOrders =
+        All_Order.where((order) => order.status == "completed").length;
+    shippedOrders =
+        All_Order.where((order) => order.status == "shipped").length;
+
+
     setState(() {});
   }
 
   void filter_product_func(String value) {
-    print('hiii');
+    // print('hiii');
     showproduct = [];
     for (Item product in Allproduct) {
       if (product.category.contains(value) ||
@@ -57,9 +69,9 @@ class _DashboardState extends State<Dashboard> {
         showproduct.add(product);
       }
     }
-    print('bye');
+    // print('bye');
     setState(() {});
-    print('oooooo');
+    // print('oooooo');
   }
 
   @override
@@ -113,7 +125,9 @@ class _DashboardState extends State<Dashboard> {
             PageRouteBuilder(
               transitionDuration: Duration(milliseconds: 500),
               pageBuilder: (context, animation, secondaryAnimation) =>
-                  AddInventoryPage(uid: widget.uid,),
+                  AddInventoryPage(
+                uid: widget.uid,
+              ),
               transitionsBuilder:
                   (context, animation, secondaryAnimation, child) {
                 return FadeTransition(
@@ -211,7 +225,23 @@ class DashboardBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     double blockWidth = MediaQuery.of(context).size.width * 0.29;
     return GestureDetector(
-      onTap: () {},
+      onTap: () {
+        Navigator.push(
+          context,
+          PageRouteBuilder(
+            transitionDuration: Duration(milliseconds: 500),
+            pageBuilder: (context, animation, secondaryAnimation) => OrdersDetailsList(),
+            transitionsBuilder:
+                (context, animation, secondaryAnimation, child) {
+              return FadeTransition(
+                opacity: animation,
+                child: child,
+              );
+            },
+          ),
+          
+        );
+      },
       child: Container(
         width: blockWidth,
         height: blockWidth,

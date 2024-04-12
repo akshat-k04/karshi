@@ -266,7 +266,8 @@ class CustomerService {
                   'shopkeeper_uid': shop.id,
                   'item_name': item['item_name'],
                   'stock': item['stock'],
-                  'price': item['price']
+                  'price': item['price'],
+                  'status': 'pending'
                 });
                 await removeFromCart(item['item_name'], item['description'], item['price'], item['image_url'], item['stock'], item['category']);
               }
