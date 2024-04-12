@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 // import 'dart:html';
 // import 'dart:math';
 
@@ -203,7 +204,34 @@ class CustomerService {
     return items;
   }
 
+  double _calculateDistance(double lat1, double lon1, double lat2, double lon2) {
+    // Calculate the distance between two coordinates
+    double earthRadius = 6371; // Radius of the earth in kilometers
+
+    double degreesToRadians(double degrees) {
+      return degrees * (pi / 180);
+    }
+
+    double lat1Radians = degreesToRadians(lat1);
+    double lon1Radians = degreesToRadians(lon1);
+    double lat2Radians = degreesToRadians(lat2);
+    double lon2Radians = degreesToRadians(lon2);
+
+    double dLat = lat2Radians - lat1Radians;
+    double dLon = lon2Radians - lon1Radians;
+
+    double a = pow(sin(dLat / 2), 2) +
+      cos(lat1Radians) * cos(lat2Radians) * pow(sin(dLon / 2), 2);
+    double c = 2 * atan2(sqrt(a), sqrt(1 - a));
+
+    double distance = earthRadius * c;
+
+    return distance;
+  }
+
   Future buyItems(double latitude, double longitude) async {
+    print(latitude);
+    print(longitude);
     DocumentSnapshot snapshot = await userCollection.doc(uid).get();
     // List<Item> items = [];
     // print("in buy items");
@@ -225,19 +253,48 @@ class CustomerService {
         List<DocumentSnapshot> shopDocs = shopSnapshot.docs;
         itemList.forEach((item) async {
           // Random random = Random();
-          print(item['item_name']);
+          // print(item['item_name']);
           if (shopDocs.isNotEmpty) {
-            var shop = shopDocs.firstWhere((shop) => shop['items']
-                .any((shopItem) {return shopItem['item_name'] == item['item_name'] && shopItem['stock']-item['stock']>=0;}));
-            // print(shop);
-            if (shop != null) {
-              print(shop.id);
+            var nearestShop;
+            double minDistance = double.infinity;
+            shopDocs.forEach((shop) {
               List<dynamic> shopItems = shop['items'];
+              // print(shopItems);
+              bool found = false;
+              shopItems.forEach((element) { 
+                if (element['item_name'] == item['item_name']&&element['stock'] - item['stock'] >= 0) {
+                  found = true;
+                }
+              });
+              if (!found) {
+                return;
+              }
+
+              double shopLatitude = shop['latitude'];
+              double shopLongitude = shop['longitude'];
+
+              double distance = _calculateDistance(latitude, longitude, shopLatitude, shopLongitude);
+              if (distance < minDistance) {
+                minDistance = distance;
+                nearestShop = shop;
+              }
+              // }
+            });
+            if (nearestShop == null) {
+              // Perform the necessary operations with the nearest shop
+            }
+            // print(shop);
+
+
+            
+            if (nearestShop != null) {
+              print(nearestShop.id);
+              List<dynamic> shopItems = nearestShop['items'];
               var shopItem = shopItems.firstWhere(
                   (shopItem) => shopItem['item_name'] == item['item_name']);
               if (shopItem != null && shopItem['stock'] - item['stock'] >= 0) {
                 var temp = shopItem['stock'];
-                await shopCollection.doc(shop.id).update({
+                await shopCollection.doc(nearestShop.id).update({
                   'items': FieldValue.arrayRemove([
                     {
                       'item_name': shopItem['item_name'],
@@ -249,7 +306,7 @@ class CustomerService {
                     }
                   ])
                 });
-                await shopCollection.doc(shop.id).update({
+                await shopCollection.doc(nearestShop.id).update({
                   'items': FieldValue.arrayUnion([
                     {
                       'item_name': item['item_name'],
@@ -263,7 +320,7 @@ class CustomerService {
                 });
                 await orderCollection.doc(Uuid().v4()).set({
                   'customer_uid': uid,
-                  'shopkeeper_uid': shop.id,
+                  'shopkeeper_uid': nearestShop.id,
                   'item_name': item['item_name'],
                   'stock': item['stock'],
                   'price': item['price'],
