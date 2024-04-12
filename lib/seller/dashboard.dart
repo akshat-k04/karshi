@@ -83,7 +83,7 @@ class _DashboardState extends State<Dashboard> {
       backgroundColor: MyAppColors.backgroundColor,
       appBar: AppBar(
         title: Text(
-          'Krishi',
+          'Krashi',
           style: TextStyle(
             color: MyAppColors.textColor, // Text color set to white
             fontSize: 36.0, // Choose the size that fits your design
