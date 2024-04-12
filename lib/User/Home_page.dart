@@ -229,10 +229,16 @@ class HomePageState extends State<HomePage> {
 class ProductItem extends StatefulWidget {
   Item product_details;
   bool isfavorite;
-  ProductItem({required this.product_details, required this.isfavorite});
+
+  ProductItem({
+    required this.product_details,
+    required this.isfavorite,
+  });
 
   @override
-  _ProductItemState createState() => _ProductItemState(favorite: isfavorite);
+  _ProductItemState createState() => _ProductItemState(
+        favorite: isfavorite,
+      );
 }
 
 class _ProductItemState extends State<ProductItem> {
@@ -240,6 +246,7 @@ class _ProductItemState extends State<ProductItem> {
   _ProductItemState({required this.favorite});
   int quantity = 1;
   bool isFavorite = false;
+
   @override
   void initState() {
     // TODO: implement initState

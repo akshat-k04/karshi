@@ -99,43 +99,148 @@ class _CheckoutPageState extends State<CheckoutPage> {
           children: <Widget>[
             Text(
               'Customer Details:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 30,
+                fontWeight: FontWeight.bold,
+                color:
+                    Colors.white, // Ensuring the color matches the white theme
+              ),
             ),
-            SizedBox(height: 8.0),
+            SizedBox(height: 30.0),
             TextField(
-              readOnly: true,
+              readOnly: false,
               controller: _nameController,
-              decoration: InputDecoration(labelText: 'Name'),
+              style: TextStyle(color: Colors.white), // Text color in TextField
+              decoration: InputDecoration(
+                labelText: 'Customer Name',
+
+                labelStyle: TextStyle(
+                    color: MyAppColors.textColor, fontSize: 20), // Label color
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: MyAppColors
+                          .selectedGreen), // Border color when TextField is enabled
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Colors
+                          .white), // Border color when TextField is focused
+                ),
+              ),
             ),
-            SizedBox(height: 8.0),
+            SizedBox(height: 30.0),
             TextField(
               readOnly: true,
               controller: _addressController,
-              decoration: InputDecoration(labelText: 'Delivery Address'),
+              style: TextStyle(color: Colors.white), // Text color in TextField
+              decoration: InputDecoration(
+                labelText: 'Address Details',
+                labelStyle: TextStyle(
+                    color: MyAppColors.textColor, fontSize: 20), // Label color
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: MyAppColors
+                          .selectedGreen), // Border color when TextField is enabled
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Colors
+                          .white), // Border color when TextField is focused
+                ),
+              ),
             ),
             SizedBox(height: 16.0),
+            TextField(
+              readOnly: true,
+              controller: _addressController,
+              style: TextStyle(color: Colors.white), // Text color in TextField
+              decoration: InputDecoration(
+                labelText: 'Town/City/Village',
+                labelStyle: TextStyle(
+                    color: MyAppColors.textColor, fontSize: 20), // Label color
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: MyAppColors
+                          .selectedGreen), // Border color when TextField is enabled
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Colors
+                          .white), // Border color when TextField is focused
+                ),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            TextField(
+              readOnly: true,
+              controller: _addressController,
+              style: TextStyle(color: Colors.white), // Text color in TextField
+              decoration: InputDecoration(
+                labelText: 'State',
+                labelStyle: TextStyle(
+                    color: MyAppColors.textColor, fontSize: 20), // Label color
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: MyAppColors
+                          .selectedGreen), // Border color when TextField is enabled
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Colors
+                          .white), // Border color when TextField is focused
+                ),
+              ),
+            ),
+            SizedBox(height: 16.0),
+            TextField(
+              readOnly: true,
+              controller: _addressController,
+              style: TextStyle(color: Colors.white), // Text color in TextField
+              decoration: InputDecoration(
+                labelText: 'PinCode ',
+                labelStyle: TextStyle(
+                    color: MyAppColors.textColor, fontSize: 20), // Label color
+                enabledBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: MyAppColors
+                          .selectedGreen), // Border color when TextField is enabled
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderSide: BorderSide(
+                      color: Colors
+                          .white), // Border color when TextField is focused
+                ),
+              ),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             Text(
               'Products:',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+                color: MyAppColors
+                    .textColor, // Assuming this is set to a suitable green shade
+              ),
             ),
             Expanded(
               child: ListView.builder(
+                padding: const EdgeInsets.all(20),
                 itemCount: widget.cartProducts.length,
                 itemBuilder: (context, index) {
-                  final product = widget.cartProducts[index];
-                  final totalPrice = product.price * product.stock;
-                  return ListTile(
-                    title: Text(product.item_name),
-                    subtitle: Text(
-                        'Price: \$${product.price} Quantity: ${product.stock} Total: \$${totalPrice.toStringAsFixed(2)}'),
-                  );
+                  return ProductItem(
+                      product_details: (widget.cartProducts)[index],
+                      isfavorite: true);
                 },
               ),
             ),
             SizedBox(height: 16.0),
             Text(
-              'Grand Total: \$${widget.grandTotal.toStringAsFixed(2)}',
-              style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                'Grand Total:                                                   \$${widget.grandTotal.toStringAsFixed(2)}',
+                style: TextStyle(color: Colors.white, fontSize: 20)),
+            SizedBox(
+              height: 20,
             ),
             ElevatedButton(
               onPressed: () async {
@@ -178,7 +283,24 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 });
                 print('Place Order');
               },
-              child: Text('Place Order'),
+              style: ButtonStyle(
+                padding:
+                    MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(10.0)),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(MyAppColors.bgGreen),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(
+                      color: Color.fromARGB(
+                          255, 66, 184, 113), // Set border color here
+                      width: 1.0, // Set border width here
+                    ),
+                  ),
+                ),
+              ),
+              child: Text('Place Order',
+                  style: TextStyle(color: MyAppColors.textColor, fontSize: 30)),
             ),
           ],
         ),

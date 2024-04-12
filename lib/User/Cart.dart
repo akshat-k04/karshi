@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:karshi/User/Home_page.dart';
 import 'package:karshi/User/checkout.dart';
 import 'package:karshi/app_colors.dart';
 import 'package:karshi/backend/models/models.dart';
@@ -60,31 +61,32 @@ class _AddToCartPageState extends State<AddToCartPage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: <Widget>[
+            SizedBox(
+              height: 20,
+            ),
+            Text(
+              'Cart',
+              style: TextStyle(color: Colors.white, fontSize: 40),
+            ),
+            SizedBox(
+              height: 20,
+            ),
             Expanded(
               child: ListView.builder(
+                padding: const EdgeInsets.all(20),
                 itemCount: cart_product.length,
                 itemBuilder: (context, index) {
-                  final product = cart_product[index];
-                  final totalPrice = product.price * product.stock;
-                  return ListTile(
-                    leading: CircleAvatar(
-                      backgroundImage: NetworkImage(product
-                          .image_url), // Ensure product model has imageUrl
-                      radius: 30.0,
-                    ),
-                    title: Text(product.item_name,
-                        style: TextStyle(color: Colors.white)),
-                    subtitle: Text(
-                      'Price: \$${product.price} Quantity: ${product.stock} Total: \$${totalPrice.toStringAsFixed(2)}',
-                      style: TextStyle(color: Colors.white),
-                    ),
-                  );
+                  return ProductItem(
+                      product_details: (cart_product)[index], isfavorite: true);
                 },
               ),
             ),
-            SizedBox(height: 16.0),
-            Text('Grand Total: \$${grandTotal.toStringAsFixed(2)}',
+            Text(
+                'Grand Total:                                                   \$${grandTotal.toStringAsFixed(2)}',
                 style: TextStyle(color: Colors.white, fontSize: 20)),
+            SizedBox(
+              height: 20,
+            ),
             ElevatedButton(
               onPressed: () {
                 // Add your logic for checkout
@@ -108,7 +110,26 @@ class _AddToCartPageState extends State<AddToCartPage> {
                 );
                 print('Checkout');
               },
-              child: Text('Checkout'),
+              style: ButtonStyle(
+                padding:
+                    MaterialStateProperty.all<EdgeInsets>(EdgeInsets.all(10.0)),
+                backgroundColor:
+                    MaterialStateProperty.all<Color>(MyAppColors.bgGreen),
+                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                  RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                    side: BorderSide(
+                      color: Color.fromARGB(
+                          255, 66, 184, 113), // Set border color here
+                      width: 1.0, // Set border width here
+                    ),
+                  ),
+                ),
+              ),
+              child: Text(
+                'Proceed to buy',
+                style: TextStyle(color: MyAppColors.textColor, fontSize: 30),
+              ),
             ),
           ],
         ),
