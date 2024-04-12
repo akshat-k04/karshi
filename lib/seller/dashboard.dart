@@ -141,8 +141,12 @@ class _DashboardState extends State<Dashboard> {
             ),
           );
         },
-        child: Icon(Icons.add),
-        backgroundColor: Colors.blue,
+        child: Icon(
+          Icons.add,
+          size: 40,
+          color: Colors.white,
+        ),
+        backgroundColor: MyAppColors.textColor,
       ),
       body: Column(children: [
         SizedBox(height: 40),
