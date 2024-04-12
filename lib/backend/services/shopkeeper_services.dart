@@ -110,6 +110,23 @@ class ShopKeeperService {
   //   });
   // }
 
+  Future<List<ShopKeeperData>> getallShopKeepers() async {
+    QuerySnapshot snapshot = await userCollection.get();
+    List<ShopKeeperData> shopkeepers = [];
+    snapshot.docs.forEach((doc) {
+      shopkeepers.add(ShopKeeperData(
+          owner_name: doc['owner_name'],
+          shop_name: doc['shop_name'],
+          shop_address: doc['shop_address'],
+          latitude: doc['latitude'],
+          longitude: doc['longitude'],
+          email: doc['email'],
+          mobile_number: doc['mobile_number'],
+          uid: doc.id));
+    });
+    return shopkeepers;
+  }
+
   Future<List<Item>> getItems() async {
     DocumentSnapshot snapshot = await userCollection.doc(uid).get();
     List<Item> items = [];
@@ -141,7 +158,8 @@ class ShopKeeperService {
         latitude: snapshot['latitude'],
         longitude: snapshot['longitude'],
         email: snapshot['email'],
-        mobile_number: snapshot['mobile_number']);
+        mobile_number: snapshot['mobile_number'],
+        uid: snapshot.id);
   }
 
   Stream<ShopKeeperData> get userInformation {

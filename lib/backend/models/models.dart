@@ -1,3 +1,5 @@
+import 'dart:js_interop';
+
 import 'package:uuid/uuid.dart';
 class UserAuth{
   final String uid;
@@ -12,16 +14,18 @@ class RoleModel {
 class CustomerData {
   final String customer_name, customer_address, email;
   final int mobile_number;
+  final String uid;
 
-  CustomerData({required this.customer_name, required this.customer_address, required this.mobile_number, required this.email});
+  CustomerData({required this.customer_name, required this.customer_address, required this.mobile_number, required this.email, required this.uid});
 }
 
 
 class ShopKeeperData {
   final String email, owner_name, shop_name, shop_address, latitude, longitude;
   final int mobile_number;
+  final String uid;
 
-  ShopKeeperData({required this.email, required this.owner_name, required this.shop_name, required this.shop_address, required this.mobile_number, required this.latitude, required this.longitude});
+  ShopKeeperData({required this.email, required this.owner_name, required this.shop_name, required this.shop_address, required this.mobile_number, required this.latitude, required this.longitude, required this.uid});
 }
 
 class Item {
