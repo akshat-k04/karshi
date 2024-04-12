@@ -49,15 +49,17 @@ class _OrdersDetailsListState extends State<OrdersDetailsList> {
         backgroundColor:
             MyAppColors.backgroundColor, // Set the AppBar color to black
       ),
-      body: ListView(
-        children: [
-          DataTable(
-            headingRowColor: MaterialStateColor.resolveWith(
-                (states) => Colors.black), // Header background color
-            headingTextStyle:
-                TextStyle(color: Colors.white), // Header text color
-            dataTextStyle: TextStyle(color: Colors.grey), // Cell text color
-            columns: [
+      body: SingleChildScrollView(
+        physics:
+            ClampingScrollPhysics(), // Add this to keep the scroll view's physics consistent with the platform
+        child: SingleChildScrollView(
+          scrollDirection: Axis.horizontal,
+          child: DataTable(
+            headingRowColor:
+                MaterialStateColor.resolveWith((states) => Colors.black),
+            headingTextStyle: TextStyle(color: Colors.white),
+            dataTextStyle: TextStyle(color: Colors.grey),
+            columns: const [
               DataColumn(label: Text('Order ID')),
               DataColumn(label: Text('Product')),
               DataColumn(label: Text('Qty')),
@@ -65,18 +67,20 @@ class _OrdersDetailsListState extends State<OrdersDetailsList> {
               DataColumn(label: Text('Date')),
               DataColumn(label: Text('Revenue')),
             ],
-            rows: widget.Order_list.map((order) {
+            rows: widget.Order_list.map<DataRow>((order) {
               return DataRow(cells: [
                 DataCell(Text("${order.orderNumber.substring(0, 8)}...")),
                 DataCell(Text(order.item_name)),
+                DataCell(Text(
+                    '12/04/2024')), // Assuming this is a placeholder for the actual date
                 DataCell(Text(order.stock.toString())),
                 DataCell(_statusIcon(order.status)),
-                DataCell(Text('12/04/2024')),
-                DataCell(Text('\$${(order.price * order.stock).toString()}')),
+                DataCell(Text(
+                    '\$${(order.price * order.stock).toStringAsFixed(2)}')), // Assuming price is a double
               ]);
             }).toList(),
           ),
-        ],
+        ),
       ),
     );
   }
