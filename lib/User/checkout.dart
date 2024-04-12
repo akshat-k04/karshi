@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:geolocator/geolocator.dart';
@@ -250,6 +252,35 @@ class _CheckoutPageState extends State<CheckoutPage> {
                 });
                 dynamic result =
                     await CustomerService(uid: widget.uid).buyItems();
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text('Order Placed'),
+                      // content: Text(''),
+                    );
+                  },
+                );
+
+                // Close popup view after 2 seconds
+                Timer(Duration(seconds: 2), () {
+                  Navigator.pushAndRemoveUntil(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: Duration(milliseconds: 500),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          HomePage(uid: widget.uid),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                    ),
+                    (route) => false,
+                  );
+                });
                 print('Place Order');
               },
               style: ButtonStyle(
