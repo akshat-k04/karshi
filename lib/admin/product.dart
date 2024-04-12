@@ -161,6 +161,8 @@ class ProductCard extends StatelessWidget {
               style: TextStyle(color: Colors.white),
             ),
             SizedBox(height: 8),
+            Text('Category',
+                style: TextStyle(color: MyAppColors.textColor, fontSize: 15)),
             Text(
               category,
               style: TextStyle(color: Colors.white),

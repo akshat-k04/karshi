@@ -72,7 +72,7 @@ class _AdminViewState extends State<AdminView> {
               child: TextField(
                 onChanged: (value) => {filter_product_func(value)},
                 decoration: InputDecoration(
-                  hintText: 'Search by Products',
+                  hintText: 'Search by Orders',
                   hintStyle: TextStyle(color: Colors.white),
                   prefixStyle: TextStyle(color: MyAppColors.textColor),
                   prefixIconColor: Colors.green,
