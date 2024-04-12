@@ -55,9 +55,8 @@ class HomePageState extends State<HomePage> {
   bool finder_in_wish(Item product) {
     for (Item temp_pro in wishlist_user) {
       if (product.item_name == temp_pro.item_name &&
-          product.category == temp_pro.category&&
-          product.description== temp_pro.description
-          ) return true;
+          product.category == temp_pro.category &&
+          product.description == temp_pro.description) return true;
     }
     return false;
   }
@@ -275,8 +274,8 @@ class _ProductItemState extends State<ProductItem> {
           child: Row(
             children: [
               GestureDetector(
-                onTap: ()=>{
-Navigator.push(
+                onTap: () => {
+                  Navigator.push(
                     context,
                     PageRouteBuilder(
                       transitionDuration: Duration(milliseconds: 500),

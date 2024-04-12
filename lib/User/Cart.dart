@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:karshi/User/checkout.dart';
+import 'package:karshi/app_colors.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/customer_services.dart';
 
@@ -41,8 +42,18 @@ class _AddToCartPageState extends State<AddToCartPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.backgroundColor,
       appBar: AppBar(
-        title: Text('Add to Cart'),
+        title: Text(
+          'Krishi',
+          style: TextStyle(
+            color: MyAppColors.textColor, // Text color set to white
+            fontSize: 36.0, // Choose the size that fits your design
+            fontWeight: FontWeight.bold, // Text weight set to bold
+          ),
+        ),
+        automaticallyImplyLeading: false, // Remove the back button icon
+        backgroundColor: MyAppColors.backgroundColor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -56,15 +67,24 @@ class _AddToCartPageState extends State<AddToCartPage> {
                   final product = cart_product[index];
                   final totalPrice = product.price * product.stock;
                   return ListTile(
-                    title: Text(product.item_name),
+                    leading: CircleAvatar(
+                      backgroundImage: NetworkImage(product
+                          .image_url), // Ensure product model has imageUrl
+                      radius: 30.0,
+                    ),
+                    title: Text(product.item_name,
+                        style: TextStyle(color: Colors.white)),
                     subtitle: Text(
-                        'Price: \$${product.price} Quantity: ${product.stock} Total: \$${totalPrice.toStringAsFixed(2)}'),
+                      'Price: \$${product.price} Quantity: ${product.stock} Total: \$${totalPrice.toStringAsFixed(2)}',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   );
                 },
               ),
             ),
             SizedBox(height: 16.0),
-            Text('Grand Total: \$${grandTotal.toStringAsFixed(2)}'),
+            Text('Grand Total: \$${grandTotal.toStringAsFixed(2)}',
+                style: TextStyle(color: Colors.white, fontSize: 20)),
             ElevatedButton(
               onPressed: () {
                 // Add your logic for checkout
@@ -73,7 +93,10 @@ class _AddToCartPageState extends State<AddToCartPage> {
                   PageRouteBuilder(
                     transitionDuration: Duration(milliseconds: 500),
                     pageBuilder: (context, animation, secondaryAnimation) =>
-                        CheckoutPage(uid: widget.uid,cartProducts: cart_product,grandTotal:grandTotal),
+                        CheckoutPage(
+                            uid: widget.uid,
+                            cartProducts: cart_product,
+                            grandTotal: grandTotal),
                     transitionsBuilder:
                         (context, animation, secondaryAnimation, child) {
                       return FadeTransition(

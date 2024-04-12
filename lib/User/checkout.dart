@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:karshi/app_colors.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/customer_services.dart';
 
@@ -47,8 +48,18 @@ class _CheckoutPageState extends State<CheckoutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.backgroundColor,
       appBar: AppBar(
-        title: Text('Checkout'),
+        title: Text(
+          'Krishi',
+          style: TextStyle(
+            color: MyAppColors.textColor, // Text color set to white
+            fontSize: 36.0, // Choose the size that fits your design
+            fontWeight: FontWeight.bold, // Text weight set to bold
+          ),
+        ),
+        automaticallyImplyLeading: false, // Remove the back button icon
+        backgroundColor: MyAppColors.backgroundColor,
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -98,7 +109,8 @@ class _CheckoutPageState extends State<CheckoutPage> {
             ElevatedButton(
               onPressed: () async {
                 // Add your logic for checkout
-                dynamic result = await CustomerService(uid: widget.uid).buyItems();
+                dynamic result =
+                    await CustomerService(uid: widget.uid).buyItems();
                 print('Place Order');
               },
               child: Text('Place Order'),
