@@ -50,4 +50,3 @@ class _AdminViewState extends State<AdminView> {
   }
 }
 
-void main() => runApp(MaterialApp(home: AdminView()));

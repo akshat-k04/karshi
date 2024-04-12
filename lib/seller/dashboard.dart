@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
@@ -47,14 +48,15 @@ class _DashboardState extends State<Dashboard> {
   void fetchData() async {
     showproduct = await ShopKeeperService(uid: widget.uid).getItems();
     Allproduct = showproduct;
-    All_Order = await Orders_Services().getOrders() ;
-    All_Order = All_Order.where((order) => order.shopkeeper_uid == widget.uid).toList();
-    pendingOrders = All_Order.where((order) => order.status == "pending").length;
+    All_Order = await Orders_Services().getOrders();
+    All_Order =
+        All_Order.where((order) => order.shopkeeper_uid == widget.uid).toList();
+    pendingOrders =
+        All_Order.where((order) => order.status == "pending").length;
     completedOrders =
         All_Order.where((order) => order.status == "completed").length;
     shippedOrders =
         All_Order.where((order) => order.status == "shipped").length;
-
 
     setState(() {});
   }
@@ -181,6 +183,21 @@ class _DashboardState extends State<Dashboard> {
                   value: '$completedOrders',
                   onTap: () {
                     // Handle tap on completed orders block
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: 500),
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            OrdersDetailsList(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
                   },
                 ),
                 SizedBox(width: 4),
@@ -189,6 +206,21 @@ class _DashboardState extends State<Dashboard> {
                   value: '$pendingOrders',
                   onTap: () {
                     // Handle tap on pending orders block
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: 500),
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            OrdersDetailsList(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
                   },
                 ),
                 SizedBox(width: 4),
@@ -197,6 +229,21 @@ class _DashboardState extends State<Dashboard> {
                   value: '$shippedOrders',
                   onTap: () {
                     // Handle tap on shipped orders block
+                    Navigator.push(
+                      context,
+                      PageRouteBuilder(
+                        transitionDuration: Duration(milliseconds: 500),
+                        pageBuilder: (context, animation, secondaryAnimation) =>
+                            OrdersDetailsList(),
+                        transitionsBuilder:
+                            (context, animation, secondaryAnimation, child) {
+                          return FadeTransition(
+                            opacity: animation,
+                            child: child,
+                          );
+                        },
+                      ),
+                    );
                   },
                 ),
               ],
@@ -204,7 +251,7 @@ class _DashboardState extends State<Dashboard> {
           ),
         ),
         const SizedBox(height: 20.0),
-        InventoryListPage(showproduct: showproduct),
+        InventoryListPage(showproduct: showproduct, All_orders: All_Order,),
       ]),
     );
   }
@@ -225,23 +272,7 @@ class DashboardBlock extends StatelessWidget {
   Widget build(BuildContext context) {
     double blockWidth = MediaQuery.of(context).size.width * 0.29;
     return GestureDetector(
-      onTap: () {
-        Navigator.push(
-          context,
-          PageRouteBuilder(
-            transitionDuration: Duration(milliseconds: 500),
-            pageBuilder: (context, animation, secondaryAnimation) => OrdersDetailsList(),
-            transitionsBuilder:
-                (context, animation, secondaryAnimation, child) {
-              return FadeTransition(
-                opacity: animation,
-                child: child,
-              );
-            },
-          ),
-          
-        );
-      },
+      onTap: onTap,
       child: Container(
         width: blockWidth,
         height: blockWidth,
@@ -279,7 +310,8 @@ class DashboardBlock extends StatelessWidget {
 
 class InventoryListPage extends StatefulWidget {
   final List<Item> showproduct;
-  InventoryListPage({required this.showproduct});
+  List<Order_Model> All_orders; // all orders of the shopkeeper
+  InventoryListPage({required this.showproduct, required this.All_orders});
   @override
   _InventoryListPageState createState() => _InventoryListPageState();
 }
@@ -291,7 +323,12 @@ class _InventoryListPageState extends State<InventoryListPage> {
       child: ListView.builder(
         itemCount: widget.showproduct.length,
         itemBuilder: (context, index) {
-          return InventryItem(product_details: (widget.showproduct)[index]);
+          return InventryItem(
+              product_details: (widget.showproduct)[index],
+              pending_orders: (widget.All_orders.where((order) =>
+                  order.item_name == widget.showproduct[index].item_name &&
+                  order.status == 'pending').length),
+              all_order: widget.All_orders);
         },
       ),
     );
@@ -300,15 +337,15 @@ class _InventoryListPageState extends State<InventoryListPage> {
 
 class InventryItem extends StatefulWidget {
   Item product_details;
-  InventryItem({required this.product_details});
+  int pending_orders;
+  List<Order_Model> all_order;
+  InventryItem({required this.product_details, required this.pending_orders,required this.all_order});
 
   @override
   _InventryItemState createState() => _InventryItemState();
 }
 
 class _InventryItemState extends State<InventryItem> {
-  int pendingOrders = 20;
-
   @override
   Widget build(BuildContext context) {
     final user = Provider.of<UserAuth?>(context);
@@ -321,6 +358,7 @@ class _InventryItemState extends State<InventryItem> {
               builder: (context) => InventoryDescriptionPage(
                     product_detail: widget.product_details,
                     uid: user!.uid,
+                    All_order: widget.all_order,
                   )),
         )
       },
@@ -380,7 +418,8 @@ class _InventryItemState extends State<InventryItem> {
                       widget.product_details.stock.toString()),
                   const SizedBox(height: 10.0),
                   // Pending Orders
-                  _buildInfoBox('Pending Orders', pendingOrders.toString()),
+                  _buildInfoBox(
+                      'Pending Orders', widget.pending_orders.toString()),
                   // const SizedBox(height: 10.0),
                   // Buttons
                 ],

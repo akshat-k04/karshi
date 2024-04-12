@@ -7,7 +7,8 @@ import 'package:karshi/seller/dashboard.dart';
 class InventoryDescriptionPage extends StatefulWidget {
   Item product_detail;
   String uid;
-  InventoryDescriptionPage({required this.product_detail, required this.uid});
+  List<Order_Model> All_order ;
+  InventoryDescriptionPage({required this.product_detail, required this.uid,required this.All_order});
 
   @override
   _InventoryDescriptionPageState createState() =>
@@ -38,6 +39,11 @@ class _InventoryDescriptionPageState extends State<InventoryDescriptionPage> {
     category = widget.product_detail.category;
     availableStock = widget.product_detail.stock;
     url = widget.product_detail.image_url;
+    completedOrders =( widget.All_order.where((order) =>order.item_name == name &&order.status == 'completed')).length ;
+    pendingOrders =( widget.All_order.where((order) =>order.item_name == name &&order.status == 'pending')).length ;
+    shippedOrders= (widget.All_order.where(
+            (order) => order.item_name == name && order.status == 'shipped'))
+        .length;
     setState(() {});
   }
 

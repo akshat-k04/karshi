@@ -133,7 +133,7 @@ class SignupScreenState extends State<SigninScreen> {
                                             ? HomePage(
                                                 uid: result.uid,
                                               )
-                                            : (isCustomer != 'Admin')
+                                            : (user_role.role == 'Admin')
                                                 ? AdminView()
                                                 : Dashboard(uid: result.uid),
                                 transitionsBuilder: (context, animation,
