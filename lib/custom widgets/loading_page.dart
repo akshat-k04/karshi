@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:flutter/material.dart';
 
 class LoadingPage extends StatelessWidget {
   const LoadingPage({Key? key}) : super(key: key);
@@ -13,7 +12,7 @@ class LoadingPage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset('assets/images/loading.gif'), // Use your asset path
+            CircularProgressIndicator(), // Or any other loading indicator
             SizedBox(height: 20.0),
             Text('Loading...'),
           ],
