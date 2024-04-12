@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:karshi/admin/adminHome.dart';
 import 'app_colors.dart';
 import 'package:karshi/User/Home_page.dart';
 import 'package:karshi/auth%20files/forgotPassword.dart';
@@ -105,6 +106,7 @@ class SignupScreenState extends State<SigninScreen> {
                             print("bye");
                             print(user_role!.role);
                             isCustomer = (user_role.role == 'Customer');
+
                             // setState(() {});
 
                             // List<Item> productlist;
@@ -131,7 +133,9 @@ class SignupScreenState extends State<SigninScreen> {
                                             ? HomePage(
                                                 uid: result.uid,
                                               )
-                                            : Dashboard(uid: result.uid),
+                                            : (isCustomer == 'Admin')
+                                                ? AdminView()
+                                                : Dashboard(uid: result.uid),
                                 transitionsBuilder: (context, animation,
                                     secondaryAnimation, child) {
                                   return FadeTransition(
