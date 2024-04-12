@@ -256,8 +256,48 @@ class _CheckoutPageState extends State<CheckoutPage> {
                   context: context,
                   builder: (BuildContext context) {
                     return AlertDialog(
-                      title: Text('Order Placed'),
-                      // content: Text(''),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(16.0),
+                      ),
+                      content: Column(
+                        mainAxisSize: MainAxisSize
+                            .min, // To make the dialog as tall as the content
+                        children: [
+                          Icon(
+                            Icons.check_circle_outline,
+                            color: Colors.green,
+                            size: 60.0, // Icon size can be adjusted as needed
+                          ),
+                          SizedBox(height: 24.0),
+                          Text(
+                            'Order Confirmed',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontSize: 24.0, // Adjust the font size as needed
+                            ),
+                          ),
+                          SizedBox(height: 8.0),
+                          Text(
+                            'Your order has been successfully placed',
+                            textAlign: TextAlign.center,
+                          ),
+                          SizedBox(height: 24.0),
+                          ElevatedButton(
+                            onPressed: () {
+                              // Logic to continue shopping
+                            },
+                            style: ElevatedButton.styleFrom(
+                              foregroundColor:
+                                  MyAppColors.textColor, // Background color
+                              shape: StadiumBorder(),
+                            ),
+                            child: Text(
+                              'Continue Shopping!',
+                              style: TextStyle(color: Colors.green),
+                            ),
+                          ),
+                        ],
+                      ),
                     );
                   },
                 );
