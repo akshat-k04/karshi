@@ -10,7 +10,6 @@ class AdminView extends StatefulWidget {
   _AdminViewState createState() => _AdminViewState();
 }
 
-
 class DashboardBlock extends StatelessWidget {
   final String title;
   final String value;
@@ -156,7 +155,6 @@ class OrderList extends StatelessWidget {
   List<Order_Model> All_order;
   OrderList({required this.All_order});
 
-
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -169,8 +167,8 @@ class OrderList extends StatelessWidget {
         SizedBox(height: 10),
         // Replace this with your order list widget
         // Example order list item
-        
-          DataTable(
+
+        DataTable(
           columnSpacing: 16, // Adjust the spacing between columns
           headingRowHeight: 40, // Set the height of the heading row
           dataRowHeight: 60, // Set the height of data rows
@@ -195,8 +193,9 @@ class OrderList extends StatelessWidget {
                     Icon(Icons.circle,
                         color: All_order[index].status == 'completed'
                             ? Colors.green
-                            :
-                            All_order[index].status == 'shipped'?Colors.yellow: Colors.red),
+                            : All_order[index].status == 'shipped'
+                                ? Colors.yellow
+                                : Colors.red),
                     SizedBox(width: 5),
                     Text(All_order[index].status),
                   ],
