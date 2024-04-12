@@ -24,6 +24,7 @@ class HomePage extends StatefulWidget {
 class HomePageState extends State<HomePage> {
   List<Item> show_products = [];
   List<Item> Allproduct = [];
+  List<Item> wishlist_user = [];
 
   @override
   void initState() {
@@ -35,6 +36,7 @@ class HomePageState extends State<HomePage> {
   void fetch() async {
     show_products = await CustomerService(uid: widget.uid).getAllItems();
     Allproduct = show_products;
+    wishlist_user = await CustomerService(uid: widget.uid).getWishlist();
     setState(() {});
   }
 
@@ -50,6 +52,16 @@ class HomePageState extends State<HomePage> {
     setState(() {});
   }
 
+  bool finder_in_wish(Item product) {
+    for (Item temp_pro in wishlist_user) {
+      if (product.item_name == temp_pro.item_name &&
+          product.category == temp_pro.category&&
+          product.description== temp_pro.description
+          ) return true;
+    }
+    return false;
+  }
+
   Widget build(BuildContext context) {
     final user = Provider.of<UserAuth?>(context);
 
@@ -58,7 +70,7 @@ class HomePageState extends State<HomePage> {
       appBar: AppBar(
         backgroundColor: MyAppColors.backgroundColor,
         title: Text(
-          'Krishi',
+          'Krashi',
           style: TextStyle(
             color: MyAppColors.textColor, // Text color set to white
             fontSize: 36.0, // Choose the size that fits your design
@@ -160,7 +172,7 @@ class HomePageState extends State<HomePage> {
                     color: MyAppColors.textColor,
                     onPressed: () async {
                       // Wishlist logic
-                      List<Item> wishlist_user =
+                      wishlist_user =
                           await CustomerService(uid: user!.uid).getWishlist();
                       Navigator.push(
                         context,
@@ -202,25 +214,9 @@ class HomePageState extends State<HomePage> {
                 padding: const EdgeInsets.all(20),
                 itemCount: show_products.length,
                 itemBuilder: (context, index) {
-                  return 
-                          ProductItem(product_details: (show_products)[index]);
-
-                  // Container(
-                  //     margin: const EdgeInsets.only(bottom: 20.0),
-                  //     decoration: BoxDecoration(
-                  //       color: MyAppColors.bgGreen,
-                  //       borderRadius: BorderRadius.circular(10.0),
-                  //       boxShadow: [
-                  //         BoxShadow(
-                  //           color: MyAppColors.bgGreen,
-                  //           spreadRadius: 2,
-                  //           blurRadius: 5,
-                  //           offset: const Offset(0, 3),
-                  //         ),
-                  //       ],
-                  //     ),
-                  //     child:
-                  //         ProductItem(product_details: (show_products)[index]));
+                  return ProductItem(
+                      product_details: (show_products)[index],
+                      isfavorite: finder_in_wish(show_products[index]));
                 },
               ),
             ),
@@ -233,16 +229,25 @@ class HomePageState extends State<HomePage> {
 
 class ProductItem extends StatefulWidget {
   Item product_details;
-  ProductItem({required this.product_details});
+  bool isfavorite;
+  ProductItem({required this.product_details, required this.isfavorite});
+
   @override
-  _ProductItemState createState() => _ProductItemState();
+  _ProductItemState createState() => _ProductItemState(favorite: isfavorite);
 }
 
 class _ProductItemState extends State<ProductItem> {
+  bool favorite;
+  _ProductItemState({required this.favorite});
   int quantity = 1;
   bool isFavorite = false;
-
   @override
+  void initState() {
+    // TODO: implement initState
+    isFavorite = favorite;
+    super.initState();
+  }
+
   Widget build(BuildContext context) {
     final user = Provider.of<UserAuth?>(context);
 
@@ -269,14 +274,34 @@ class _ProductItemState extends State<ProductItem> {
           ),
           child: Row(
             children: [
-              Container(
-                width: 130.0,
-                height: 130.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  image: DecorationImage(
-                    image: NetworkImage(widget.product_details.image_url),
-                    fit: BoxFit.cover,
+              GestureDetector(
+                onTap: ()=>{
+Navigator.push(
+                    context,
+                    PageRouteBuilder(
+                      transitionDuration: Duration(milliseconds: 500),
+                      pageBuilder: (context, animation, secondaryAnimation) =>
+                          ProductDetailsPage(
+                              product_detail: widget.product_details),
+                      transitionsBuilder:
+                          (context, animation, secondaryAnimation, child) {
+                        return FadeTransition(
+                          opacity: animation,
+                          child: child,
+                        );
+                      },
+                    ),
+                  )
+                },
+                child: Container(
+                  width: 130.0,
+                  height: 130.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10.0),
+                    image: DecorationImage(
+                      image: NetworkImage(widget.product_details.image_url),
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
@@ -300,14 +325,15 @@ class _ProductItemState extends State<ProductItem> {
                       ),
                       Text(
                         "★★★★☆",
-                        style: TextStyle(color: Colors.yellowAccent,fontSize: 12),
+                        style:
+                            TextStyle(color: Colors.yellowAccent, fontSize: 12),
                       ), // Placeholder for rating
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           SizedBox(
-                            height: 50,
-                            width: 90,
+                            height: 35,
+                            width: 86,
                             child: ElevatedButton(
                               onPressed: () {
                                 dynamic result =
@@ -324,18 +350,16 @@ class _ProductItemState extends State<ProductItem> {
                                 });
                               },
                               style: ElevatedButton.styleFrom(
-                                backgroundColor: Colors.green, // Background color
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(4.0),
-                                  
-                                ),
-                                padding: EdgeInsets.all(2)
-                              ),
-                              
-    
+                                  backgroundColor:
+                                      Colors.green, // Background color
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(4.0),
+                                  ),
+                                  padding: EdgeInsets.all(2)),
                               child: const Text(
                                 'Add to Cart',
-                                style: TextStyle(color: Colors.white,fontSize: 10),
+                                style: TextStyle(
+                                    color: Colors.white, fontSize: 14),
                               ),
                             ),
                           ),
@@ -343,6 +367,7 @@ class _ProductItemState extends State<ProductItem> {
                             icon: const Icon(
                               Icons.remove,
                               color: Colors.white,
+                              size: 12,
                             ),
                             onPressed: () {
                               setState(() {
@@ -354,10 +379,14 @@ class _ProductItemState extends State<ProductItem> {
                           ),
                           Text(
                             '$quantity',
-                            style: TextStyle(color: Colors.white),
+                            style: TextStyle(color: Colors.white, fontSize: 12),
                           ),
                           IconButton(
-                            icon: const Icon(Icons.add, color: Colors.white),
+                            icon: const Icon(
+                              Icons.add,
+                              color: Colors.white,
+                              size: 12,
+                            ),
                             onPressed: () {
                               setState(() {
                                 quantity++;
@@ -410,12 +439,12 @@ class _ProductItemState extends State<ProductItem> {
           ),
         ),
         Positioned(
-          right: 20,
+          right: 40,
           top: 80,
           child: Text(
             '\$${widget.product_details.price}', // Assuming you have a price field
             style: TextStyle(
-              fontSize: 25.0,
+              fontSize: 16.0,
               fontWeight: FontWeight.bold,
               color: Colors.white,
             ),
