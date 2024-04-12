@@ -1,6 +1,7 @@
 // import 'dart:html';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:karshi/backend/models/models.dart';
 // import 'package:flutter/material.dart';
 // import 'package:location/location.dart';
@@ -9,42 +10,31 @@ class ShopKeeperService {
   final String uid;
   ShopKeeperService({required this.uid});
 
-  // Location location = Location();
+  // late String lat;
+  //   late String long;
 
+  Future<Position> _getCurrentPosition() async {
+    bool serviceEnabled = await Geolocator.isLocationServiceEnabled();
+    if (!serviceEnabled) {
+      return Future.error('Location services are disabled.');
+    }
 
-  // void _getLocationPermission() async {
-  //   bool _serviceEnabled;
-  //   PermissionStatus _permissionGranted;
-  //   _serviceEnabled = await location.serviceEnabled();
-  //   if (!_serviceEnabled) {
-  //     _serviceEnabled = await location.requestService();
-  //     if (!_serviceEnabled) {
-  //       return;
-  //     }
-  //   }
-  //   _permissionGranted = await location.hasPermission();
-  //   if (_permissionGranted == PermissionStatus.denied) {
-  //     _permissionGranted = await location.requestPermission();
-  //     if (_permissionGranted != PermissionStatus.granted) {
-  //       return;
-  //     }
-  //   }
-  // }
+    LocationPermission permission = await Geolocator.checkPermission();
 
-  // void _getCurrentLocation() async {
-  //   LocationData? locationData;
-  //   try {
-  //     locationData = await location.getLocation();
-  //   } catch (e) {
-  //     print("Error getting location: $e");
-  //     locationData = null;
-  //   }
-  //   if (locationData != null) {
-  //     double? latitude = locationData.latitude;
-  //     double? longitude = locationData.longitude;
-  //     print("Latitude: $latitude, Longitude: $longitude");
-  //   }
-  // }
+    if (permission == LocationPermission.denied) {
+      permission = await Geolocator.requestPermission();
+      if (permission == LocationPermission.denied) {
+        return Future.error('Location permissions are denied');
+      }
+    }
+
+    if (permission == LocationPermission.deniedForever) {
+      return Future.error(
+          'Location permissions are permanently denied, we cannot request permissions.');
+    }
+
+    return await Geolocator.getCurrentPosition();
+  }
 
   final CollectionReference userCollection =
       FirebaseFirestore.instance.collection('ShopKeeper_Data');
@@ -54,9 +44,12 @@ class ShopKeeperService {
       String owner_name,
       String shop_address,
       int mobile_number,
-      String shop_name,
-      String latitude,
-      String longitude) async {
+      String shop_name,) async {
+
+    Position position = await _getCurrentPosition();
+    double latitude = position.latitude;
+    double longitude = position.longitude;
+    
     return await userCollection.doc(uid).set({
       'owner_name': owner_name,
       'shop_address': shop_address,
