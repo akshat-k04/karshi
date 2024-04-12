@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:karshi/app_colors.dart';
 import 'package:karshi/backend/models/models.dart';
 import 'package:karshi/backend/services/admin_services.dart';
 import 'package:karshi/backend/services/customer_services.dart';
@@ -29,6 +30,7 @@ class _OrdersPageState extends State<OrdersPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: MyAppColors.bgGreen,
       appBar: AppBar(
         title: Text('Your Orders'),
         actions: [
