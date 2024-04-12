@@ -1,6 +1,4 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
-import 'dart:js_interop';
-
 import 'package:custom_refresh_indicator/custom_refresh_indicator.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
@@ -132,11 +130,32 @@ class IconCard extends StatelessWidget {
       mainAxisSize: MainAxisSize.min,
       mainAxisAlignment: MainAxisAlignment.center,
       children: <Widget>[
-        Icon(
-          icon,
-          color: iconColor, // Apply the color here
+        SizedBox(
+          height: 40,
         ),
-        Text(label),
+        Container(
+          padding: EdgeInsets.all(8), // Padding inside the container
+          decoration: BoxDecoration(
+            color: Colors.transparent, // Background color of the container
+            border: Border.all(
+              color: MyAppColors.selectedGreen, // Color of the border
+              width: 3, // Thickness of the border
+            ),
+            borderRadius: BorderRadius.circular(10), // Rounded corners
+          ),
+          child: Icon(
+            icon,
+            color: iconColor,
+            size: 80,
+          ),
+        ),
+        Text(
+          label,
+          style: TextStyle(color: Colors.white),
+        ),
+        SizedBox(
+          height: 40,
+        )
       ],
     );
   }
@@ -149,15 +168,16 @@ class PieChartWidget extends StatelessWidget {
       height: 200,
       child: PieChart(PieChartData(
         sections: [
+          PieChartSectionData(color: Colors.red, value: 4, title: '4'),
           PieChartSectionData(
-            color: Colors.blue,
-            value: 30,
-            title: '30%',
+            color: Colors.yellow,
+            value: 2,
+            title: '2',
           ),
           PieChartSectionData(
-            color: Colors.orange,
-            value: 70,
-            title: '70%',
+            color: Colors.green,
+            value: 2,
+            title: '2',
           ),
         ],
       )),
@@ -206,7 +226,9 @@ class OrderList extends StatelessWidget {
                 label: Text('Date',
                     style: TextStyle(color: MyAppColors.textColor))),
             DataColumn(
-                label: Icon(Icons.more_vert)), // Placeholder for action icon
+                label: Icon(Icons.more_vert,
+                    color:
+                        MyAppColors.textColor)), // Placeholder for action icon
           ],
           rows: List<DataRow>.generate(
             All_order.length,
@@ -216,8 +238,10 @@ class OrderList extends StatelessWidget {
                   All_order[index].orderNumber.substring(0, 8),
                   style: TextStyle(color: Colors.white),
                 )),
-                DataCell(Text(All_order[index].item_name)),
-                DataCell(Text(All_order[index].stock.toString())),
+                DataCell(Text(All_order[index].item_name,
+                    style: TextStyle(color: Colors.white))),
+                DataCell(Text(All_order[index].stock.toString(),
+                    style: TextStyle(color: Colors.white))),
                 DataCell(Row(
                   children: [
                     Icon(Icons.circle,
@@ -227,11 +251,20 @@ class OrderList extends StatelessWidget {
                                 ? Colors.yellow
                                 : Colors.red),
                     SizedBox(width: 5),
-                    Text(All_order[index].status),
+                    Text(All_order[index].status,
+                        style: TextStyle(color: Colors.white)),
                   ],
                 )),
-                DataCell(Text('12/4/2024')),
-                DataCell(Icon(Icons.more_vert)), // Placeholder for action icon
+                DataCell(
+                  Text(
+                    '12/4/2024',
+                    style: TextStyle(color: Colors.white),
+                  ),
+                ),
+                DataCell(Icon(
+                  Icons.more_vert,
+                  color: Colors.white,
+                )), // Placeholder for action icon
               ],
             ),
           ),
