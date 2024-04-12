@@ -1,52 +1,96 @@
 import 'package:flutter/material.dart';
 
-class AdminView extends StatefulWidget {
+class DashboardBlock extends StatelessWidget {
+  final String title;
+  final String value;
+  final VoidCallback onTap;
+
+  DashboardBlock(
+      {required this.title, required this.value, required this.onTap});
+
   @override
-  _AdminViewState createState() => _AdminViewState();
+  Widget build(BuildContext context) {
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        padding: EdgeInsets.all(16.0),
+        decoration: BoxDecoration(
+          color: Color(0xFF00796B), // Custom card color
+          borderRadius: BorderRadius.circular(10), // Rounded corners
+        ),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: <Widget>[
+            Text(
+              title,
+              style: TextStyle(
+                color: Colors.white,
+                fontWeight: FontWeight.bold,
+                fontSize: 18,
+              ),
+            ),
+            SizedBox(height: 8),
+            Text(
+              value,
+              style: TextStyle(
+                color: Colors.white,
+                fontSize: 24,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
 }
 
-class _AdminViewState extends State<AdminView> {
-  List<String> adminData = [];
-
-  @override
-  void initState() {
-    super.initState();
-    loadData();
-  }
-
-  Future<void> loadData() async {
-    // Simulate a network call to load data with a delay
-    await Future.delayed(Duration(seconds: 2));
-
-    // Dummy data to populate the list, replace with your actual data fetching logic
-    setState(() {
-      adminData = List.generate(10, (index) => 'Item $index');
-    });
-  }
+class AdminDashboard extends StatelessWidget {
+  // Placeholder data
+  final int completedOrders = 20;
+  final int pendingOrders = 5;
+  final int shippedOrders = 8;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Admin View'),
-        actions: [
-          IconButton(
-            icon: Icon(Icons.refresh),
-            onPressed: loadData,
-          ),
-        ],
+        title: Text('Krishi App'),
+        backgroundColor: Color(0xFF004D40),
       ),
-      body: adminData.isEmpty
-          ? Center(child: CircularProgressIndicator())
-          : ListView.builder(
-              itemCount: adminData.length,
-              itemBuilder: (context, index) {
-                return ListTile(
-                  title: Text(adminData[index]),
-                );
-              },
-            ),
+      body: Padding(
+        padding: EdgeInsets.all(20.0),
+        child: SizedBox(
+          height: MediaQuery.of(context).size.width * 0.28,
+          child: Row(
+            crossAxisAlignment: CrossAxisAlignment.center,
+            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+            children: <Widget>[
+              DashboardBlock(
+                title: 'User',
+                value: '25', // Replace with actual data
+                onTap: () {
+                  // Handle tap
+                },
+              ),
+              DashboardBlock(
+                title: 'Store',
+                value: '8', // Replace with actual data
+                onTap: () {
+                  // Handle tap
+                },
+              ),
+              DashboardBlock(
+                title: 'Product',
+                value: '50+', // Replace with actual data
+                onTap: () {
+                  // Handle tap
+                },
+              ),
+            ],
+          ),
+        ),
+      ),
     );
   }
 }
-
