@@ -1,11 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:karshi/backend/models/models.dart';
+import 'package:karshi/backend/services/admin_services.dart';
 
 class OrdersPage extends StatefulWidget {
+  String uid;
+  OrdersPage({required this.uid});
   @override
   _OrdersPageState createState() => _OrdersPageState();
 }
 
 class _OrdersPageState extends State<OrdersPage> {
+  List<Order_Model> All_order = [];
+  @override
+  void initState() {
+    // TODO: implement initState
+    fetch_data();
+    super.initState();
+  }
+
+  void fetch_data() async {
+    All_order = await Orders_Services().getOrders();
+    All_order =
+        All_order.where((order) => order.customer_uid == widget.uid).toList();
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -21,9 +40,10 @@ class _OrdersPageState extends State<OrdersPage> {
         ],
       ),
       body: ListView.builder(
-        itemCount: 2, // Replace with your actual order list length
+        itemCount:
+            All_order.length, // Replace with your actual order list length
         itemBuilder: (context, index) {
-          return OrderItem();
+          return OrderItem(orderDetail :All_order[index]);
         },
       ),
     );
@@ -31,6 +51,11 @@ class _OrdersPageState extends State<OrdersPage> {
 }
 
 class OrderItem extends StatelessWidget {
+  final Order_Model orderDetail; // Use your actual order model class
+  // This order detail has product name, quantity, price per quantity, and order status
+
+  OrderItem({required this.orderDetail});
+
   @override
   Widget build(BuildContext context) {
     return Card(
@@ -39,8 +64,9 @@ class OrderItem extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ListTile(
-            title: Text('Product 1'),
-            subtitle: Text('Product category'),
+            title: Text(orderDetail.item_name), // Display product name
+            subtitle: Text(
+                '${orderDetail.stock} x \$${orderDetail.price}'), // Display quantity and price per quantity
             trailing: Icon(Icons.more_vert),
           ),
           Padding(
@@ -49,10 +75,11 @@ class OrderItem extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  'Seller: Rohan Sellers, Shop Name',
+                  'Seller: ${orderDetail.shopkeeper_uid}', // Display seller's UID
                   style: TextStyle(fontWeight: FontWeight.bold),
                 ),
-                Text('Order Status: In route'),
+                Text(
+                    'Order Status: ${orderDetail.status}'), // Display order status
                 SizedBox(height: 8),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
@@ -72,10 +99,4 @@ class OrderItem extends StatelessWidget {
       ),
     );
   }
-}
-
-void main() {
-  runApp(MaterialApp(
-    home: OrdersPage(),
-  ));
 }

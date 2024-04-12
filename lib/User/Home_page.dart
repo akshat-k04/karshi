@@ -1,4 +1,5 @@
 import 'dart:ffi';
+import 'package:karshi/User/my_orders.dart';
 import 'package:karshi/app_colors.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -78,6 +79,27 @@ class HomePageState extends State<HomePage> {
         ),
         automaticallyImplyLeading: false, // Remove the back button icon
         actions: [
+          IconButton(
+            onPressed: (){
+              
+              Navigator.push(
+                context,
+                PageRouteBuilder(
+                  transitionDuration: Duration(milliseconds: 500),
+                  pageBuilder: (context, animation, secondaryAnimation) =>
+                      OrdersPage(uid: user!.uid),
+                  transitionsBuilder:
+                      (context, animation, secondaryAnimation, child) {
+                    return FadeTransition(
+                      opacity: animation,
+                      child: child,
+                    );
+                  },
+                ),
+              );
+            }, 
+            icon:Icon(Icons.shopping_cart_rounded)),
+
           IconButton(
             icon: const Icon(Icons.person),
             onPressed: () {
