@@ -114,6 +114,7 @@ class HomePageState extends State<HomePage> {
                   Expanded(
                     child: TextField(
                       onChanged: (value) => {filter_products(value)},
+                      style: TextStyle(color: Colors.white),
                       decoration: InputDecoration(
                         hintText: 'Search Products',
                         hintStyle: TextStyle(color: Colors.white),
